@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Vendredi — Full body + Cardio actif</title>
+<title>Vendredi — Full body + HIIT ventre plat</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -163,8 +163,8 @@
 <body>
 <div class="header">
   <div class="day-label">Vendredi</div>
-  <h1>Full body + Cardio actif</h1>
-  <div class="subtitle">Phase 1 — 25 min, échauffement compris</div>
+  <h1>Full body + HIIT ventre plat</h1>
+  <div class="subtitle">Focus dégonflement — 30 min, échauffement compris</div>
 </div>
 <div class="warmup">
   <div class="warmup-title">Échauffement — 5 min</div>
@@ -176,7 +176,7 @@
 <div id="measure-section" class="measure-section">
   <div class="measure-icon">📏</div>
   <div class="measure-title">Prends tes mesures !</div>
-  <div class="measure-subtitle">Séance terminée — note ton poids et tour de taille</div>
+  <div class="measure-subtitle">Séance terminée — pèse-toi et mesure ton tour de taille (vendredi matin = jour officiel de pesée)</div>
   <div id="measure-form">
     <div class="measure-fields">
       <div class="measure-field">
@@ -200,9 +200,11 @@
 var exercises = [
   { name: "Diverging Seated Row", sets: 3, reps: "10", rest: 30, weight: "30 kg", tip: "Rythme soutenu, tire les coudes vers l'arri\u00e8re" },
   { name: "Rear Delt", sets: 3, reps: "12", rest: 30, weight: "20 kg", tip: "Ouvrir bras vers l'arri\u00e8re \u2014 excellent pour la posture" },
-  { name: "Leg Press", sets: 3, reps: "10", rest: 45, weight: "30 kg", tip: "Poids mod\u00e9r\u00e9, encha\u00eener avec \u00e9nergie" },
-  { name: "Rotary Torso", sets: 2, reps: "15/c\u00f4t\u00e9", rest: 30, weight: "25 kg", tip: "Rotation contr\u00f4l\u00e9e, sentir les obliques" },
-  { name: "Stairmaster", sets: 1, reps: "8 min", rest: 0, weight: "\u2014", tip: "Rythme soutenu, vide le r\u00e9servoir !", isCardio: true, cardioDuration: 480 }
+  { name: "Leg Press", sets: 3, reps: "10", rest: 45, weight: "30 kg", tip: "Poids mod\u00e9r\u00e9, on garde du jus pour le finisher" },
+  { name: "Crunchs sur banc inclin\u00e9", sets: 3, reps: "15", rest: 30, weight: "poids du corps", tip: "Au m\u00eame \u00e9tage que la muscu, fais-le ici. Descente contr\u00f4l\u00e9e, expire \u00e0 fond" },
+  { name: "Planche sur coudes", sets: 3, reps: "40s", rest: 30, weight: "\u2014", tip: "Au sol, zone stretch. Renforce le transverse \u2014 muscle ceinture pour ventre plat", isPlank: true, plankSec: 40 },
+  { name: "Planche lat\u00e9rale", sets: 2, reps: "30s/c\u00f4t\u00e9", rest: 30, weight: "\u2014", tip: "Hanches hautes, ligne parfaite. Travaille les obliques (pense aux 2 c\u00f4t\u00e9s)", isPlank: true, plankSec: 30 },
+  { name: "Stairmaster HIIT (finisher)", sets: 1, reps: "6 min", rest: 0, weight: "\u2014", tip: "30s rythme rapide / 30s lent, alterner. Br\u00fble le maximum sur la fin de s\u00e9ance", isCardio: true, cardioDuration: 360 }
 ];
 var activeIndex = -1;
 var timers = exercises.map(function() { return { currentSet: 0, phase: 'idle', seconds: 0, intervalId: null }; });
@@ -240,7 +242,15 @@ function render() {
       if (t.phase === 'idle' && !isCompleted) {
         timerHTML = '<div class="timer-display"><div class="timer-time work">GO</div><div class="timer-label">Tape pour lancer la s\u00e9rie 1</div></div>';
       } else if (t.phase === 'work') {
-        timerHTML = '<div class="timer-display"><div class="timer-time work">' + formatTime(t.seconds) + '</div><div class="timer-label">' + ex.reps + ' reps \u2014 s\u00e9rie ' + (t.currentSet+1) + '/' + ex.sets + '</div></div>';
+        if (ex.isPlank) {
+          var pdur = ex.plankSec || 30;
+          var prem = Math.max(0, pdur - t.seconds);
+          var ppct = ((pdur - prem) / pdur * 100).toFixed(0);
+          timerHTML = '<div class="timer-display"><div class="timer-time work">' + formatTime(prem) + '</div><div class="timer-label">Tiens bon \u2014 s\u00e9rie ' + (t.currentSet+1) + '/' + ex.sets + '</div></div>';
+          progressHTML = '<div class="progress-bar"><div class="progress-fill work" style="width:' + ppct + '%"></div></div>';
+        } else {
+          timerHTML = '<div class="timer-display"><div class="timer-time work">' + formatTime(t.seconds) + '</div><div class="timer-label">' + ex.reps + ' reps \u2014 s\u00e9rie ' + (t.currentSet+1) + '/' + ex.sets + '</div></div>';
+        }
       } else if (t.phase === 'rest') {
         var pct2 = ((ex.rest - t.seconds) / ex.rest * 100).toFixed(0);
         timerHTML = '<div class="timer-display"><div class="timer-time rest resting">' + formatTime(t.seconds) + '</div><div class="timer-label">Repos \u2014 prochaine s\u00e9rie dans\u2026</div></div>';
@@ -250,7 +260,7 @@ function render() {
       }
     }
     var btnHTML = '';
-    if (t.phase === 'work' && !ex.isCardio) {
+    if (t.phase === 'work' && !ex.isCardio && !ex.isPlank) {
       btnHTML = '<div class="btn-row"><button class="btn btn-primary" onclick="event.stopPropagation(); finishSet(' + i + ')">S\u00e9rie termin\u00e9e</button></div>';
     } else if (t.phase === 'work' && ex.isCardio) {
       btnHTML = '<div class="btn-row"><button class="btn btn-secondary" onclick="event.stopPropagation(); finishSet(' + i + ')">Arr\u00eater</button></div>';
@@ -287,6 +297,13 @@ function startWork(i) {
     t.intervalId = setInterval(function() {
       t.seconds++;
       if (t.seconds >= ex.cardioDuration) { clearInterval(t.intervalId); t.phase = 'done'; vibrate([200,100,200,100,300]); checkAllDone(); render(); return; }
+      render();
+    }, 1000);
+  } else if (ex.isPlank) {
+    var pdur = ex.plankSec || 30;
+    t.intervalId = setInterval(function() {
+      t.seconds++;
+      if (t.seconds >= pdur) { clearInterval(t.intervalId); finishSet(i); return; }
       render();
     }, 1000);
   } else {
