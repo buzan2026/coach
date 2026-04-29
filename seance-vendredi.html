@@ -162,15 +162,15 @@
 </head>
 <body>
 <div class="header">
-  <div class="day-label">Vendredi · S8</div>
+  <div class="day-label">Vendredi</div>
   <h1>Full body + HIIT ventre plat</h1>
-  <div class="subtitle">Phase 3 intensifiée — circuit explosif + jour officiel de pesée</div>
+  <div class="subtitle">Focus dégonflement — 30 min, échauffement compris</div>
 </div>
 <div class="warmup">
-  <div class="warmup-title">Échauffement — 5 min (2e étage)</div>
-  <div class="warmup-text">Marche rapide tapis, inclinaison 5%. On enchaîne tout de suite avec le HIIT Stairmaster au 2e, puis descente au 1er pour le circuit muscu.</div>
+  <div class="warmup-title">Échauffement — 5 min (3e étage)</div>
+  <div class="warmup-text">Marche rapide sur tapis, inclinaison 4%. Tu enchaînes avec le HIIT Stairmaster et les crunchs au 3e, puis tu descends au 1er pour la muscu.</div>
 </div>
-<div class="section-title">Exercices · circuit + supersets · charges modérées rythme rapide</div>
+<div class="section-title">Exercices</div>
 <div id="exercises"></div>
 <div class="hint">Tape sur un exercice pour démarrer le suivi</div>
 <div id="measure-section" class="measure-section">
@@ -195,16 +195,16 @@
   </div>
   <div id="measure-saved" class="measure-saved"></div>
 </div>
-<div class="footer">Coach Boris — Phase 3 intensifiée · S8 (28 avril → 4 mai)</div>
+<div class="footer">Coach Boris — Semaine du 27 avril, consolidation phase 2</div>
 <script>
 var exercises = [
-  { name: "Stairmaster HIIT (2e étage)", sets: 1, reps: "6 min", rest: 0, weight: "—", tip: "30s sprint / 30s lent en alternance. Cardio brûle-graisse en ouverture, juste après l'échauffement", isCardio: true, cardioDuration: 360 },
-  { name: "Crunchs sur banc incliné (2e étage)", sets: 3, reps: "15", rest: 30, weight: "poids du corps", tip: "Toujours au 2e. Descente contrôlée, expire à fond. Ensuite descente au 1er pour le circuit" },
-  { name: "Circuit Tour 1 — Chest Press → Cable Row → Goblet Squat (1er)", sets: 1, reps: "10+10+12", rest: 90, weight: "30/35/14 kg", tip: "NOUVEAU S8 — enchaîner 10 Chest Press, 10 Cable Row, 12 Goblet Squat sans pause. Repos 90s après le tour" },
-  { name: "Circuit Tour 2 — même séquence (1er)", sets: 1, reps: "10+10+12", rest: 90, weight: "30/35/14 kg", tip: "Rythme rapide, même charge. C'est là que ça brule" },
-  { name: "Circuit Tour 3 — même séquence (1er)", sets: 1, reps: "10+10+12", rest: 30, weight: "30/35/14 kg", tip: "Dernier tour, balance tout. Après on passe aux supersets" },
-  { name: "Hip Thrust + Rotary Torso superset (1er)", sets: 3, reps: "12+15/côté", rest: 30, weight: "50 / 20 kg", tip: "Enchaîner Hip Thrust puis Rotary Torso sans pause. Densifie la fin de séance, attaque les obliques" },
-  { name: "Planche sur coudes (1er — zone stretch)", sets: 3, reps: "45s", rest: 30, weight: "—", tip: "Au sol. Ventre rentré, gainage profond. Renforce le transverse — muscle ceinture pour ventre plat", isPlank: true, plankSec: 45 }
+  { name: "V\u00e9lo elliptique HIIT (3e \u00e9tage)", sets: 1, reps: "6 min", rest: 0, weight: "\u2014", tip: "30s rythme rapide r\u00e9sistance 10 / 30s lent r\u00e9sistance 4, alterner. Cardio br\u00fble-graisse en d\u00e9but de s\u00e9ance, juste apr\u00e8s l'\u00e9chauffement", isCardio: true, cardioDuration: 360 },
+  { name: "Crunchs sur banc inclin\u00e9 (3e \u00e9tage)", sets: 3, reps: "15", rest: 30, weight: "poids du corps", tip: "Toujours au 3e. Descente contr\u00f4l\u00e9e, expire \u00e0 fond. Ensuite on descend au 1er pour la muscu" },
+  { name: "Diverging Seated Row (1er \u00e9tage)", sets: 3, reps: "10", rest: 30, weight: "30 kg", tip: "Rythme soutenu, tire les coudes vers l'arri\u00e8re" },
+  { name: "Rear Delt (1er \u00e9tage)", sets: 3, reps: "12", rest: 30, weight: "20 kg", tip: "Ouvrir bras vers l'arri\u00e8re \u2014 excellent pour la posture" },
+  { name: "Leg Press (1er \u00e9tage)", sets: 3, reps: "10", rest: 45, weight: "35 kg", tip: "+2,5 kg \u2014 tour de taille toujours en baisse, on consolide. On garde du jus pour les planches" },
+  { name: "Planche sur coudes (1er \u2014 zone stretch)", sets: 3, reps: "40s", rest: 30, weight: "\u2014", tip: "Au sol, zone stretch. Renforce le transverse \u2014 muscle ceinture pour ventre plat", isPlank: true, plankSec: 40 },
+  { name: "Planche lat\u00e9rale (1er \u2014 zone stretch)", sets: 2, reps: "30s/c\u00f4t\u00e9", rest: 30, weight: "\u2014", tip: "Hanches hautes, ligne parfaite. Travaille les obliques (pense aux 2 c\u00f4t\u00e9s)", isPlank: true, plankSec: 30 }
 ];
 var activeIndex = -1;
 var timers = exercises.map(function() { return { currentSet: 0, phase: 'idle', seconds: 0, intervalId: null }; });
@@ -223,7 +223,7 @@ function render() {
       var pc = 'set-pill';
       if (s < t.currentSet) pc += ' done';
       else if (s === t.currentSet && t.phase !== 'idle' && t.phase !== 'done') pc += ' current';
-      pills += '<div class="' + pc + '">' + (ex.isCardio ? '🔥' : 'S' + (s+1)) + '</div>';
+      pills += '<div class="' + pc + '">' + (ex.isCardio ? '\uD83D\uDD25' : 'S' + (s+1)) + '</div>';
     }
     var timerHTML = '', progressHTML = '';
     if (ex.isCardio) {
@@ -233,37 +233,37 @@ function render() {
         var rem = Math.max(0, ex.cardioDuration - t.seconds);
         var mins = Math.floor(rem / 60), secs = rem % 60;
         var pct = (t.seconds / ex.cardioDuration * 100).toFixed(0);
-        timerHTML = '<div class="timer-display"><div class="timer-time cardio-pulse">' + mins + ':' + String(secs).padStart(2,'0') + '</div><div class="timer-label">Dernière ligne droite !</div></div>';
+        timerHTML = '<div class="timer-display"><div class="timer-time cardio-pulse">' + mins + ':' + String(secs).padStart(2,'0') + '</div><div class="timer-label">Derni\u00e8re ligne droite !</div></div>';
         progressHTML = '<div class="progress-bar"><div class="progress-fill cardio" style="width:' + pct + '%"></div></div>';
       } else if (t.phase === 'done') {
-        timerHTML = '<div class="timer-display"><div class="timer-time done-color">✓</div><div class="timer-label">Séance bouclée !</div></div>';
+        timerHTML = '<div class="timer-display"><div class="timer-time done-color">\u2713</div><div class="timer-label">S\u00e9ance boucl\u00e9e !</div></div>';
       }
     } else {
       if (t.phase === 'idle' && !isCompleted) {
-        timerHTML = '<div class="timer-display"><div class="timer-time work">GO</div><div class="timer-label">Tape pour lancer la série 1</div></div>';
+        timerHTML = '<div class="timer-display"><div class="timer-time work">GO</div><div class="timer-label">Tape pour lancer la s\u00e9rie 1</div></div>';
       } else if (t.phase === 'work') {
         if (ex.isPlank) {
           var pdur = ex.plankSec || 30;
           var prem = Math.max(0, pdur - t.seconds);
           var ppct = ((pdur - prem) / pdur * 100).toFixed(0);
-          timerHTML = '<div class="timer-display"><div class="timer-time work">' + formatTime(prem) + '</div><div class="timer-label">Tiens bon — série ' + (t.currentSet+1) + '/' + ex.sets + '</div></div>';
+          timerHTML = '<div class="timer-display"><div class="timer-time work">' + formatTime(prem) + '</div><div class="timer-label">Tiens bon \u2014 s\u00e9rie ' + (t.currentSet+1) + '/' + ex.sets + '</div></div>';
           progressHTML = '<div class="progress-bar"><div class="progress-fill work" style="width:' + ppct + '%"></div></div>';
         } else {
-          timerHTML = '<div class="timer-display"><div class="timer-time work">' + formatTime(t.seconds) + '</div><div class="timer-label">' + ex.reps + ' reps — série ' + (t.currentSet+1) + '/' + ex.sets + '</div></div>';
+          timerHTML = '<div class="timer-display"><div class="timer-time work">' + formatTime(t.seconds) + '</div><div class="timer-label">' + ex.reps + ' reps \u2014 s\u00e9rie ' + (t.currentSet+1) + '/' + ex.sets + '</div></div>';
         }
       } else if (t.phase === 'rest') {
         var pct2 = ((ex.rest - t.seconds) / ex.rest * 100).toFixed(0);
-        timerHTML = '<div class="timer-display"><div class="timer-time rest resting">' + formatTime(t.seconds) + '</div><div class="timer-label">Repos — prochaine série dans…</div></div>';
+        timerHTML = '<div class="timer-display"><div class="timer-time rest resting">' + formatTime(t.seconds) + '</div><div class="timer-label">Repos \u2014 prochaine s\u00e9rie dans\u2026</div></div>';
         progressHTML = '<div class="progress-bar"><div class="progress-fill rest" style="width:' + pct2 + '%"></div></div>';
       } else if (t.phase === 'done') {
-        timerHTML = '<div class="timer-display"><div class="timer-time done-color">✓</div><div class="timer-label">Terminé !</div></div>';
+        timerHTML = '<div class="timer-display"><div class="timer-time done-color">\u2713</div><div class="timer-label">Termin\u00e9 !</div></div>';
       }
     }
     var btnHTML = '';
     if (t.phase === 'work' && !ex.isCardio && !ex.isPlank) {
-      btnHTML = '<div class="btn-row"><button class="btn btn-primary" onclick="event.stopPropagation(); finishSet(' + i + ')">Série terminée</button></div>';
+      btnHTML = '<div class="btn-row"><button class="btn btn-primary" onclick="event.stopPropagation(); finishSet(' + i + ')">S\u00e9rie termin\u00e9e</button></div>';
     } else if (t.phase === 'work' && ex.isCardio) {
-      btnHTML = '<div class="btn-row"><button class="btn btn-secondary" onclick="event.stopPropagation(); finishSet(' + i + ')">Arrêter</button></div>';
+      btnHTML = '<div class="btn-row"><button class="btn btn-secondary" onclick="event.stopPropagation(); finishSet(' + i + ')">Arr\u00eater</button></div>';
     } else if (t.phase === 'rest') {
       btnHTML = '<div class="btn-row"><button class="btn btn-secondary" onclick="event.stopPropagation(); skipRest(' + i + ')">Passer le repos</button></div>';
     }
@@ -272,8 +272,8 @@ function render() {
       '<div class="exercise-name">' + ex.name + '</div>' +
       '<div class="exercise-meta">' +
         '<div class="meta-box"><div class="meta-label">Charge</div><div class="meta-value">' + ex.weight + '</div></div>' +
-        '<div class="meta-box"><div class="meta-label">' + (ex.isCardio ? 'Durée' : 'Séries') + '</div><div class="meta-value">' + (ex.isCardio ? ex.reps : ex.sets + '×' + ex.reps) + '</div></div>' +
-        '<div class="meta-box"><div class="meta-label">Repos</div><div class="meta-value">' + (ex.rest ? ex.rest + 's' : '—') + '</div></div>' +
+        '<div class="meta-box"><div class="meta-label">' + (ex.isCardio ? 'Dur\u00e9e' : 'S\u00e9ries') + '</div><div class="meta-value">' + (ex.isCardio ? ex.reps : ex.sets + '\u00d7' + ex.reps) + '</div></div>' +
+        '<div class="meta-box"><div class="meta-label">Repos</div><div class="meta-value">' + (ex.rest ? ex.rest + 's' : '\u2014') + '</div></div>' +
       '</div>' +
       '<div class="tip">' + ex.tip + '</div>' +
       '<div class="tracker" style="display:' + (isActive ? 'block' : 'none') + '">' +
@@ -337,10 +337,10 @@ function saveMeasures() {
   var taille = document.getElementById('input-taille').value;
   if (!poids && !taille) return;
   var date = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
-  var msg = '✅ Mesures du ' + date + ' enregistrées !';
+  var msg = '\u2705 Mesures du ' + date + ' enregistr\u00e9es !';
   if (poids) msg += '\nPoids : ' + poids + ' kg';
   if (taille) msg += '\nTour de taille : ' + taille + ' cm';
-  msg += '\n\nPense à les noter ou envoyer à ton coach !';
+  msg += '\n\nPense \u00e0 les noter ou envoyer \u00e0 ton coach !';
   document.getElementById('measure-form').style.display = 'none';
   var saved = document.getElementById('measure-saved');
   saved.style.display = 'block'; saved.innerText = msg; saved.style.whiteSpace = 'pre-line';
