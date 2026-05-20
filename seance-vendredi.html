@@ -16,71 +16,19 @@
     -webkit-user-select: none;
     user-select: none;
   }
-  .header {
-    text-align: center;
-    margin-bottom: 28px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #222;
-  }
-  .day-label {
-    display: inline-block;
-    background: #4ade80;
-    color: #0a0a0a;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    padding: 4px 14px;
-    border-radius: 20px;
-    margin-bottom: 10px;
-  }
+  .header { text-align: center; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid #222; }
+  .day-label { display: inline-block; background: #4ade80; color: #0a0a0a; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; padding: 4px 14px; border-radius: 20px; margin-bottom: 10px; }
   h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
   .subtitle { font-size: 13px; color: #888; }
-  .warmup {
-    background: #1a1a2e;
-    border-left: 3px solid #5b8dee;
-    border-radius: 8px;
-    padding: 14px 16px;
-    margin-bottom: 24px;
-  }
-  .warmup-title {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #5b8dee;
-    font-weight: 700;
-    margin-bottom: 6px;
-  }
+  .warmup { background: #1a1a2e; border-left: 3px solid #5b8dee; border-radius: 8px; padding: 14px 16px; margin-bottom: 24px; }
+  .warmup-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #5b8dee; font-weight: 700; margin-bottom: 6px; }
   .warmup-text { font-size: 15px; line-height: 1.4; }
-  .section-title {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: #555;
-    font-weight: 700;
-    margin-bottom: 12px;
-    margin-top: 8px;
-  }
-  .exercise-card {
-    background: #151515;
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 12px;
-    border: 1px solid #222;
-    position: relative;
-    cursor: pointer;
-    transition: border-color 0.3s, opacity 0.3s;
-    overflow: hidden;
-  }
+  .section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #555; font-weight: 700; margin-bottom: 12px; margin-top: 8px; }
+  .exercise-card { background: #151515; border-radius: 12px; padding: 16px; margin-bottom: 12px; border: 1px solid #222; position: relative; cursor: pointer; transition: border-color 0.3s, opacity 0.3s; overflow: hidden; }
   .exercise-card.active { border-color: #4ade80; }
   .exercise-card.completed { opacity: 0.35; border-color: #333; }
   .exercise-card.completed .exercise-name::after { content: ' ✓'; color: #4ade80; }
-  .exercise-number {
-    position: absolute; top: 16px; right: 16px;
-    width: 28px; height: 28px; background: #222; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 700; color: #666;
-  }
+  .exercise-number { position: absolute; top: 16px; right: 16px; width: 28px; height: 28px; background: #222; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #666; }
   .exercise-name { font-size: 17px; font-weight: 600; margin-bottom: 10px; padding-right: 40px; }
   .exercise-meta { display: flex; gap: 16px; margin-bottom: 10px; }
   .meta-box { background: #0a0a0a; border-radius: 8px; padding: 8px 12px; text-align: center; flex: 1; }
@@ -90,28 +38,17 @@
   .tracker { display: none; margin-top: 14px; padding-top: 14px; border-top: 1px solid #222; }
   .exercise-card.active .tracker { display: block; }
   .sets-row { display: flex; gap: 8px; margin-bottom: 14px; justify-content: center; }
-  .set-pill {
-    width: 44px; height: 44px; border-radius: 50%; border: 2px solid #333;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; font-weight: 700; color: #666; transition: all 0.3s;
-  }
+  .set-pill { width: 44px; height: 44px; border-radius: 50%; border: 2px solid #333; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #666; transition: all 0.3s; }
   .set-pill.current { border-color: #4ade80; color: #4ade80; box-shadow: 0 0 12px rgba(74,222,128,0.3); }
   .set-pill.done { background: #4ade80; border-color: #4ade80; color: #0a0a0a; }
   .timer-display { text-align: center; margin-bottom: 14px; }
-  .timer-time {
-    font-size: 56px; font-weight: 800; font-variant-numeric: tabular-nums;
-    letter-spacing: -1px; line-height: 1; margin-bottom: 4px; transition: color 0.3s;
-  }
+  .timer-time { font-size: 56px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -1px; line-height: 1; margin-bottom: 4px; transition: color 0.3s; }
   .timer-time.work { color: #4ade80; }
   .timer-time.rest { color: #5b8dee; }
   .timer-time.done-color { color: #4ade80; }
   .timer-label { font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: #666; }
   .btn-row { display: flex; gap: 10px; justify-content: center; }
-  .btn {
-    padding: 12px 24px; border-radius: 10px; border: none; font-size: 15px;
-    font-weight: 700; cursor: pointer; transition: transform 0.1s, opacity 0.2s;
-    -webkit-tap-highlight-color: transparent;
-  }
+  .btn { padding: 12px 24px; border-radius: 10px; border: none; font-size: 15px; font-weight: 700; cursor: pointer; transition: transform 0.1s, opacity 0.2s; -webkit-tap-highlight-color: transparent; }
   .btn:active { transform: scale(0.95); }
   .btn-primary { background: #4ade80; color: #0a0a0a; flex: 1; }
   .btn-secondary { background: #222; color: #aaa; }
@@ -125,12 +62,7 @@
   .progress-fill.cardio { background: #ff6b35; }
   .footer { text-align: center; margin-top: 32px; padding-top: 20px; border-top: 1px solid #222; color: #444; font-size: 12px; }
   .hint { text-align: center; background: #1a1a1a; border-radius: 8px; padding: 10px; margin-top: 20px; font-size: 12px; color: #666; }
-  .measure-section {
-    display: none; margin-top: 28px; padding: 20px 16px;
-    background: linear-gradient(135deg, #1a2e1a 0%, #151515 100%);
-    border: 2px solid #4ade80; border-radius: 16px; text-align: center;
-    animation: slideUp 0.5s ease-out;
-  }
+  .measure-section { display: none; margin-top: 28px; padding: 20px 16px; background: linear-gradient(135deg, #1a2e1a 0%, #151515 100%); border: 2px solid #4ade80; border-radius: 16px; text-align: center; animation: slideUp 0.5s ease-out; }
   .measure-section.visible { display: block; }
   .measure-icon { font-size: 40px; margin-bottom: 10px; }
   .measure-title { font-size: 18px; font-weight: 700; color: #4ade80; margin-bottom: 6px; }
@@ -138,20 +70,11 @@
   .measure-fields { display: flex; gap: 12px; margin-bottom: 16px; }
   .measure-field { flex: 1; background: #0a0a0a; border-radius: 12px; padding: 14px 10px; text-align: center; }
   .measure-field label { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #666; margin-bottom: 8px; }
-  .measure-field input {
-    width: 100%; background: none; border: none; border-bottom: 2px solid #333;
-    color: #e8e8e8; font-size: 28px; font-weight: 700; text-align: center;
-    padding: 4px 0; font-family: inherit; outline: none;
-    -webkit-user-select: auto; user-select: auto;
-  }
+  .measure-field input { width: 100%; background: none; border: none; border-bottom: 2px solid #333; color: #e8e8e8; font-size: 28px; font-weight: 700; text-align: center; padding: 4px 0; font-family: inherit; outline: none; -webkit-user-select: auto; user-select: auto; }
   .measure-field input:focus { border-bottom-color: #4ade80; }
   .measure-field .unit { font-size: 12px; color: #666; margin-top: 4px; }
   .measure-tip { font-size: 12px; color: #666; line-height: 1.5; margin-bottom: 16px; }
-  .btn-measure {
-    width: 100%; padding: 14px; border-radius: 12px; border: none;
-    background: #4ade80; color: #0a0a0a; font-size: 16px; font-weight: 700;
-    cursor: pointer; transition: transform 0.1s;
-  }
+  .btn-measure { width: 100%; padding: 14px; border-radius: 12px; border: none; background: #4ade80; color: #0a0a0a; font-size: 16px; font-weight: 700; cursor: pointer; transition: transform 0.1s; }
   .btn-measure:active { transform: scale(0.97); }
   .measure-saved { display: none; text-align: center; padding: 16px; color: #4ade80; font-size: 16px; font-weight: 600; }
   @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -163,12 +86,12 @@
 <body>
 <div class="header">
   <div class="day-label">Vendredi</div>
-  <h1>Full body + HIIT ventre plat</h1>
-  <div class="subtitle">Semaine du 5 mai · Consolidation +2,5 kg — 30 min</div>
+  <h1>Full body 100 % poids du corps + Rameur</h1>
+  <div class="subtitle">Semaine du 11 mai · Zéro machine de muscu · Pesée ce matin — 33 min</div>
 </div>
 <div class="warmup">
   <div class="warmup-title">Échauffement — 5 min (3e étage)</div>
-  <div class="warmup-text">Marche rapide sur tapis, inclinaison 4%. Tu enchaînes avec le HIIT Stairmaster et les crunchs au 3e, puis tu descends au 1er pour la muscu.</div>
+  <div class="warmup-text">Marche rapide sur tapis, inclinaison 4 %. Tu enchaînes avec les crunchs banc incliné au 3e, puis le rameur HIIT au 3e, et tu descends une seule fois au 1er pour tout le bloc poids du corps.</div>
 </div>
 <div class="section-title">Exercices</div>
 <div id="exercises"></div>
@@ -195,17 +118,15 @@
   </div>
   <div id="measure-saved" class="measure-saved"></div>
 </div>
-<div class="footer">Coach Boris — Semaine du 5 mai · Tour de taille 99,5 cm · 84 kg (record !)</div>
+<div class="footer">Coach Boris — Vendredi · 100 % poids du corps + Rameur · Pesée officielle ce matin</div>
 <script>
 var exercises = [
-  { name: "V\u00e9lo elliptique HIIT (3e \u00e9tage)", sets: 1, reps: "6 min", rest: 0, weight: "\u2014", tip: "30s rythme rapide r\u00e9sistance 10 / 30s lent r\u00e9sistance 4, alterner. Cardio br\u00fble-graisse en d\u00e9but de s\u00e9ance", isCardio: true, cardioDuration: 360 },
-  { name: "Crunchs sur banc inclin\u00e9 (3e \u00e9tage)", sets: 3, reps: "15", rest: 30, weight: "poids du corps", tip: "Toujours au 3e. Descente contr\u00f4l\u00e9e, expire \u00e0 fond. Ensuite on descend au 1er pour la muscu" },
-  { name: "Diverging Seated Row (1er \u00e9tage)", sets: 3, reps: "10", rest: 30, weight: "32,5 kg", tip: "+2,5 kg \u2014 consolidation. Tire les coudes vers l'arri\u00e8re, contr\u00f4le la descente" },
-  { name: "Rear Delt (1er \u00e9tage)", sets: 3, reps: "12", rest: 30, weight: "22,5 kg", tip: "+2,5 kg \u2014 ouvrir bras vers l'arri\u00e8re, excellent pour la posture" },
-  { name: "Leg Press (1er \u00e9tage)", sets: 3, reps: "10", rest: 45, weight: "37,5 kg", tip: "Rep range \u00e0 10 le vendredi (vs 12 le jeudi). On garde du jus pour les planches" },
-  { name: "Planche sur coudes (1er \u2014 zone stretch)", sets: 3, reps: "40s", rest: 30, weight: "\u2014", tip: "Au sol, zone stretch. Renforce le transverse \u2014 muscle ceinture pour ventre plat", isPlank: true, plankSec: 40 },
-  { name: "Planche lat\u00e9rale (1er \u2014 zone stretch)", sets: 2, reps: "30s/c\u00f4t\u00e9", rest: 30, weight: "\u2014", tip: "Hanches hautes, ligne parfaite. Travaille les obliques (pense aux 2 c\u00f4t\u00e9s)", isPlank: true, plankSec: 30 },
-  { name: "Battle ropes HIIT (zone fonctionnelle 1er)", sets: 1, reps: "4 min", rest: 0, weight: "\u2014", tip: "Finisher br\u00fble-graisse ! 20s intense / 20s repos. Tu as ador\u00e9 le 2 mai \u2014 on ferme la semaine en beaut\u00e9", isCardio: true, cardioDuration: 240 }
+  { name: "Crunchs sur banc incliné (3e étage)", sets: 3, reps: "15", rest: 30, weight: "poids du corps", tip: "Au 3e juste après l'échauffement. Descente contrôlée, expire à fond en remontant" },
+  { name: "Rameur HIIT (3e étage)", sets: 1, reps: "8 min", rest: 0, weight: "—", tip: "Cardio dédié du vendredi. 30s puissance max / 30s récup molle, alterner pendant 8 min. Tu enchaînes au 3e, puis tu descends UNE SEULE FOIS au 1er pour tout le reste", isCardio: true, cardioDuration: 480 },
+  { name: "Squats poids du corps (1er — zone stretch)", sets: 3, reps: "20", rest: 30, weight: "poids du corps", tip: "Sans machine. Pieds largeur épaules, genoux dans l'axe des orteils, descends à 90°, remonte en poussant sur les talons. Active fessiers + quadris" },
+  { name: "Pompes (1er — zone stretch)", sets: 3, reps: "10", rest: 30, weight: "poids du corps", tip: "Sans machine. Mains largeur épaules, corps gainé en ligne droite, descends jusqu'à frôler le sol. Si trop dur : sur les genoux, c'est OK on construit la base" },
+  { name: "Planche latérale (1er — zone stretch)", sets: 3, reps: "30s/côté", rest: 30, weight: "—", tip: "Sans machine. Obliques exclusifs vendredi. Hanches hautes, ligne parfaite, pense aux 2 côtés", isPlank: true, plankSec: 30 },
+  { name: "Mountain climbers (zone fonctionnelle 1er)", sets: 3, reps: "30s", rest: 20, weight: "poids du corps", tip: "Sans machine. Position planche, ramène les genoux alternativement vers la poitrine, rythme rapide. Finisher cardio + core de la semaine", isPlank: true, plankSec: 30 }
 ];
 var activeIndex = -1;
 var timers = exercises.map(function() { return { currentSet: 0, phase: 'idle', seconds: 0, intervalId: null }; });
@@ -224,7 +145,7 @@ function render() {
       var pc = 'set-pill';
       if (s < t.currentSet) pc += ' done';
       else if (s === t.currentSet && t.phase !== 'idle' && t.phase !== 'done') pc += ' current';
-      pills += '<div class="' + pc + '">' + (ex.isCardio ? '\uD83D\uDD25' : 'S' + (s+1)) + '</div>';
+      pills += '<div class="' + pc + '">' + (ex.isCardio ? '🔥' : 'S' + (s+1)) + '</div>';
     }
     var timerHTML = '', progressHTML = '';
     if (ex.isCardio) {
@@ -234,37 +155,37 @@ function render() {
         var rem = Math.max(0, ex.cardioDuration - t.seconds);
         var mins = Math.floor(rem / 60), secs = rem % 60;
         var pct = (t.seconds / ex.cardioDuration * 100).toFixed(0);
-        timerHTML = '<div class="timer-display"><div class="timer-time cardio-pulse">' + mins + ':' + String(secs).padStart(2,'0') + '</div><div class="timer-label">Derni\u00e8re ligne droite !</div></div>';
+        timerHTML = '<div class="timer-display"><div class="timer-time cardio-pulse">' + mins + ':' + String(secs).padStart(2,'0') + '</div><div class="timer-label">Dernière ligne droite !</div></div>';
         progressHTML = '<div class="progress-bar"><div class="progress-fill cardio" style="width:' + pct + '%"></div></div>';
       } else if (t.phase === 'done') {
-        timerHTML = '<div class="timer-display"><div class="timer-time done-color">\u2713</div><div class="timer-label">S\u00e9ance boucl\u00e9e !</div></div>';
+        timerHTML = '<div class="timer-display"><div class="timer-time done-color">✓</div><div class="timer-label">Séance bouclée !</div></div>';
       }
     } else {
       if (t.phase === 'idle' && !isCompleted) {
-        timerHTML = '<div class="timer-display"><div class="timer-time work">GO</div><div class="timer-label">Tape pour lancer la s\u00e9rie 1</div></div>';
+        timerHTML = '<div class="timer-display"><div class="timer-time work">GO</div><div class="timer-label">Tape pour lancer la série 1</div></div>';
       } else if (t.phase === 'work') {
         if (ex.isPlank) {
           var pdur = ex.plankSec || 30;
           var prem = Math.max(0, pdur - t.seconds);
           var ppct = ((pdur - prem) / pdur * 100).toFixed(0);
-          timerHTML = '<div class="timer-display"><div class="timer-time work">' + formatTime(prem) + '</div><div class="timer-label">Tiens bon \u2014 s\u00e9rie ' + (t.currentSet+1) + '/' + ex.sets + '</div></div>';
+          timerHTML = '<div class="timer-display"><div class="timer-time work">' + formatTime(prem) + '</div><div class="timer-label">Tiens bon — série ' + (t.currentSet+1) + '/' + ex.sets + '</div></div>';
           progressHTML = '<div class="progress-bar"><div class="progress-fill work" style="width:' + ppct + '%"></div></div>';
         } else {
-          timerHTML = '<div class="timer-display"><div class="timer-time work">' + formatTime(t.seconds) + '</div><div class="timer-label">' + ex.reps + ' reps \u2014 s\u00e9rie ' + (t.currentSet+1) + '/' + ex.sets + '</div></div>';
+          timerHTML = '<div class="timer-display"><div class="timer-time work">' + formatTime(t.seconds) + '</div><div class="timer-label">' + ex.reps + ' reps — série ' + (t.currentSet+1) + '/' + ex.sets + '</div></div>';
         }
       } else if (t.phase === 'rest') {
         var pct2 = ((ex.rest - t.seconds) / ex.rest * 100).toFixed(0);
-        timerHTML = '<div class="timer-display"><div class="timer-time rest resting">' + formatTime(t.seconds) + '</div><div class="timer-label">Repos \u2014 prochaine s\u00e9rie dans\u2026</div></div>';
+        timerHTML = '<div class="timer-display"><div class="timer-time rest resting">' + formatTime(t.seconds) + '</div><div class="timer-label">Repos — prochaine série dans…</div></div>';
         progressHTML = '<div class="progress-bar"><div class="progress-fill rest" style="width:' + pct2 + '%"></div></div>';
       } else if (t.phase === 'done') {
-        timerHTML = '<div class="timer-display"><div class="timer-time done-color">\u2713</div><div class="timer-label">Termin\u00e9 !</div></div>';
+        timerHTML = '<div class="timer-display"><div class="timer-time done-color">✓</div><div class="timer-label">Terminé !</div></div>';
       }
     }
     var btnHTML = '';
     if (t.phase === 'work' && !ex.isCardio && !ex.isPlank) {
-      btnHTML = '<div class="btn-row"><button class="btn btn-primary" onclick="event.stopPropagation(); finishSet(' + i + ')">S\u00e9rie termin\u00e9e</button></div>';
+      btnHTML = '<div class="btn-row"><button class="btn btn-primary" onclick="event.stopPropagation(); finishSet(' + i + ')">Série terminée</button></div>';
     } else if (t.phase === 'work' && ex.isCardio) {
-      btnHTML = '<div class="btn-row"><button class="btn btn-secondary" onclick="event.stopPropagation(); finishSet(' + i + ')">Arr\u00eater</button></div>';
+      btnHTML = '<div class="btn-row"><button class="btn btn-secondary" onclick="event.stopPropagation(); finishSet(' + i + ')">Arrêter</button></div>';
     } else if (t.phase === 'rest') {
       btnHTML = '<div class="btn-row"><button class="btn btn-secondary" onclick="event.stopPropagation(); skipRest(' + i + ')">Passer le repos</button></div>';
     }
@@ -273,8 +194,8 @@ function render() {
       '<div class="exercise-name">' + ex.name + '</div>' +
       '<div class="exercise-meta">' +
         '<div class="meta-box"><div class="meta-label">Charge</div><div class="meta-value">' + ex.weight + '</div></div>' +
-        '<div class="meta-box"><div class="meta-label">' + (ex.isCardio ? 'Dur\u00e9e' : 'S\u00e9ries') + '</div><div class="meta-value">' + (ex.isCardio ? ex.reps : ex.sets + '\u00d7' + ex.reps) + '</div></div>' +
-        '<div class="meta-box"><div class="meta-label">Repos</div><div class="meta-value">' + (ex.rest ? ex.rest + 's' : '\u2014') + '</div></div>' +
+        '<div class="meta-box"><div class="meta-label">' + (ex.isCardio ? 'Durée' : 'Séries') + '</div><div class="meta-value">' + (ex.isCardio ? ex.reps : ex.sets + '×' + ex.reps) + '</div></div>' +
+        '<div class="meta-box"><div class="meta-label">Repos</div><div class="meta-value">' + (ex.rest ? ex.rest + 's' : '—') + '</div></div>' +
       '</div>' +
       '<div class="tip">' + ex.tip + '</div>' +
       '<div class="tracker" style="display:' + (isActive ? 'block' : 'none') + '">' +
@@ -338,10 +259,10 @@ function saveMeasures() {
   var taille = document.getElementById('input-taille').value;
   if (!poids && !taille) return;
   var date = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
-  var msg = '\u2705 Mesures du ' + date + ' enregistr\u00e9es !';
+  var msg = '✅ Mesures du ' + date + ' enregistrées !';
   if (poids) msg += '\nPoids : ' + poids + ' kg';
   if (taille) msg += '\nTour de taille : ' + taille + ' cm';
-  msg += '\n\nPense \u00e0 les noter ou envoyer \u00e0 ton coach !';
+  msg += '\n\nPense à les noter ou envoyer à ton coach !';
   document.getElementById('measure-form').style.display = 'none';
   var saved = document.getElementById('measure-saved');
   saved.style.display = 'block'; saved.innerText = msg; saved.style.whiteSpace = 'pre-line';
