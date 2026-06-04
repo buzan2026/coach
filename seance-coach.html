@@ -1,710 +1,434 @@
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Séances — Semaine du 4 juin 2026</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mes 3 Séances</title>
 <style>
-  :root {
-    --bg: #0e0e12;
-    --bg2: #16161d;
-    --card: #1c1c26;
-    --text: #f5f5f7;
-    --muted: #8a8a98;
-    --border: #2a2a36;
-    --mer: #a855f7;
-    --mer-dim: rgba(168,85,247,0.12);
-    --mer-border: rgba(168,85,247,0.22);
-    --jeu: #ff6b35;
-    --jeu-dim: rgba(255,107,53,0.12);
-    --jeu-border: rgba(255,107,53,0.22);
-    --ven: #4ade80;
-    --ven-dim: rgba(74,222,128,0.10);
-    --ven-border: rgba(74,222,128,0.22);
-    --accent: var(--mer);
-    --accent-dim: var(--mer-dim);
-    --accent-border: var(--mer-border);
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body {
-    background: #0e0e12;
-    color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif;
-    min-height: 100vh;
-    line-height: 1.5;
-  }
-
-  /* ── TAB BAR ── */
-  .tab-bar {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(14,14,18,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    padding: 0 20px;
-  }
-  .tab-bar-inner {
-    max-width: 640px;
-    margin: 0 auto;
-    display: flex;
-    gap: 0;
-  }
-  .tab-btn {
-    flex: 1;
-    padding: 16px 12px 14px;
-    background: none;
-    border: none;
-    border-bottom: 3px solid transparent;
-    color: var(--muted);
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: color 0.15s, border-color 0.15s;
-    text-align: center;
-    letter-spacing: 0.02em;
-  }
-  .tab-btn:hover { color: var(--text); }
-  .tab-btn.active-mer { color: var(--mer); border-bottom-color: var(--mer); }
-  .tab-btn.active-jeu { color: var(--jeu); border-bottom-color: var(--jeu); }
-  .tab-btn.active-ven { color: var(--ven); border-bottom-color: var(--ven); }
-  .tab-btn .day-sub { display: block; font-size: 10px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 2px; opacity: 0.7; }
-
-  /* ── PANELS ── */
-  .panel { display: none; }
-  .panel.active { display: block; }
-
-  /* Each panel has its own bg gradient */
-  .panel-mer { background: radial-gradient(1200px 600px at 50% 0%, #1e102e 0%, #0e0e12 55%); }
-  .panel-jeu { background: radial-gradient(1200px 600px at 50% 0%, #2a1510 0%, #0e0e12 55%); }
-  .panel-ven { background: radial-gradient(1200px 600px at 50% 0%, #0e2218 0%, #0e0e12 55%); }
-
-  .wrap {
-    max-width: 640px;
-    margin: 0 auto;
-    padding: 32px 20px 80px;
-  }
-
-  /* ── HEADER ── */
-  header { margin-bottom: 28px; }
-  .badge {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    padding: 6px 12px;
-    border-radius: 100px;
-    margin-bottom: 14px;
-  }
-  .badge-mer { background: var(--mer-dim); color: var(--mer); }
-  .badge-jeu { background: var(--jeu-dim); color: var(--jeu); }
-  .badge-ven { background: var(--ven-dim); color: var(--ven); }
-
-  h1 {
-    font-size: 28px;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1.15;
-    margin-bottom: 8px;
-  }
-  .h1-mer span { color: var(--mer); }
-  .h1-jeu span { color: var(--jeu); }
-  .h1-ven span { color: var(--ven); }
-  .meta { color: var(--muted); font-size: 14px; }
-
-  /* ── CARDS ── */
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 24px 22px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    margin-bottom: 16px;
-  }
-  .card h2 {
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .dot {
-    display: inline-block;
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-  .dot-mer { background: var(--mer); }
-  .dot-jeu { background: var(--jeu); }
-  .dot-ven { background: var(--ven); }
-
-  /* ── FLOOR TAG ── */
-  .floor-tag {
-    display: inline-block;
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.09em;
-    padding: 3px 9px;
-    border-radius: 6px;
-    margin-bottom: 14px;
-  }
-  .floor-mer { background: var(--mer-dim); color: var(--mer); border: 1px solid var(--mer-border); }
-  .floor-jeu { background: var(--jeu-dim); color: var(--jeu); border: 1px solid var(--jeu-border); }
-  .floor-ven { background: var(--ven-dim); color: var(--ven); border: 1px solid var(--ven-border); }
-
-  /* ── WARMUP ── */
-  .warmup { font-size: 16px; font-weight: 600; }
-  .warmup .small { display: block; font-size: 13px; font-weight: 400; color: var(--muted); margin-top: 4px; }
-  .cardio-detail {
-    margin-top: 12px;
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 12px 14px;
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.6;
-  }
-  .cardio-detail strong { color: var(--text); }
-
-  /* ── HIIT GRID ── */
-  .hiit-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 6px;
-    margin-top: 12px;
-  }
-  .hiit-block {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 8px 6px;
-    text-align: center;
-  }
-  .hiit-block .h-label { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 3px; }
-  .hiit-block .h-val { font-size: 13px; font-weight: 700; }
-  .hiit-effort-mer .h-val { color: var(--mer); }
-  .hiit-effort-jeu .h-val { color: var(--jeu); }
-  .hiit-effort-ven .h-val { color: var(--ven); }
-
-  /* ── EXERCISES ── */
-  .exo-list { list-style: none; }
-  .exo { padding: 16px 0; border-bottom: 1px solid var(--border); }
-  .exo:last-child { border-bottom: none; }
-  .exo-name { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
-  .exo-name a { color: inherit; text-decoration: none; border-bottom: 1px dashed var(--border); }
-  .exo-name a:hover { border-color: currentColor; }
-  .exo-name-mer a:hover { color: var(--mer); }
-  .exo-name-jeu a:hover { color: var(--jeu); }
-  .exo-name-ven a:hover { color: var(--ven); }
-
-  .rotation-badge {
-    display: inline-block;
-    font-size: 9px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding: 2px 7px;
-    border-radius: 5px;
-    margin-left: 8px;
-    vertical-align: middle;
-  }
-  .rotation-badge-mer { background: var(--mer-dim); color: var(--mer); border: 1px solid var(--mer-border); }
-
-  .exo-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 8px;
-  }
-  .exo-pill {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 8px 10px;
-    text-align: center;
-  }
-  .exo-pill .label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 2px; }
-  .exo-pill .value { font-size: 14px; font-weight: 700; }
-  .value-mer { color: var(--mer); }
-  .value-jeu { color: var(--jeu); }
-  .value-ven { color: var(--ven); }
-
-  .exo-tip { font-size: 13px; color: var(--muted); line-height: 1.55; }
-  .exo-tip strong { color: var(--text); font-weight: 600; }
-
-  /* ── FINISHER CARDS ── */
-  .finisher-mer { background: linear-gradient(135deg, rgba(168,85,247,0.05) 0%, rgba(168,85,247,0.02) 100%); border: 1px solid var(--mer-border); }
-  .finisher-jeu { background: linear-gradient(135deg, rgba(255,107,53,0.05) 0%, rgba(255,107,53,0.02) 100%); border: 1px solid var(--jeu-border); }
-  .finisher-ven { background: linear-gradient(135deg, rgba(74,222,128,0.06) 0%, rgba(74,222,128,0.02) 100%); border: 1px solid var(--ven-border); }
-
-  .core-banner {
-    border-radius: 12px;
-    padding: 10px 14px;
-    margin-bottom: 12px;
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-  .core-banner-mer { background: rgba(168,85,247,0.08); border: 1px solid rgba(168,85,247,0.2); color: var(--mer); }
-
-  /* ── PESÉE ── */
-  .pesee-banner { text-align: center; padding: 20px; }
-  .pesee-banner .icon { font-size: 32px; margin-bottom: 10px; }
-  .pesee-banner .title { font-size: 18px; font-weight: 800; color: var(--ven); margin-bottom: 6px; }
-  .pesee-banner .sub { font-size: 13px; color: var(--muted); line-height: 1.6; }
-  .pesee-banner .sub strong { color: var(--text); }
-
-  /* ── FOOTER NOTE ── */
-  .footer-note {
-    margin-top: 24px;
-    padding: 18px 20px;
-    background: var(--bg2);
-    border: 1px dashed var(--border);
-    border-radius: 14px;
-    color: var(--muted);
-    font-size: 13px;
-    line-height: 1.6;
-  }
-  .footer-note strong { color: var(--text); font-weight: 600; }
+  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap');
+  :root{--dark:#0d0d0d;--card:#141414;--border:#222;--a:#e8c98a;--b:#7ab8f5;--c:#a8e6a3;--text:#d8d0c8;--muted:#444;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--dark);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh;padding-bottom:140px;}
+  .app-header{padding:32px 20px 0;text-align:center;}
+  .app-header h1{font-family:'Barlow Condensed',sans-serif;font-size:2.4rem;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:#fff;line-height:1;}
+  .app-header p{margin-top:5px;font-size:0.72rem;color:var(--muted);letter-spacing:0.14em;text-transform:uppercase;}
+  .week-badge{display:inline-block;margin-top:10px;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;padding:4px 12px;border-radius:100px;background:#1a1a1a;border:1px solid #2a2a2a;color:#888;}
+  .tabs{display:flex;gap:0;padding:20px 16px 0;max-width:640px;margin:0 auto;}
+  .tab{flex:1;padding:11px 6px;text-align:center;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);border-bottom:2px solid #1a1a1a;transition:all 0.2s;-webkit-tap-highlight-color:transparent;}
+  .tab.active-mer{color:var(--b);border-bottom-color:var(--b);}
+  .tab.active-jeu{color:var(--a);border-bottom-color:var(--a);}
+  .tab.active-ven{color:var(--c);border-bottom-color:var(--c);}
+  .tab.active-bon{color:#a8e6a3;border-bottom-color:#a8e6a3;}
+  .panel{display:none;max-width:640px;margin:0 auto;padding:20px 16px;}
+  .panel.active{display:block;}
+  .card{background:var(--card);border-radius:16px;border:1px solid var(--border);overflow:hidden;}
+  .card-header{padding:20px 22px 18px;border-bottom:1px solid var(--border);position:relative;}
+  .card-header .tag{font-family:'Barlow Condensed',sans-serif;font-size:0.68rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:6px;display:block;}
+  .card-header h2{font-family:'Barlow Condensed',sans-serif;font-size:1.9rem;font-weight:800;text-transform:uppercase;letter-spacing:0.04em;color:#fff;line-height:1;}
+  .card-header .dur{position:absolute;top:20px;right:20px;font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:700;color:#2a2a2a;line-height:1;}
+  .card-header .dur span{display:block;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:#333;font-family:'Barlow',sans-serif;text-align:right;}
+  .card-body{padding:20px 22px;}
+  .sbadge{display:inline-block;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;padding:3px 8px;border-radius:5px;margin-bottom:16px;}
+  .phase{margin-bottom:18px;}
+  .phase-label{font-size:0.65rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px;color:var(--muted);}
+  .phase-label::after{content:'';flex:1;height:1px;background:#1a1a1a;}
+  .exercise{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:10px;margin-bottom:7px;background:#0a0a0a;border:1px solid #1a1a1a;cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:transparent;user-select:none;}
+  .exercise:active{transform:scale(0.98);}
+  .exercise:hover{background:#111;border-color:#2a2a2a;}
+  .exercise.done{border-color:#1a3a1a !important;background:#080e08;}
+  .exercise.done .exname{color:#3a5a3a;}
+  .exname{font-size:0.9rem;font-weight:600;color:#e8e0d4;transition:color 0.3s;}
+  .exname small{display:block;font-size:0.7rem;font-weight:400;color:var(--muted);margin-top:2px;}
+  .exright{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+  .exdet{font-family:'Barlow Condensed',sans-serif;font-size:0.95rem;font-weight:700;white-space:nowrap;}
+  .play-btn{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#1a1a1a;border:1px solid #2a2a2a;font-size:0.6rem;color:#444;flex-shrink:0;transition:all 0.2s;}
+  .exercise:hover .play-btn{background:#e8c98a15;border-color:#e8c98a50;color:#e8c98a;}
+  .check-icon{font-size:0.9rem;color:#3a6a3a;display:none;}
+  .exercise.done .check-icon{display:block;}
+  .exercise.done .play-btn{display:none;}
+  .tip{background:#0a0a0a;border-radius:10px;padding:11px 13px;font-size:0.78rem;color:#666;line-height:1.5;border-left:2px solid #1e1e1e;margin-top:4px;}
+  .tip strong{color:#888;}
+  .mer .card-header{border-top:3px solid var(--b);}.mer .tag{color:var(--b);}.mer .exdet{color:var(--b);}
+  .jeu .card-header{border-top:3px solid var(--a);}.jeu .tag{color:var(--a);}.jeu .exdet{color:var(--a);}
+  .ven .card-header{border-top:3px solid var(--c);}.ven .tag{color:var(--c);}.ven .exdet{color:var(--c);}
+  .dim .card-header{border-top:3px solid #a8e6a3;opacity:0.85;}.dim .tag{color:#a8e6a3;}.dim .exdet{color:#a8e6a3;}
+  .timer-bar{position:fixed;bottom:0;left:0;right:0;background:#111;border-top:1px solid #222;padding:14px 20px 26px;display:none;z-index:999;animation:sup 0.3s ease;}
+  .timer-bar.active{display:block;}
+  @keyframes sup{from{transform:translateY(100%);}to{transform:translateY(0);}}
+  .timer-inner{max-width:380px;margin:0 auto;text-align:center;}
+  .tlbl{font-size:0.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:5px;}
+  .tnum{font-family:'Barlow Condensed',sans-serif;font-size:3.6rem;font-weight:800;color:#e8c98a;line-height:1;margin-bottom:8px;}
+  .tnum.urgent{color:#ff5757;animation:blink 0.5s infinite;}
+  @keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+  .tprog{width:100%;height:4px;background:#1e1e1e;border-radius:3px;overflow:hidden;margin-bottom:12px;}
+  .tpbar{height:100%;border-radius:3px;transition:width 1s linear;}
+  .tbtns{display:flex;gap:10px;}
+  .tbtn{flex:1;padding:10px;border:none;border-radius:10px;font-family:'Barlow Condensed',sans-serif;font-size:0.95rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;cursor:pointer;}
+  .tbtn.restart{background:#e8c98a18;color:#e8c98a;border:1px solid #e8c98a35;}
+  .tbtn.skip{background:#1a1a1a;color:var(--muted);}
+  .moverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:1000;align-items:center;justify-content:center;padding:20px;}
+  .moverlay.active{display:flex;}
+  .modal{background:#141414;border-radius:18px;border:1px solid #2a2a2a;max-width:520px;width:100%;max-height:90vh;overflow-y:auto;animation:sup 0.25s ease;}
+  .mhead{padding:16px 20px 13px;border-bottom:1px solid #222;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#141414;z-index:2;}
+  .mtitle{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:800;text-transform:uppercase;color:#fff;}
+  .mclose{background:none;border:none;color:#555;font-size:1.3rem;cursor:pointer;padding:4px 8px;}
+  .mbody{padding:16px 20px 20px;}
+  .vwrap{position:relative;width:100%;padding-top:50%;border-radius:10px;overflow:hidden;margin-bottom:16px;background:#000;}
+  .cues{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px;}
+  .cue{background:#0d0d0d;border-radius:9px;padding:10px 12px;}
+  .cl{font-size:0.63rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#e8c98a;margin-bottom:3px;}
+  .cl.r{color:#e87a7a;}
+  .cue p{font-size:0.76rem;color:#888;line-height:1.4;}
+  .muscles{display:flex;gap:7px;flex-wrap:wrap;}
+  .mtag{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:6px;padding:3px 9px;font-size:0.68rem;color:#666;}
 </style>
 </head>
 <body>
 
-<!-- ══════════ TAB BAR ══════════ -->
-<div class="tab-bar">
-  <div class="tab-bar-inner">
-    <button class="tab-btn active-mer" onclick="showTab('mer')" id="btn-mer">
-      Mercredi
-      <span class="day-sub">Push · Core</span>
-    </button>
-    <button class="tab-btn" onclick="showTab('jeu')" id="btn-jeu">
-      Jeudi
-      <span class="day-sub">Pull · Jambes</span>
-    </button>
-    <button class="tab-btn" onclick="showTab('ven')" id="btn-ven">
-      Vendredi
-      <span class="day-sub">Full body · Pesée</span>
-    </button>
-  </div>
+<div class="app-header">
+  <h1>Mes Séances</h1>
+  <p id="week-label">1 tap = vidéo · 2 taps = ⏱ pause · 3 taps = reset</p>
+  <div class="week-badge" id="week-badge">Semaine —</div>
 </div>
 
-
-<!-- ══════════════════════════════════════════════
-     MERCREDI — Push + Core
-══════════════════════════════════════════════ -->
-<div class="panel panel-mer active" id="panel-mer">
-  <div class="wrap">
-    <header>
-      <span class="badge badge-mer">Mercredi 4 juin 2026</span>
-      <h1 class="h1-mer">Push <span>+ Core</span></h1>
-      <p class="meta">~35 min · Basic-Fit · 3e → 1er étage</p>
-    </header>
-
-    <div class="card">
-      <div class="floor-tag floor-mer">↑ 3e étage — Cardio</div>
-      <h2><span class="dot dot-mer"></span>Tapis course incliné — 10 min</h2>
-      <div class="warmup">
-        Échauffement + cardio actif
-        <span class="small">Seul jour avec le tapis — profite-en pour bien monter en température.</span>
-      </div>
-      <div class="cardio-detail">
-        <strong>Protocol :</strong> 2 min marche rapide (pente 2%) → 6 min allure soutenue (pente 4–6%, 5,5–6 km/h) → 2 min retour au calme (pente 1%). Respiration nasale sur le retour au calme.
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="floor-tag floor-mer">↓ 1er étage — Machines</div>
-      <h2><span class="dot dot-mer"></span>Corps de séance — Push</h2>
-      <ul class="exo-list">
-        <li class="exo">
-          <div class="exo-name exo-name-mer">
-            <a href="https://www.youtube.com/results?search_query=converging+chest+press+machine+technique" target="_blank">Converging Chest Press</a>
-          </div>
-          <div class="exo-grid">
-            <div class="exo-pill"><div class="label">Séries</div><div class="value">4 × 10</div></div>
-            <div class="exo-pill"><div class="label">Charge</div><div class="value value-mer">42,5 kg</div></div>
-            <div class="exo-pill"><div class="label">Repos</div><div class="value">45s</div></div>
-          </div>
-          <p class="exo-tip"><strong>+2,5 kg vs semaine dernière.</strong> Tempo descente lente (3s), poussée explosive. Tu tiens 10 reps propres aux 4 séries → prêt à monter la semaine prochaine.</p>
-        </li>
-        <li class="exo">
-          <div class="exo-name exo-name-mer">
-            <a href="https://www.youtube.com/results?search_query=converging+shoulder+press+machine+technique" target="_blank">Converging Shoulder Press</a>
-          </div>
-          <div class="exo-grid">
-            <div class="exo-pill"><div class="label">Séries</div><div class="value">4 × 10</div></div>
-            <div class="exo-pill"><div class="label">Charge</div><div class="value value-mer">27,5 kg</div></div>
-            <div class="exo-pill"><div class="label">Repos</div><div class="value">45s</div></div>
-          </div>
-          <p class="exo-tip"><strong>+2,5 kg vs semaine dernière.</strong> Contracture trapèze résolue — on reprend la progression. Pousser sans verrouiller les coudes en haut.</p>
-        </li>
-        <li class="exo">
-          <div class="exo-name exo-name-mer">
-            <a href="https://www.youtube.com/results?search_query=pec+fly+machine+technique+poitrine" target="_blank">Pec Fly</a>
-          </div>
-          <div class="exo-grid">
-            <div class="exo-pill"><div class="label">Séries</div><div class="value">3 × 12</div></div>
-            <div class="exo-pill"><div class="label">Charge</div><div class="value">27,5 kg</div></div>
-            <div class="exo-pill"><div class="label">Repos</div><div class="value">30s</div></div>
-          </div>
-          <p class="exo-tip">Charge identique — finisseur poitrine, pas l'exercice phare. Contrôle la fermeture, pas la vitesse.</p>
-        </li>
-        <li class="exo">
-          <div class="exo-name exo-name-mer">
-            <a href="https://www.youtube.com/results?search_query=abdominal+crunch+machine+technique" target="_blank">Abdominal Crunch (machine)</a>
-          </div>
-          <div class="exo-grid">
-            <div class="exo-pill"><div class="label">Séries</div><div class="value">3 × 20</div></div>
-            <div class="exo-pill"><div class="label">Charge</div><div class="value">+1 cran</div></div>
-            <div class="exo-pill"><div class="label">Repos</div><div class="value">30s</div></div>
-          </div>
-          <p class="exo-tip">Mouvement lent et contrôlé. Expire en contractant en haut, inspire en revenant. Pas de rebond.</p>
-        </li>
-      </ul>
-    </div>
-
-    <div class="card finisher-mer">
-      <div class="floor-tag floor-mer">↓ 1er étage — Zone stretch</div>
-      <div class="core-banner core-banner-mer">🔄 Core rotation sem. 3 — Hollow hold</div>
-      <h2><span class="dot dot-mer"></span>Fin de séance — Core sans machine</h2>
-      <ul class="exo-list">
-        <li class="exo">
-          <div class="exo-name exo-name-mer">
-            <a href="https://www.youtube.com/results?search_query=vacuum+abdominal+debout+technique" target="_blank">Vacuum abdominal debout</a>
-          </div>
-          <div class="exo-grid">
-            <div class="exo-pill"><div class="label">Séries</div><div class="value">3 × 15s</div></div>
-            <div class="exo-pill"><div class="label">Charge</div><div class="value">—</div></div>
-            <div class="exo-pill"><div class="label">Repos</div><div class="value">20s</div></div>
-          </div>
-          <p class="exo-tip">Expire à fond, rentre le nombril vers la colonne vertébrale et <strong>tiens 15 secondes</strong>. C'est le seul exercice qui cible le transverse — le muscle qui "aplatit" le ventre de l'intérieur.</p>
-        </li>
-        <li class="exo">
-          <div class="exo-name exo-name-mer">
-            <a href="https://www.youtube.com/results?search_query=hollow+hold+core+exercise+technique" target="_blank">Hollow hold</a>
-            <span class="rotation-badge rotation-badge-mer">rotation</span>
-          </div>
-          <div class="exo-grid">
-            <div class="exo-pill"><div class="label">Séries</div><div class="value">3 × 20s</div></div>
-            <div class="exo-pill"><div class="label">Charge</div><div class="value">—</div></div>
-            <div class="exo-pill"><div class="label">Repos</div><div class="value">30s</div></div>
-          </div>
-          <p class="exo-tip">Allongé sur le dos. Tu creuses le bas du dos contre le sol, tu lèves les jambes à <strong>30–40 cm</strong> (pas plus) et les bras tendus au-dessus de la tête. Tu tiens sans bouger. Sensation : sangle entière qui brûle en silence. Si c'est trop dur : plie légèrement les genoux.</p>
-        </li>
-        <li class="exo">
-          <div class="exo-name exo-name-mer">
-            <a href="https://www.youtube.com/results?search_query=russian+twists+medicine+ball+technique" target="_blank">Russian twists médecine ball</a>
-          </div>
-          <div class="exo-grid">
-            <div class="exo-pill"><div class="label">Séries</div><div class="value">3 × 20 tapes</div></div>
-            <div class="exo-pill"><div class="label">Charge</div><div class="value">5 kg</div></div>
-            <div class="exo-pill"><div class="label">Repos</div><div class="value">30s</div></div>
-          </div>
-          <p class="exo-tip">Assis, pieds décollés, genoux fléchis. Passe la ball d'un côté à l'autre en touchant le sol. <strong>10 tapes par côté = 20 au total.</strong></p>
-        </li>
-      </ul>
-    </div>
-
-    <div class="footer-note">
-      <strong>Progression :</strong> +2,5 kg sur Chest Press (42,5 kg) et Shoulder Press (27,5 kg).<br><br>
-      <strong>Core de rotation — Hollow hold :</strong> gainage isométrique complet. 20 secondes propres > 30 secondes bâclées.
-    </div>
-  </div>
+<div class="tabs">
+  <div class="tab active-mer" id="tab-mer" onclick="switchTab('mer')">Mer</div>
+  <div class="tab" id="tab-jeu" onclick="switchTab('jeu')">Jeu</div>
+  <div class="tab" id="tab-ven" onclick="switchTab('ven')">Ven</div>
+  <div class="tab" id="tab-bon" onclick="switchTab('bon')">Bonus</div>
 </div>
 
-
-<!-- ══════════════════════════════════════════════
-     JEUDI — Pull + Bas du corps
-══════════════════════════════════════════════ -->
-<div class="panel panel-jeu" id="panel-jeu">
-  <div class="wrap">
-    <header>
-      <span class="badge badge-jeu">Jeudi 5 juin 2026</span>
-      <h1 class="h1-jeu">Pull <span>+ Bas du corps</span></h1>
-      <p class="meta">~40 min · Basic-Fit · 3e → 2e → 1er étage</p>
-    </header>
-
-    <div class="card">
-      <div class="floor-tag floor-jeu">↑ 3e étage — Cardio HIIT</div>
-      <h2><span class="dot dot-jeu"></span>Vélo elliptique — 10 min HIIT</h2>
-      <div class="warmup">
-        Cardio interval training
-        <span class="small">Seul jour avec l'elliptique — protocole 30s/30s.</span>
-      </div>
-      <div class="hiit-grid">
-        <div class="hiit-block"><div class="h-label">Échauff.</div><div class="h-val">2 min</div></div>
-        <div class="hiit-block hiit-effort-jeu"><div class="h-label">Sprint</div><div class="h-val">30s</div></div>
-        <div class="hiit-block"><div class="h-label">Récup</div><div class="h-val">30s</div></div>
-        <div class="hiit-block"><div class="h-label">× tours</div><div class="h-val">6×</div></div>
-      </div>
-      <div class="cardio-detail" style="margin-top:12px;">
-        2 min à allure modérée → 6 intervalles (30s effort maximal / 30s récupération active) → 2 min retour au calme. Total 10 min pile.
-      </div>
+<!-- MERCREDI -->
+<div class="panel active" id="panel-mer">
+  <div class="card mer">
+    <div class="card-header">
+      <span class="tag">Mercredi — Haut du corps</span>
+      <h2>Dos &amp;<br>Épaules</h2>
+      <div class="dur">25<span>min</span></div>
     </div>
-
-    <div class="card">
-      <div class="floor-tag floor-jeu">↓ 2e étage — Hack Squat</div>
-      <h2><span class="dot dot-jeu"></span>Composé jambes</h2>
-      <ul class="exo-list">
-        <li class="exo">
-          <div class="exo-name exo-name-jeu">
-            <a href="https://www.youtube.com/results?search_query=hack+squat+machine+technique+cuisses" target="_blank">Hack Squat</a>
-          </div>
-          <div class="exo-grid">
-            <div class="exo-pill"><div class="label">Séries</div><div class="value">4 × 10</div></div>
-            <div class="exo-pill"><div class="label">Charge</div><div class="value value-jeu">55 kg</div></div>
-            <div class="exo-pill"><div class="label">Repos</div><div class="value">60s</div></div>
-          </div>
-          <p class="exo-tip"><strong>+2,5 kg vs semaine dernière.</strong> Dos plaqué contre le dossier, pieds largeur d'épaules. Descendre jusqu'à ce que les cuisses soient parallèles au plateau. Pousse sur les talons à la remontée.</p>
-        </li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="floor-tag floor-jeu">↓ 1er étage — Machines</div>
-      <h2><span class="dot dot-jeu"></span>Corps de séance — Pull + Jambes</h2>
-      <ul class="exo-list">
-        <li class="exo">
-          <div class="exo-name exo-name-jeu">
-            <a href="https://www.youtube.com/results?search_query=diverging+lat+pulldown+machine+technique" target="_blank">Diverging Lat Pulldown</a>
-          </div>
-          <div class="exo-grid">
-            <div class="exo-pill"><div class="label">Séries</div><div class="value">4 × 10</div></div>
-            <div class="exo-pill"><div class="label">Charge</div><div class="value value-jeu">42,5 kg</div></div>
-            <div class="exo-pill"><div class="label">Repos</div><div class="value">45s</div></div>
-          </div>
-          <p class="exo-tip"><strong>+2,5 kg vs semaine dernière.</strong> Tirer les coudes vers les hanches, serrer 2 secondes en bas. Ne pas laisser monter les épaules à la remontée.</p>
-        </li>
-        <li class="exo">
-          <div class="exo-name exo-name-jeu">
-            <a href="https://www.youtube.com/results?search_query=diverging+seated+row+machine+technique+dos" target="_blank">Diverging Seated Row</a>
-          </div>
-          <div class="exo-grid">
-            <div class="exo-pill"><div class="label">Séries</div><div class="value">3 × 10</div></div>
-            <div class="exo-pill"><div class="label">Charge</div><div class="value value-jeu">37,5 kg</div></div>
-            <div class="exo-pill"><div class="label">Repos</div><div class="value">30s</div></div>
-          </div>
-          <p class="exo-tip"><strong>+2,5 kg vs semaine dernière.</strong> Rythme soutenu, tirer en serrant les omoplates l'une vers l'autre. Buste droit, pas de coup de reins.</p>
-        </li>
-        <li class="exo">
-          <div class="exo-name exo-name-jeu">
-            <a href="https://www.youtube.com/results?search_query=rear+delt+machine+technique+epaules" target="_blank">Rear Delt</a>
-          </div>
-          <div class="exo-grid">
-            <div class="exo-pill"><div class="label">Séries</div><div class="value">3 × 12</div></div>
-            <div class="exo-pill"><div class="label">Charge</div><div class="value">22,5 kg</div></div>
-            <div class="exo-pill"><div class="label">Repos</div><div class="value">30s</div></div>
-          </div>
-          <p class="exo-tip">Charge identique — exercice posture. Ouvrir les bras vers l'arrière en contrôlant. Excellent contre les épaules arrondies (travail de bureau).</p>
-        </li>
-        <li class="exo">
-          <div class="exo-name exo-name-jeu">
-            <a href="https://www.youtube.com/results?search_query=seated+leg+curl+machine+technique+ischio" target="_blank">Seated Leg Curl</a>
-          </div>
-          <div class="exo-grid">
-            <div class="exo-pill"><div class="label">Séries</div><div class="value">4 × 10</div></div>
-            <div class="exo-pill"><div class="label">Charge</div><div class="value value-jeu">28,5 kg</div></div>
-            <div class="exo-pill"><div class="label">Repos</div><div class="value">45s</div></div>
-          </div>
-          <p class="exo-tip"><strong>+2,5 kg vs semaine dernière.</strong> Descente lente (3 secondes). C'est la phase excentrique qui fait le travail — résiste à la remontée.</p>
-        </li>
-        <li class="exo">
-          <div class="exo-name exo-name-jeu">
-            <a href="https://www.youtube.com/results?search_query=prone+leg+curl+machine+technique+ischio" target="_blank">Prone Leg Curl</a>
-          </div>
-          <div class="exo-grid">
-            <div class="exo-pill"><div class="label">Séries</div><div class="value">3 × 10</div></div>
-            <div class="exo-pill"><div class="label">Charge</div><div class="value">34 kg</div></div>
-            <div class="exo-pill"><div class="label">Repos</div><div class="value">45s</div></div>
-          </div>
-          <p class="exo-tip">Charge identique. Contracter les fessiers en haut du mouvement avant de redescendre. Hanches qui ne décollent pas du siège.</p>
-        </li>
-      </ul>
-    </div>
-
-    <div class="card finisher-jeu">
-      <div class="floor-tag floor-jeu">↓ 1er étage — Zone stretch</div>
-      <h2><span class="dot dot-jeu"></span>Fin de séance — Core au sol</h2>
-      <ul class="exo-list">
-        <li class="exo">
-          <div class="exo-name exo-name-jeu">
-            <a href="https://www.youtube.com/results?search_query=dead+bug+core+exercise+technique+gainage" target="_blank">Dead bug</a>
-          </div>
-          <div class="exo-grid">
-            <div class="exo-pill"><div class="label">Séries</div><div class="value">3 × 10/côté</div></div>
-            <div class="exo-pill"><div class="label">Charge</div><div class="value">—</div></div>
-            <div class="exo-pill"><div class="label">Repos</div><div class="value">30s</div></div>
-          </div>
-          <p class="exo-tip">Allongé sur le dos, bras tendus vers le plafond, genoux à 90°. Descends <strong>bras droit + jambe gauche</strong> en gardant le bas du dos collé au sol. Alterne lentement.</p>
-        </li>
-        <li class="exo">
-          <div class="exo-name exo-name-jeu">
-            <a href="https://www.youtube.com/results?search_query=planche+laterale+side+plank+technique" target="_blank">Planche latérale</a>
-          </div>
-          <div class="exo-grid">
-            <div class="exo-pill"><div class="label">Séries</div><div class="value">3 × 25s/côté</div></div>
-            <div class="exo-pill"><div class="label">Charge</div><div class="value">—</div></div>
-            <div class="exo-pill"><div class="label">Repos</div><div class="value">20s</div></div>
-          </div>
-          <p class="exo-tip">Corps rigide en diagonale, hanche bien levée. <strong>Ne laisse pas le bassin s'affaisser.</strong> 25 secondes propres > 40 secondes en biais.</p>
-        </li>
-      </ul>
-    </div>
-
-    <div class="footer-note">
-      <strong>Progression du jour :</strong> +2,5 kg sur Lat Pulldown (42,5 kg), Seated Row (37,5 kg), Seated Leg Curl (28,5 kg) et Hack Squat (55 kg).<br><br>
-      <strong>Pas de Rotary Torso :</strong> la planche latérale fait mieux — obliques + stabilisation de hanche en simultané.
-    </div>
-  </div>
-</div>
-
-
-<!-- ══════════════════════════════════════════════
-     VENDREDI — Full body + Pesée
-══════════════════════════════════════════════ -->
-<div class="panel panel-ven" id="panel-ven">
-  <div class="wrap">
-    <header>
-      <span class="badge badge-ven">Vendredi 6 juin 2026 — Jour J</span>
-      <h1 class="h1-ven">Full body <span>+ Pesée</span></h1>
-      <p class="meta">~32 min · Basic-Fit · 3e → 1er étage · Aucune machine muscu</p>
-    </header>
-
-    <div class="card">
-      <div class="floor-tag floor-ven">↑ 3e étage — Crunchs + Rameur HIIT</div>
-      <h2><span class="dot dot-ven"></span>Ouverture — Crunchs banc incliné + Rameur</h2>
-      <ul class="exo-list">
-        <li class="exo">
-          <div class="exo-name exo-name-ven">
-            <a href="https://www.youtube.com/results?search_query=crunch+banc+incline+abdos+technique" target="_blank">Crunchs sur banc incliné</a>
-          </div>
-          <div class="exo-grid">
-            <div class="exo-pill"><div class="label">Séries</div><div class="value">3 × 15</div></div>
-            <div class="exo-pill"><div class="label">Charge</div><div class="value">—</div></div>
-            <div class="exo-pill"><div class="label">Repos</div><div class="value">20s</div></div>
-          </div>
-          <p class="exo-tip">Banc incliné au 3e étage. Mains derrière la nuque ou croisées sur la poitrine, monte lentement et <strong>contrôle la descente</strong>. Expire en montant.</p>
-        </li>
-        <li class="exo">
-          <div class="exo-name exo-name-ven">
-            <a href="https://www.youtube.com/results?search_query=rowing+machine+HIIT+technique+rameur" target="_blank">Rameur Matrix — HIIT</a>
-          </div>
-          <div class="exo-grid">
-            <div class="exo-pill"><div class="label">Total</div><div class="value">10 min</div></div>
-            <div class="exo-pill"><div class="label">Effort</div><div class="value value-ven">20s</div></div>
-            <div class="exo-pill"><div class="label">Récup</div><div class="value">40s</div></div>
-          </div>
-          <div class="hiit-grid" style="margin-top:8px;">
-            <div class="hiit-block"><div class="h-label">Échauff.</div><div class="h-val">2 min</div></div>
-            <div class="hiit-block hiit-effort-ven"><div class="h-label">Sprint</div><div class="h-val">20s</div></div>
-            <div class="hiit-block"><div class="h-label">Récup</div><div class="h-val">40s</div></div>
-            <div class="hiit-block"><div class="h-label">× tours</div><div class="h-val">8×</div></div>
-          </div>
-          <p class="exo-tip" style="margin-top:8px;">Ratio 20/40 — les 20 secondes à fond, les 40 secondes on souffle. <strong>Corps entier impliqué</strong> : jambes + dos + bras.</p>
-        </li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="floor-tag floor-ven">↓ 1er étage — Poids du corps uniquement</div>
-      <h2><span class="dot dot-ven"></span>Corps de séance — Full body sans machine</h2>
-      <ul class="exo-list">
-        <li class="exo">
-          <div class="exo-name exo-name-ven">
-            <a href="https://www.youtube.com/results?search_query=squat+poids+du+corps+technique+gainage" target="_blank">Squats poids du corps</a>
-          </div>
-          <div class="exo-grid">
-            <div class="exo-pill"><div class="label">Séries</div><div class="value">3 × 20</div></div>
-            <div class="exo-pill"><div class="label">Charge</div><div class="value">—</div></div>
-            <div class="exo-pill"><div class="label">Repos</div><div class="value">30s</div></div>
-          </div>
-          <p class="exo-tip">Pieds largeur d'épaules, orteils légèrement ouverts. Descends en gardant le buste droit, pousse sur les talons. <strong>Les dernières 5 reps doivent brûler.</strong></p>
-        </li>
-        <li class="exo">
-          <div class="exo-name exo-name-ven">
-            <a href="https://www.youtube.com/results?search_query=pompes+push+up+technique+dos+plat" target="_blank">Pompes</a>
-          </div>
-          <div class="exo-grid">
-            <div class="exo-pill"><div class="label">Séries</div><div class="value">3 × 12</div></div>
-            <div class="exo-pill"><div class="label">Charge</div><div class="value">—</div></div>
-            <div class="exo-pill"><div class="label">Repos</div><div class="value">30s</div></div>
-          </div>
-          <p class="exo-tip">Corps en planche rigide de la tête aux talons — <strong>les hanches ne s'affaissent pas</strong>. Si besoin : genoux au sol pour les dernières reps, aucun problème.</p>
-        </li>
-        <li class="exo">
-          <div class="exo-name exo-name-ven">
-            <a href="https://www.youtube.com/results?search_query=mountain+climbers+gainage+cardio+technique" target="_blank">Mountain climbers</a>
-          </div>
-          <div class="exo-grid">
-            <div class="exo-pill"><div class="label">Séries</div><div class="value">3 × 30s</div></div>
-            <div class="exo-pill"><div class="label">Charge</div><div class="value">—</div></div>
-            <div class="exo-pill"><div class="label">Repos</div><div class="value">30s</div></div>
-          </div>
-          <p class="exo-tip">En position de planche haute, ramène les genoux vers la poitrine en alternance le plus vite possible. Gainage + cardio + obliques. <strong>Le bassin ne monte pas.</strong></p>
-        </li>
-        <li class="exo">
-          <div class="exo-name exo-name-ven">
-            <a href="https://www.youtube.com/results?search_query=planche+laterale+side+plank+gainage+obliques" target="_blank">Planche latérale</a>
-          </div>
-          <div class="exo-grid">
-            <div class="exo-pill"><div class="label">Séries</div><div class="value">2 × 25s/côté</div></div>
-            <div class="exo-pill"><div class="label">Charge</div><div class="value">—</div></div>
-            <div class="exo-pill"><div class="label">Repos</div><div class="value">20s</div></div>
-          </div>
-          <p class="exo-tip">Pour finir en douceur. Corps bien aligné, hanche levée. Obliques + épaule + fessier en simultané.</p>
-        </li>
-      </ul>
-    </div>
-
-    <div class="card finisher-ven">
-      <h2><span class="dot dot-ven"></span>Bloc pesée — avant la douche</h2>
-      <div class="pesee-banner">
-        <div class="icon">📏</div>
-        <div class="title">Poids + Tour de taille</div>
-        <div class="sub">
-          <strong>Maintenant, avant la douche.</strong><br>
-          À jeun, détendu, sans rentrer le ventre. Mètre ruban <strong>au niveau du nombril</strong>.<br><br>
-          Ces deux chiffres dans la conversation → je mets à jour et prépare la semaine suivante.
+    <div class="card-body">
+      <div class="sbadge" style="background:#7ab8f510;color:#7ab8f5;border:1px solid #7ab8f530;">🏢 Étage 3 → Étage 1</div>
+      <div class="phase">
+        <div class="phase-label">📍 Étage 3 — Cardio</div>
+        <div class="exercise" onclick="tap(this,'rameur',0)">
+          <div class="exname">Rameur<small>Rythme progressif</small></div>
+          <div class="exright"><div class="play-btn">▶</div><span class="exdet">8 min</span><span class="check-icon">✓</span></div>
         </div>
       </div>
-    </div>
-
-    <div class="footer-note">
-      <strong>Vendredi = règle absolue :</strong> zéro machine de muscu. Full body + rameur HIIT = le format le plus efficace pour brûler après la séance.<br><br>
-      <strong>Si la pesée montre une stagnation du tour de taille</strong> → la semaine prochaine on passe le cardio à 12 min sur les 3 jours.
+      <div class="phase">
+        <div class="phase-label">📍 Étage 3 — Core</div>
+        <div id="core-mer"></div>
+      </div>
+      <div class="phase">
+        <div class="phase-label">📍 Étage 1 — Machines · 3 × 15</div>
+        <div class="exercise" onclick="tap(this,'lat-pulldown',45)">
+          <div class="exname">Diverging Lat Pull-Down<small>Grand dorsal</small></div>
+          <div class="exright"><div class="play-btn">▶</div><span class="exdet">20kg</span><span class="check-icon">✓</span></div>
+        </div>
+        <div class="exercise" onclick="tap(this,'seated-row',45)">
+          <div class="exname">Diverging Seated Row<small>Milieu du dos</small></div>
+          <div class="exright"><div class="play-btn">▶</div><span class="exdet">20kg</span><span class="check-icon">✓</span></div>
+        </div>
+        <div class="exercise" onclick="tap(this,'shoulder-press',45)">
+          <div class="exname">Converging Shoulder Press<small>Épaules</small></div>
+          <div class="exright"><div class="play-btn">▶</div><span class="exdet">15kg</span><span class="check-icon">✓</span></div>
+        </div>
+        <div class="exercise" onclick="tap(this,'rear-delt-pec',45)">
+          <div class="exname">Rear Delt / Pec Fly<small>Alterner selon la semaine</small></div>
+          <div class="exright"><div class="play-btn">▶</div><span class="exdet">15kg</span><span class="check-icon">✓</span></div>
+        </div>
+      </div>
+      <div class="tip" style="border-left-color:#7ab8f5;">🍳 <strong>Mercredi —</strong> Yaourt grec · granola protéiné · café</div>
     </div>
   </div>
 </div>
 
+<!-- JEUDI -->
+<div class="panel" id="panel-jeu">
+  <div class="card jeu">
+    <div class="card-header">
+      <span class="tag">Jeudi — Bas du corps</span>
+      <h2>Jambes<br>&amp; Ventre</h2>
+      <div class="dur">25<span>min</span></div>
+    </div>
+    <div class="card-body">
+      <div class="sbadge" style="background:#e8c98a10;color:#e8c98a;border:1px solid #e8c98a30;">🏢 Étage 3 → Étage 1</div>
+      <div class="phase">
+        <div class="phase-label">📍 Étage 3 — Cardio</div>
+        <div class="exercise" onclick="tap(this,'velo',0)">
+          <div class="exname">Vélo statique<small>Résistance progressive</small></div>
+          <div class="exright"><div class="play-btn">▶</div><span class="exdet">6 min</span><span class="check-icon">✓</span></div>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-label">📍 Étage 3 — Core</div>
+        <div id="core-jeu"></div>
+      </div>
+      <div class="phase">
+        <div class="phase-label">📍 Étage 1 — Leg Press pyramide</div>
+        <div class="exercise" onclick="tap(this,'leg-press',60)">
+          <div class="exname">Série 1 — Lourd<small>Focus force</small></div>
+          <div class="exright"><div class="play-btn">▶</div><span class="exdet">10 × 45kg</span><span class="check-icon">✓</span></div>
+        </div>
+        <div class="exercise" onclick="tap(this,'leg-press',60)">
+          <div class="exname">Série 2</div>
+          <div class="exright"><div class="play-btn">▶</div><span class="exdet">12 × 40kg</span><span class="check-icon">✓</span></div>
+        </div>
+        <div class="exercise" onclick="tap(this,'leg-press',60)">
+          <div class="exname">Série 3</div>
+          <div class="exright"><div class="play-btn">▶</div><span class="exdet">15 × 35kg</span><span class="check-icon">✓</span></div>
+        </div>
+        <div class="exercise" onclick="tap(this,'leg-press',60)">
+          <div class="exname">Série 4 — Léger<small>Focus endurance</small></div>
+          <div class="exright"><div class="play-btn">▶</div><span class="exdet">20 × 30kg</span><span class="check-icon">✓</span></div>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-label">📍 Étage 1 — Finition · 2 × 15</div>
+        <div class="exercise" onclick="tap(this,'hip-abductor',45)">
+          <div class="exname">Hip Abductor<small>Fessiers et hanches</small></div>
+          <div class="exright"><div class="play-btn">▶</div><span class="exdet">20kg</span><span class="check-icon">✓</span></div>
+        </div>
+        <div class="exercise" onclick="tap(this,'ab-crunch',45)">
+          <div class="exname">Abdominal Crunch machine<small>Contracte fort, reviens lentement</small></div>
+          <div class="exright"><div class="play-btn">▶</div><span class="exdet">15kg</span><span class="check-icon">✓</span></div>
+        </div>
+      </div>
+      <div class="tip" style="border-left-color:#7ab8f5;">🍳 <strong>Jeudi —</strong> Skyr · banane · cannelle · café</div>
+    </div>
+  </div>
+</div>
+
+<!-- VENDREDI -->
+<div class="panel" id="panel-ven">
+  <div class="card ven">
+    <div class="card-header">
+      <span class="tag">Vendredi — Circuit Full Body</span>
+      <h2>Circuit<br>Express</h2>
+      <div class="dur">25<span>min</span></div>
+    </div>
+    <div class="card-body">
+      <div class="sbadge" style="background:#a8e6a310;color:#a8e6a3;border:1px solid #a8e6a330;">🏢 Étage 3 → Étage 1</div>
+      <div class="phase">
+        <div class="phase-label">📍 Étage 3 — Cardio</div>
+        <div class="exercise" onclick="tap(this,'elliptique',0)">
+          <div class="exname">Elliptique<small>Monte la résistance à mi-chemin</small></div>
+          <div class="exright"><div class="play-btn">▶</div><span class="exdet">6 min</span><span class="check-icon">✓</span></div>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="phase-label">📍 Étage 3 — Core</div>
+        <div id="core-ven"></div>
+      </div>
+      <div class="phase">
+        <div class="phase-label">📍 Étage 1 — Circuit · 3 tours · 10 reps</div>
+        <div class="tip" style="margin-bottom:10px;border-left-color:#a8e6a3;font-size:0.74rem;">Enchaîne sans pause · 45 sec entre chaque tour</div>
+        <div class="exercise" onclick="tap(this,'leg-press',45)">
+          <div class="exname">① Leg Press<small>Jambes</small></div>
+          <div class="exright"><div class="play-btn">▶</div><span class="exdet">10 × 35kg</span><span class="check-icon">✓</span></div>
+        </div>
+        <div class="exercise" onclick="tap(this,'lat-pulldown',45)">
+          <div class="exname">② Lat Pull-Down<small>Dos</small></div>
+          <div class="exright"><div class="play-btn">▶</div><span class="exdet">10 × 20kg</span><span class="check-icon">✓</span></div>
+        </div>
+        <div class="exercise" onclick="tap(this,'shoulder-press',45)">
+          <div class="exname">③ Shoulder Press<small>Épaules</small></div>
+          <div class="exright"><div class="play-btn">▶</div><span class="exdet">10 × 15kg</span><span class="check-icon">✓</span></div>
+        </div>
+        <div class="exercise" onclick="tap(this,'ab-crunch',45)">
+          <div class="exname">④ Abdominal Crunch<small>Abdos</small></div>
+          <div class="exright"><div class="play-btn">▶</div><span class="exdet">10 × 15kg</span><span class="check-icon">✓</span></div>
+        </div>
+      </div>
+      <div class="tip">📊 <strong>Pesée du vendredi</strong> — poids + tour de taille avant la douche</div>
+      <div class="tip" style="margin-top:8px;border-left-color:#7ab8f5;">🍳 <strong>Vendredi —</strong> 2 œufs · knäckebröd · comté · café</div>
+    </div>
+  </div>
+</div>
+
+<!-- DIMANCHE -->
+<div class="panel" id="panel-bon">
+  <div class="card" style="border-top:3px solid #ff6b35;border:1px solid #222;background:#141414;border-radius:16px;overflow:hidden;">
+    <div class="card-header">
+      <span class="tag" style="color:#ff6b35;">Jour Bonus · Quand tu peux</span>
+      <h2>Déstockage<br>Express</h2>
+      <div class="dur">20<span>min</span></div>
+    </div>
+    <div class="card-body">
+      <div class="sbadge" style="background:#ff6b3510;color:#ff6b35;border:1px solid #ff6b3530;">🏢 Étage 3 uniquement — pas de machines</div>
+
+      <div class="phase">
+        <div class="phase-label" style="color:#ff6b35;">📍 Cardio enchaîné · 18 min</div>
+        <div class="exercise" onclick="tap(this,'rameur',0)">
+          <div class="exname">Rameur<small>Effort soutenu, accélère les 2 dernières min</small></div>
+          <div class="exright"><div class="play-btn">▶</div><span class="exdet" style="color:#ff6b35;">8 min</span><span class="check-icon">✓</span></div>
+        </div>
+        <div class="exercise" onclick="tap(this,'elliptique',0)">
+          <div class="exname">Elliptique<small>Résistance 7-8, poignées mobiles</small></div>
+          <div class="exright"><div class="play-btn">▶</div><span class="exdet" style="color:#ff6b35;">6 min</span><span class="check-icon">✓</span></div>
+        </div>
+        <div class="exercise" onclick="tap(this,'velo',0)">
+          <div class="exname">Vélo statique<small>Sprint final — résistance max sur la dernière minute</small></div>
+          <div class="exright"><div class="play-btn">▶</div><span class="exdet" style="color:#ff6b35;">4 min</span><span class="check-icon">✓</span></div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-label" style="color:#ff6b35;">📍 Core express · au sol</div>
+        <div class="exercise" onclick="tap(this,'gainage',30)">
+          <div class="exname">Gainage classique<small>Planche avant-bras</small></div>
+          <div class="exright"><div class="play-btn">▶</div><span class="exdet" style="color:#ff6b35;">2 × 40s</span><span class="check-icon">✓</span></div>
+        </div>
+        <div class="exercise" onclick="tap(this,'mountain-climbers',30)">
+          <div class="exname">Mountain climbers<small>Rythme rapide</small></div>
+          <div class="exright"><div class="play-btn">▶</div><span class="exdet" style="color:#ff6b35;">2 × 30s</span><span class="check-icon">✓</span></div>
+        </div>
+      </div>
+
+      <div class="tip" style="border-left-color:#ff6b35;"><strong>Pas de machines.</strong> Cardio pur pour brûler les réserves — idéal après un week-end épicurien ou si tu as 20 min devant toi.</div>
+      <div class="tip" style="margin-top:8px;border-left-color:#7ab8f5;">🍳 <strong>Avant —</strong> Yaourt grec · café · pas de pain</div>
+    </div>
+  </div>
+</div>
+
+<!-- TIMER -->
+<div class="timer-bar" id="tbar">
+  <div class="timer-inner">
+    <div class="tlbl" id="tlbl">Pause — reprends dans</div>
+    <div class="tnum" id="tnum">45</div>
+    <div class="tprog"><div class="tpbar" id="tpbar" style="width:100%;background:linear-gradient(90deg,#e8c98a,#6fcf97);"></div></div>
+    <div class="tbtns">
+      <button class="tbtn restart" onclick="restartTimer()">↺ Refaire</button>
+      <button class="tbtn skip" onclick="skipTimer()">Passer →</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="moverlay" id="moverlay" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="mhead"><span class="mtitle" id="mtitle"></span><button class="mclose" onclick="closeModalFn()">✕</button></div>
+    <div class="mbody">
+      <div class="vwrap" id="mvid"></div>
+      <div class="cues" id="mcues"></div>
+      <div class="muscles" id="mmuscles"></div>
+    </div>
+  </div>
+</div>
 
 <script>
-  const TABS = ['mer','jeu','ven'];
-  const COLORS = { mer: 'active-mer', jeu: 'active-jeu', ven: 'active-ven' };
+// ── WEEK CALCULATION ──
+const START = new Date('2026-03-04'); // début du programme
+const now = new Date();
+const weekNum = Math.floor((now - START) / (7 * 24 * 3600 * 1000)) + 1;
+const cycle = ((weekNum - 1) % 3) + 1; // 1, 2 ou 3
 
-  function showTab(day) {
-    TABS.forEach(t => {
-      document.getElementById('panel-' + t).classList.toggle('active', t === day);
-      const btn = document.getElementById('btn-' + t);
-      btn.className = 'tab-btn' + (t === day ? ' ' + COLORS[t] : '');
-    });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+document.getElementById('week-badge').textContent = `Semaine ${weekNum} du programme · Cycle ${cycle}/3`;
 
-  // Auto-select tab based on current day (Mon-Fri mapping)
-  const dow = new Date().getDay(); // 0=Sun,1=Mon,...,6=Sat
-  if (dow === 3) showTab('mer');
-  else if (dow === 4) showTab('jeu');
-  else if (dow === 5) showTab('ven');
-  // else stays on mercredi by default
+// Core exercises per cycle
+const CORE = {
+  mer: [
+    {id:'gainage', name:'Gainage classique', sub:'Planche avant-bras', det:'3 × 45s', rest:45},
+    {id:'squat',   name:'Squats poids du corps', sub:'Descente lente 3 secondes', det:'3 × 20', rest:45},
+    {id:'pompes',  name:'Pompes', sub:'Descente lente, coudes à 45°', det:'3 × 10', rest:45}
+  ],
+  jeu: [
+    {id:'planche-lat',       name:'Planche latérale', sub:'25s gauche + 25s droite', det:'3 × 25s', rest:45},
+    {id:'mountain-climbers', name:'Mountain climbers', sub:'Rythme rapide', det:'3 × 30s', rest:30},
+    {id:'gainage',           name:'Gainage classique', sub:'Planche avant-bras', det:'3 × 45s', rest:45}
+  ],
+  ven: [
+    {id:'squat',      name:'Squats poids du corps', sub:'Descente lente 3 secondes', det:'3 × 20', rest:45},
+    {id:'pompes',     name:'Pompes', sub:'Tempo lent', det:'3 × 10', rest:45},
+    {id:'planche-lat',name:'Planche latérale', sub:'G/D alternés', det:'3 × 25s', rest:45}
+  ]
+};
+
+function buildCore(day) {
+  const ex = CORE[day][cycle - 1];
+  return `<div class="exercise" onclick="tap(this,'${ex.id}',${ex.rest})">
+    <div class="exname">${ex.name}<small>${ex.sub}</small></div>
+    <div class="exright"><div class="play-btn">▶</div><span class="exdet">${ex.det}</span><span class="check-icon">✓</span></div>
+  </div>`;
+}
+
+document.getElementById('core-mer').innerHTML = buildCore('mer');
+document.getElementById('core-jeu').innerHTML = buildCore('jeu');
+document.getElementById('core-ven').innerHTML = buildCore('ven');
+
+// ── TABS ──
+const tabColors={'mer':'active-mer','jeu':'active-jeu','ven':'active-ven','bon':'active-bon'};
+function switchTab(day){
+  document.querySelectorAll('.tab').forEach(t=>{t.className='tab';});
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+day).classList.add(tabColors[day]);
+  document.getElementById('panel-'+day).classList.add('active');
+  skipTimer();
+}
+const d=new Date().getDay();
+if(d===4)switchTab('jeu');
+else if(d===5)switchTab('ven');
+
+// ── TIMER ──
+let tInt=null,tSec=45,tTotal=45;
+function startTimer(s){
+  clearInterval(tInt);tSec=s;tTotal=s;
+  document.getElementById('tbar').classList.add('active');
+  updateT();
+  tInt=setInterval(()=>{tSec--;updateT();if(tSec<=0){clearInterval(tInt);document.getElementById('tnum').textContent='✓';document.getElementById('tnum').classList.remove('urgent');document.getElementById('tlbl').textContent="C'est parti !";setTimeout(skipTimer,1200);}},1000);
+}
+function updateT(){
+  const n=document.getElementById('tnum'),b=document.getElementById('tpbar');
+  n.textContent=tSec;n.classList.toggle('urgent',tSec<=10);
+  b.style.width=(tSec/tTotal*100)+'%';
+  b.style.background=tSec<=10?'linear-gradient(90deg,#ff5757,#ff8a57)':'linear-gradient(90deg,#e8c98a,#6fcf97)';
+}
+function skipTimer(){clearInterval(tInt);document.getElementById('tbar').classList.remove('active');document.getElementById('tnum').classList.remove('urgent');document.getElementById('tlbl').textContent='Pause — reprends dans';}
+function restartTimer(){startTimer(tTotal);}
+
+// ── TAP ──
+const taps={};
+function tap(el,id,rest){
+  const k=el.dataset.k||(el.dataset.k=Math.random().toString(36).slice(2));
+  taps[k]=(taps[k]||0)+1;
+  if(taps[k]===1){showEx(id);}
+  else if(taps[k]===2){el.classList.add('done');closeModalFn();if(rest>0)startTimer(rest);}
+  else{taps[k]=0;el.classList.remove('done');}
+}
+
+// ── EXERCISES ──
+const EX={
+  gainage:{t:'Gainage — Planche',q:'gainage planche avant bras technique musculation',m:['Abdominaux','Lombaires','Fessiers'],c:[{g:1,l:'Appui',t:'Avant-bras à plat, coudes sous les épaules'},{g:1,l:'Corps',t:'Ligne droite tête-talons'},{g:1,l:'Ventre',t:'Rentre le nombril, contracte les abdos'},{g:0,l:'Évite',t:'Les fesses qui montent'}]},
+  'planche-lat':{t:'Planche latérale',q:'planche latérale gainage obliques technique',m:['Obliques','Abdominaux'],c:[{g:1,l:'Appui',t:'Avant-bras au sol, épaule alignée avec le coude'},{g:1,l:'Corps',t:'Ligne droite tête-pieds, hanches levées'},{g:1,l:'Durée',t:'25s par côté'},{g:0,l:'Évite',t:'Les hanches qui tombent'}]},
+  squat:{t:'Squat poids du corps',q:'squat poids du corps technique débutant',m:['Quadriceps','Fessiers'],c:[{g:1,l:'Pieds',t:'Écartement des épaules, en canard'},{g:1,l:'Descente',t:'Cuisses parallèles, 3s lente'},{g:1,l:'Dos',t:'Droit, poitrine fière'},{g:0,l:'Évite',t:'Genoux vers l\'intérieur'}]},
+  pompes:{t:'Pompes',q:'pompes technique débutant musculation pectoraux',m:['Pectoraux','Triceps','Épaules'],c:[{g:1,l:'Mains',t:'Largeur des épaules'},{g:1,l:'Corps',t:'Ligne droite tête-talons'},{g:1,l:'Descente',t:'Lente — coudes à 45°'},{g:0,l:'Évite',t:'Les hanches qui s\'affaissent'}]},
+  'mountain-climbers':{t:'Mountain Climbers',q:'mountain climbers technique cardio abdos',m:['Abdominaux','Cardio'],c:[{g:1,l:'Position',t:'Planche haute, bras tendus'},{g:1,l:'Mouvement',t:'Genoux vers la poitrine alternés'},{g:1,l:'Rythme',t:'Rapide — comme courir sur place'},{g:0,l:'Évite',t:'Lever les fesses'}]},
+  'lat-pulldown':{t:'Lat Pull-Down',q:'lat pull down tirage vertical technique dos musculation',m:['Grand dorsal','Biceps'],c:[{g:1,l:'Prise',t:'Large, paumes vers l\'avant'},{g:1,l:'Mouvement',t:'Tire vers la poitrine'},{g:1,l:'Dos',t:'Légèrement incliné en arrière'},{g:0,l:'Évite',t:'Tirer derrière la tête'}]},
+  'seated-row':{t:'Diverging Seated Row',q:'tirage horizontal assis machine dos technique musculation',m:['Grand dorsal','Biceps'],c:[{g:1,l:'Position',t:'Assis, dos droit'},{g:1,l:'Mouvement',t:'Coudes le long du corps'},{g:1,l:'Fin',t:'Omoplates serrées — 1 sec'},{g:0,l:'Évite',t:'Te pencher en arrière'}]},
+  'shoulder-press':{t:'Converging Shoulder Press',q:'shoulder press machine épaules technique salle',m:['Deltoïdes','Triceps'],c:[{g:1,l:'Réglage',t:'Poignées à hauteur des épaules'},{g:1,l:'Mouvement',t:'Pousse vers le haut'},{g:1,l:'Respiration',t:'Expire en poussant'},{g:0,l:'Évite',t:'Cambrer le dos'}]},
+  'rear-delt-pec':{t:'Rear Delt / Pec Fly',q:'rear delt pec fly machine technique salle musculation',m:['Pectoraux','Deltoïdes postérieurs'],c:[{g:1,l:'Pec Fly',t:'Poignées vers l\'avant — ferme les bras'},{g:1,l:'Rear Delt',t:'Poignées vers l\'arrière — ouvre les bras'},{g:1,l:'Réglage',t:'Poignées à hauteur des épaules'},{g:0,l:'Évite',t:'Tirer avec le dos'}]},
+  'leg-press':{t:'Leg Press',q:'leg press presse cuisses technique débutant musculation',m:['Quadriceps','Fessiers','Ischio-jambiers'],c:[{g:1,l:'Position',t:'Dos plat contre le dossier'},{g:1,l:'Mouvement',t:'Extension quasi complète'},{g:1,l:'Pieds',t:'Écartement des épaules'},{g:0,l:'Évite',t:'Décoller les fesses'}]},
+  'hip-abductor':{t:'Hip Abductor',q:'hip abductor machine fessiers technique salle musculation',m:['Fessiers','Abducteurs'],c:[{g:1,l:'Position',t:'Assis, dos droit'},{g:1,l:'Mouvement',t:'Écarte les jambes vers l\'extérieur'},{g:1,l:'Contraction',t:'Tiens 1 sec en haut'},{g:0,l:'Évite',t:'Te pencher d\'un côté'}]},
+  'ab-crunch':{t:'Abdominal Crunch Machine',q:'abdominal crunch machine abdos technique salle musculation',m:['Abdominaux'],c:[{g:1,l:'Réglage',t:'Haut du dos contre le coussin'},{g:1,l:'Mouvement',t:'Contracte les abdos'},{g:1,l:'Tempo',t:'Descends lentement 2 sec'},{g:0,l:'Évite',t:'Tirer avec le cou'}]},
+  rameur:{t:'Rameur',q:'rameur technique correct cardio salle sport débutant',m:['Dos','Épaules','Jambes'],c:[{g:1,l:'Jambes',t:'Pousse fort — 60% de l\'effort'},{g:1,l:'Bras',t:'Incline le buste, tire vers le bas-ventre'},{g:1,l:'Retour',t:'Bras d\'abord, puis jambes'},{g:0,l:'Évite',t:'Arrondir le dos'}]},
+  velo:{t:'Vélo statique',q:'vélo statique technique cardio salle sport',m:['Quadriceps','Fessiers','Cardio'],c:[{g:1,l:'Selle',t:'Jambe presque tendue en bas'},{g:1,l:'Cadence',t:'Régulière, résistance modérée'},{g:1,l:'Dos',t:'Légèrement penché en avant'},{g:0,l:'Évite',t:'La résistance trop faible'}]},
+  elliptique:{t:'Elliptique',q:'elliptique technique bonne posture cardio salle sport',m:['Full body','Cardio'],c:[{g:1,l:'Bras',t:'Poignées mobiles — +20% calories'},{g:1,l:'Résistance',t:'Minimum niveau 5'},{g:1,l:'Posture',t:'Dos droit, regard devant'},{g:0,l:'Évite',t:'Les poignées fixes'}]},
+  marche:{t:'Marche rapide',q:'marche rapide technique posture bénéfices cardio',m:['Cardio','Jambes','Fessiers'],c:[{g:1,l:'Allure',t:'5-6 km/h — tu transpires, tu peux parler'},{g:1,l:'Bras',t:'Balance les bras naturellement'},{g:1,l:'Posture',t:'Dos droit, épaules détendues'},{g:0,l:'Évite',t:'La promenade tranquille'}]}
+};
+
+function showEx(id){
+  const e=EX[id];if(!e)return;
+  document.getElementById('mtitle').textContent=e.t;
+  const q=encodeURIComponent(e.q);
+  document.getElementById('mvid').innerHTML=`<a href="https://www.youtube.com/results?search_query=${q}" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:14px;background:#ff000015;border:1px solid #ff000040;border-radius:10px;padding:16px;text-decoration:none;position:absolute;top:0;left:0;width:100%;height:100%;"><svg width="42" height="42" viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#FF0000"/><path d="M32 24L20 31V17L32 24Z" fill="white"/></svg><div><div style="color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;text-transform:uppercase;">Voir sur YouTube</div><div style="color:#888;font-size:0.73rem;margin-top:3px;">${e.t}</div></div></a>`;
+  document.getElementById('mcues').innerHTML=e.c.map(c=>`<div class="cue"><div class="cl ${c.g?'':'r'}">${c.g?'✓':'✗'} ${c.l}</div><p>${c.t}</p></div>`).join('');
+  document.getElementById('mmuscles').innerHTML=e.m.map(m=>`<span class="mtag">${m}</span>`).join('');
+  document.getElementById('moverlay').classList.add('active');
+}
+function closeModalFn(){document.getElementById('mvid').innerHTML='';document.getElementById('moverlay').classList.remove('active');}
+function closeModal(e){if(e.target===document.getElementById('moverlay'))closeModalFn();}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModalFn();skipTimer();}});
 </script>
 </body>
 </html>
