@@ -6,441 +6,434 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mes 3 Séances</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap');
-  :root{--dark:#0d0d0d;--card:#141414;--border:#2a2a2a;--a:#e8c98a;--b:#7ab8f5;--c:#a8e6a3;--text:#ede8e0;--muted:#666;}
-  *{margin:0;padding:0;box-sizing:border-box;}
-  body{background:var(--dark);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh;padding-bottom:140px;}
-  .app-header{padding:32px 20px 0;text-align:center;}
-  .app-header h1{font-family:'Barlow Condensed',sans-serif;font-size:2.4rem;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:#fff;line-height:1;}
-  .app-header p{margin-top:5px;font-size:0.78rem;color:#777;letter-spacing:0.14em;text-transform:uppercase;}
-  .week-badge{display:inline-block;margin-top:10px;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;padding:5px 14px;border-radius:100px;background:#1a1a1a;border:1px solid #333;color:#aaa;}
-  .tabs{display:flex;gap:0;padding:20px 16px 0;max-width:640px;margin:0 auto;}
-  .tab{flex:1;padding:12px 6px;text-align:center;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#555;border-bottom:2px solid #1a1a1a;transition:all 0.2s;-webkit-tap-highlight-color:transparent;}
-  .tab.active-mer{color:var(--b);border-bottom-color:var(--b);}
-  .tab.active-jeu{color:var(--a);border-bottom-color:var(--a);}
-  .tab.active-ven{color:var(--c);border-bottom-color:var(--c);}
-  .tab.active-bon{color:#a8e6a3;border-bottom-color:#a8e6a3;}
-  .panel{display:none;max-width:640px;margin:0 auto;padding:20px 16px;}
-  .panel.active{display:block;}
-  .card{background:var(--card);border-radius:16px;border:1px solid var(--border);overflow:hidden;}
-  .card-header{padding:20px 22px 18px;border-bottom:1px solid var(--border);position:relative;}
-  .card-header .tag{font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:6px;display:block;}
-  .card-header h2{font-family:'Barlow Condensed',sans-serif;font-size:1.9rem;font-weight:800;text-transform:uppercase;letter-spacing:0.04em;color:#fff;line-height:1;}
-  .card-header .dur{position:absolute;top:20px;right:20px;font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:700;color:#2a2a2a;line-height:1;}
-  .card-header .dur span{display:block;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:#333;font-family:'Barlow',sans-serif;text-align:right;}
-  .card-body{padding:20px 22px;}
-  .sbadge{display:inline-block;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;padding:4px 10px;border-radius:5px;margin-bottom:16px;}
-  .phase{margin-bottom:18px;}
-  .phase-label{font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px;color:#888;}
-  .phase-label::after{content:'';flex:1;height:1px;background:#1a1a1a;}
-  .exercise{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:10px;margin-bottom:7px;background:#0a0a0a;border:1px solid #1e1e1e;cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:transparent;user-select:none;}
-  .exercise:active{transform:scale(0.98);}
-  .exercise:hover{background:#111;border-color:#2a2a2a;}
-  .exercise.done{border-color:#1a3a1a !important;background:#080e08;}
-  .exercise.done .exname{color:#3a5a3a;}
-  .exname{font-size:1rem;font-weight:600;color:#ede8e0;transition:color 0.3s;}
-  .exname small{display:block;font-size:0.78rem;font-weight:400;color:#888;margin-top:2px;}
-  .exright{display:flex;align-items:center;gap:8px;flex-shrink:0;}
-  .exdet{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;white-space:nowrap;}
-  .play-btn{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#1a1a1a;border:1px solid #333;font-size:0.6rem;color:#666;flex-shrink:0;transition:all 0.2s;}
-  .exercise:hover .play-btn{background:#e8c98a15;border-color:#e8c98a50;color:#e8c98a;}
-  .check-icon{font-size:0.9rem;color:#4a8a4a;display:none;}
-  .exercise.done .check-icon{display:block;}
-  .exercise.done .play-btn{display:none;}
-  .tip{background:#0a0a0a;border-radius:10px;padding:11px 13px;font-size:0.82rem;color:#888;line-height:1.5;border-left:2px solid #252525;margin-top:4px;}
-  .tip strong{color:#aaa;}
-  .mer .card-header{border-top:3px solid var(--b);}.mer .tag{color:var(--b);}.mer .exdet{color:var(--b);}
-  .jeu .card-header{border-top:3px solid var(--a);}.jeu .tag{color:var(--a);}.jeu .exdet{color:var(--a);}
-  .ven .card-header{border-top:3px solid var(--c);}.ven .tag{color:var(--c);}.ven .exdet{color:var(--c);}
-  .dim .card-header{border-top:3px solid #a8e6a3;opacity:0.85;}.dim .tag{color:#a8e6a3;}.dim .exdet{color:#a8e6a3;}
-  .timer-bar{position:fixed;bottom:0;left:0;right:0;background:#111;border-top:1px solid #222;padding:14px 20px 26px;display:none;z-index:999;animation:sup 0.3s ease;}
-  .timer-bar.active{display:block;}
-  @keyframes sup{from{transform:translateY(100%);}to{transform:translateY(0);}}
-  .timer-inner{max-width:380px;margin:0 auto;text-align:center;}
-  .tlbl{font-size:0.72rem;color:#888;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:5px;}
-  .tnum{font-family:'Barlow Condensed',sans-serif;font-size:3.6rem;font-weight:800;color:#e8c98a;line-height:1;margin-bottom:8px;}
-  .tnum.urgent{color:#ff5757;animation:blink 0.5s infinite;}
-  @keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
-  .tprog{width:100%;height:4px;background:#1e1e1e;border-radius:3px;overflow:hidden;margin-bottom:12px;}
-  .tpbar{height:100%;border-radius:3px;transition:width 1s linear;}
-  .tbtns{display:flex;gap:10px;}
-  .tbtn{flex:1;padding:10px;border:none;border-radius:10px;font-family:'Barlow Condensed',sans-serif;font-size:0.95rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;cursor:pointer;}
-  .tbtn.restart{background:#e8c98a18;color:#e8c98a;border:1px solid #e8c98a35;}
-  .tbtn.skip{background:#1a1a1a;color:#888;}
-  .moverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:1000;align-items:center;justify-content:center;padding:20px;}
-  .moverlay.active{display:flex;}
-  .modal{background:#141414;border-radius:18px;border:1px solid #2a2a2a;max-width:520px;width:100%;max-height:90vh;overflow-y:auto;animation:sup 0.25s ease;}
-  .mhead{padding:16px 20px 13px;border-bottom:1px solid #222;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#141414;z-index:2;}
-  .mtitle{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:800;text-transform:uppercase;color:#fff;}
-  .mclose{background:none;border:none;color:#666;font-size:1.3rem;cursor:pointer;padding:4px 8px;}
-  .mbody{padding:16px 20px 20px;}
-  .vwrap{position:relative;width:100%;padding-top:50%;border-radius:10px;overflow:hidden;margin-bottom:16px;background:#000;}
-  .cues{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px;}
-  .cue{background:#0d0d0d;border-radius:9px;padding:10px 12px;}
-  .cl{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#e8c98a;margin-bottom:3px;}
-  .cl.r{color:#e87a7a;}
-  .cue p{font-size:0.8rem;color:#999;line-height:1.4;}
-  .muscles{display:flex;gap:7px;flex-wrap:wrap;}
-  .mtag{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:6px;padding:3px 9px;font-size:0.72rem;color:#888;}
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap');
+:root{--dark:#0d0d0d;--card:#141414;--border:#2a2a2a;--a:#e8c98a;--b:#7ab8f5;--c:#a8e6a3;--text:#ede8e0;--muted:#666;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--dark);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh;padding-bottom:140px;}
+.app-header{padding:32px 20px 0;text-align:center;}
+.app-header h1{font-family:'Barlow Condensed',sans-serif;font-size:2.4rem;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:#fff;line-height:1;}
+.app-header p{margin-top:5px;font-size:0.78rem;color:#777;letter-spacing:0.14em;text-transform:uppercase;}
+.week-badge{display:inline-block;margin-top:10px;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;padding:5px 14px;border-radius:100px;background:#1a1a1a;border:1px solid #333;color:#aaa;}
+.tabs{display:flex;gap:0;padding:20px 16px 0;max-width:640px;margin:0 auto;}
+.tab{flex:1;padding:12px 6px;text-align:center;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#555;border-bottom:2px solid #1a1a1a;transition:all 0.2s;-webkit-tap-highlight-color:transparent;}
+.tab.active-mer{color:var(--b);border-bottom-color:var(--b);}
+.tab.active-jeu{color:var(--a);border-bottom-color:var(--a);}
+.tab.active-ven{color:var(--c);border-bottom-color:var(--c);}
+.tab.active-bon{color:#a8e6a3;border-bottom-color:#a8e6a3;}
+.panel{display:none;max-width:640px;margin:0 auto;padding:20px 16px;}
+.panel.active{display:block;}
+.card{background:var(--card);border-radius:16px;border:1px solid var(--border);overflow:hidden;}
+.card-header{padding:20px 22px 18px;border-bottom:1px solid var(--border);position:relative;}
+.card-header .tag{font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:6px;display:block;}
+.card-header h2{font-family:'Barlow Condensed',sans-serif;font-size:1.9rem;font-weight:800;text-transform:uppercase;letter-spacing:0.04em;color:#fff;line-height:1;}
+.card-header .dur{position:absolute;top:20px;right:20px;font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:700;color:#2a2a2a;line-height:1;}
+.card-header .dur span{display:block;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:#333;font-family:'Barlow',sans-serif;text-align:right;}
+.card-body{padding:20px 22px;}
+.sbadge{display:inline-block;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;padding:4px 10px;border-radius:5px;margin-bottom:16px;}
+.phase{margin-bottom:18px;}
+.phase-label{font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px;color:#888;}
+.phase-label::after{content:'';flex:1;height:1px;background:#1a1a1a;}
+.exercise{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-radius:10px;margin-bottom:7px;background:#0a0a0a;border:1px solid #1e1e1e;cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:transparent;user-select:none;}
+.exercise:active{transform:scale(0.98);}
+.exercise:hover{background:#111;border-color:#2a2a2a;}
+.exercise.done{border-color:#1a3a1a !important;background:#080e08;}
+.exercise.done .exname{color:#3a5a3a;}
+.exname{font-size:1rem;font-weight:600;color:#ede8e0;transition:color 0.3s;}
+.exname small{display:block;font-size:0.78rem;font-weight:400;color:#888;margin-top:2px;}
+.exright{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.exdet{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;white-space:nowrap;}
+.play-btn{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#1a1a1a;border:1px solid #333;font-size:0.6rem;color:#666;flex-shrink:0;transition:all 0.2s;}
+.exercise:hover .play-btn{background:#e8c98a15;border-color:#e8c98a50;color:#e8c98a;}
+.check-icon{font-size:0.9rem;color:#4a8a4a;display:none;}
+.exercise.done .check-icon{display:block;}
+.exercise.done .play-btn{display:none;}
+.tip{background:#0a0a0a;border-radius:10px;padding:11px 13px;font-size:0.82rem;color:#888;line-height:1.5;border-left:2px solid #252525;margin-top:4px;}
+.tip strong{color:#aaa;}
+.mer .card-header{border-top:3px solid var(--b);}.mer .tag{color:var(--b);}.mer .exdet{color:var(--b);}
+.jeu .card-header{border-top:3px solid var(--a);}.jeu .tag{color:var(--a);}.jeu .exdet{color:var(--a);}
+.ven .card-header{border-top:3px solid var(--c);}.ven .tag{color:var(--c);}.ven .exdet{color:var(--c);}
+.dim .card-header{border-top:3px solid #a8e6a3;opacity:0.85;}.dim .tag{color:#a8e6a3;}.dim .exdet{color:#a8e6a3;}
+.timer-bar{position:fixed;bottom:0;left:0;right:0;background:#111;border-top:1px solid #222;padding:14px 20px 26px;display:none;z-index:999;animation:sup 0.3s ease;}
+.timer-bar.active{display:block;}
+@keyframes sup{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.timer-inner{max-width:380px;margin:0 auto;text-align:center;}
+.tlbl{font-size:0.72rem;color:#888;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:5px;}
+.tnum{font-family:'Barlow Condensed',sans-serif;font-size:3.6rem;font-weight:800;color:#e8c98a;line-height:1;margin-bottom:8px;}
+.tnum.urgent{color:#ff5757;animation:blink 0.5s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+.tprog{width:100%;height:4px;background:#1e1e1e;border-radius:3px;overflow:hidden;margin-bottom:12px;}
+.tpbar{height:100%;border-radius:3px;transition:width 1s linear;}
+.tbtns{display:flex;gap:10px;}
+.tbtn{flex:1;padding:10px;border:none;border-radius:10px;font-family:'Barlow Condensed',sans-serif;font-size:0.95rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;cursor:pointer;}
+.tbtn.restart{background:#e8c98a18;color:#e8c98a;border:1px solid #e8c98a35;}
+.tbtn.skip{background:#1a1a1a;color:#888;}
+.moverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:1000;align-items:center;justify-content:center;padding:20px;}
+.moverlay.active{display:flex;}
+.modal{background:#141414;border-radius:18px;border:1px solid #2a2a2a;max-width:520px;width:100%;max-height:90vh;overflow-y:auto;animation:sup 0.25s ease;}
+.mhead{padding:16px 20px 13px;border-bottom:1px solid #222;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#141414;z-index:2;}
+.mtitle{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:800;text-transform:uppercase;color:#fff;}
+.mclose{background:none;border:none;color:#666;font-size:1.3rem;cursor:pointer;padding:4px 8px;}
+.mbody{padding:16px 20px 20px;}
+.vwrap{position:relative;width:100%;padding-top:50%;border-radius:10px;overflow:hidden;margin-bottom:16px;background:#000;}
+.cues{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px;}
+.cue{background:#0d0d0d;border-radius:9px;padding:10px 12px;}
+.cl{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#e8c98a;margin-bottom:3px;}
+.cl.r{color:#e87a7a;}
+.cue p{font-size:0.8rem;color:#999;line-height:1.4;}
+.muscles{display:flex;gap:7px;flex-wrap:wrap;}
+.mtag{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:6px;padding:3px 9px;font-size:0.72rem;color:#888;}
 </style>
 </head>
 <body>
-
 <div class="app-header">
-  <h1>Mes Séances</h1>
-  <p id="week-label">1 tap = vidéo · 2 taps = ⏱ pause · 3 taps = reset</p>
-  <div class="week-badge" id="week-badge">Semaine —</div>
+<h1>Mes Séances</h1>
+<p id="week-label">1 tap = vidéo · 2 taps = ⏱ pause · 3 taps = reset</p>
+<div class="week-badge" id="week-badge">Semaine —</div>
 </div>
-
 <div class="tabs">
-  <div class="tab active-mer" id="tab-mer" onclick="switchTab('mer')">Mer</div>
-  <div class="tab" id="tab-jeu" onclick="switchTab('jeu')">Jeu</div>
-  <div class="tab" id="tab-ven" onclick="switchTab('ven')">Ven</div>
-  <div class="tab" id="tab-bon" onclick="switchTab('bon')">Bonus</div>
+<div class="tab active-mer" id="tab-mer" onclick="switchTab('mer')">Mer</div>
+<div class="tab" id="tab-jeu" onclick="switchTab('jeu')">Jeu</div>
+<div class="tab" id="tab-ven" onclick="switchTab('ven')">Ven</div>
+<div class="tab" id="tab-bon" onclick="switchTab('bon')">Bonus</div>
 </div>
-
 <!-- MERCREDI -->
 <div class="panel active" id="panel-mer">
-  <div class="card mer">
-    <div class="card-header">
-      <span class="tag">Mercredi — Haut du corps</span>
-      <h2>Dos &amp;<br>Épaules</h2>
-      <div class="dur">25<span>min</span></div>
-    </div>
-    <div class="card-body">
-      <div class="sbadge" style="background:#7ab8f510;color:#7ab8f5;border:1px solid #7ab8f530;">🏢 Étage 3 → Étage 1</div>
-      <div class="phase">
-        <div class="phase-label">📍 Étage 3 — Cardio</div>
-        <div class="exercise" onclick="tap(this,'rameur',0)">
-          <div class="exname">Rameur<small>Rythme progressif</small></div>
-          <div class="exright"><div class="play-btn">▶</div><span class="exdet">8 min</span><span class="check-icon">✓</span></div>
-        </div>
-      </div>
-      <div class="phase">
-        <div class="phase-label">📍 Étage 3 — Core</div>
-        <div id="core-mer"></div>
-      </div>
-      <div class="phase">
-        <div class="phase-label">📍 Étage 1 — Machines · 3 × 15</div>
-        <div class="exercise" onclick="tap(this,'lat-pulldown',45)">
-          <div class="exname">Diverging Lat Pull-Down<small>Grand dorsal</small></div>
-          <div class="exright"><div class="play-btn">▶</div><span class="exdet">20kg</span><span class="check-icon">✓</span></div>
-        </div>
-        <div class="exercise" onclick="tap(this,'seated-row',45)">
-          <div class="exname">Diverging Seated Row<small>Milieu du dos</small></div>
-          <div class="exright"><div class="play-btn">▶</div><span class="exdet">20kg</span><span class="check-icon">✓</span></div>
-        </div>
-        <div class="exercise" onclick="tap(this,'shoulder-press',45)">
-          <div class="exname">Converging Shoulder Press<small>Épaules</small></div>
-          <div class="exright"><div class="play-btn">▶</div><span class="exdet">15kg</span><span class="check-icon">✓</span></div>
-        </div>
-        <div class="exercise" onclick="tap(this,'rear-delt-pec',45)">
-          <div class="exname">Rear Delt / Pec Fly<small>Alterner selon la semaine</small></div>
-          <div class="exright"><div class="play-btn">▶</div><span class="exdet">15kg</span><span class="check-icon">✓</span></div>
-        </div>
-      </div>
-      <div class="tip" style="border-left-color:#7ab8f5;">🍳 <strong>Mercredi —</strong> Yaourt grec · granola protéiné · café</div>
-    </div>
-  </div>
+<div class="card mer">
+<div class="card-header">
+<span class="tag">Mercredi — Haut du corps</span>
+<h2>Dos &amp;<br>Épaules</h2>
+<div class="dur">25<span>min</span></div>
 </div>
-
+<div class="card-body">
+<div class="sbadge" style="background:#7ab8f510;color:#7ab8f5;border:1px solid #7ab8f530;">🏢 Étage 3 → Étage 1</div>
+<div class="phase">
+<div class="phase-label">📍 Étage 3 — Cardio</div>
+<div class="exercise" onclick="tap(this,'rameur',0)">
+<div class="exname">Rameur<small>Rythme progressif</small></div>
+<div class="exright"><div class="play-btn">▶</div><span class="exdet">8 min</span><span class="check-icon">✓</span></div>
+</div>
+</div>
+<div class="phase">
+<div class="phase-label">📍 Étage 3 — Core</div>
+<div id="core-mer"></div>
+</div>
+<div class="phase">
+<div class="phase-label">📍 Étage 1 — Machines · 3 × 15</div>
+<div class="exercise" onclick="tap(this,'lat-pulldown',45)">
+<div class="exname">Diverging Lat Pull-Down<small>Grand dorsal</small></div>
+<div class="exright"><div class="play-btn">▶</div><span class="exdet">20kg</span><span class="check-icon">✓</span></div>
+</div>
+<div class="exercise" onclick="tap(this,'seated-row',45)">
+<div class="exname">Diverging Seated Row<small>Milieu du dos</small></div>
+<div class="exright"><div class="play-btn">▶</div><span class="exdet">20kg</span><span class="check-icon">✓</span></div>
+</div>
+<div class="exercise" onclick="tap(this,'shoulder-press',45)">
+<div class="exname">Converging Shoulder Press<small>Épaules</small></div>
+<div class="exright"><div class="play-btn">▶</div><span class="exdet">15kg</span><span class="check-icon">✓</span></div>
+</div>
+<div class="exercise" onclick="tap(this,'rear-delt-pec',45)">
+<div class="exname">Rear Delt / Pec Fly<small>Alterner selon la semaine</small></div>
+<div class="exright"><div class="play-btn">▶</div><span class="exdet">15kg</span><span class="check-icon">✓</span></div>
+</div>
+</div>
+<div class="tip" style="border-left-color:#7ab8f5;">🍳 <strong>Mercredi —</strong> Yaourt grec · granola protéiné · café</div>
+</div>
+</div>
+</div>
 <!-- JEUDI -->
 <div class="panel" id="panel-jeu">
-  <div class="card jeu">
-    <div class="card-header">
-      <span class="tag">Jeudi — Bas du corps</span>
-      <h2>Jambes<br>&amp; Ventre</h2>
-      <div class="dur">15<span>min</span></div>
-    </div>
-    <div class="card-body">
-      <div class="sbadge" style="background:#e8c98a10;color:#e8c98a;border:1px solid #e8c98a30;">🏢 Étage 3 → Étage 1</div>
-      <div class="phase">
-        <div class="phase-label">📍 Étage 3 — Cardio</div>
-        <div class="exercise" onclick="tap(this,'velo',0)">
-          <div class="exname">Vélo statique<small>Résistance progressive</small></div>
-          <div class="exright"><div class="play-btn">▶</div><span class="exdet">6 min</span><span class="check-icon">✓</span></div>
-        </div>
-      </div>
-      <div class="phase">
-        <div class="phase-label">📍 Étage 3 — Core</div>
-        <div id="core-jeu"></div>
-      </div>
-      <div class="phase">
-        <div class="phase-label">📍 Étage 1 — Leg Press pyramide</div>
-        <div class="exercise" onclick="tap(this,'leg-press',60)">
-          <div class="exname">Série 1 — Lourd<small>Focus force</small></div>
-          <div class="exright"><div class="play-btn">▶</div><span class="exdet">10 × 45kg</span><span class="check-icon">✓</span></div>
-        </div>
-        <div class="exercise" onclick="tap(this,'leg-press',60)">
-          <div class="exname">Série 2</div>
-          <div class="exright"><div class="play-btn">▶</div><span class="exdet">12 × 40kg</span><span class="check-icon">✓</span></div>
-        </div>
-        <div class="exercise" onclick="tap(this,'leg-press',60)">
-          <div class="exname">Série 3</div>
-          <div class="exright"><div class="play-btn">▶</div><span class="exdet">15 × 35kg</span><span class="check-icon">✓</span></div>
-        </div>
-        <div class="exercise" onclick="tap(this,'leg-press',60)">
-          <div class="exname">Série 4 — Léger<small>Focus endurance</small></div>
-          <div class="exright"><div class="play-btn">▶</div><span class="exdet">20 × 30kg</span><span class="check-icon">✓</span></div>
-        </div>
-      </div>
-      <div class="phase">
-        <div class="phase-label">📍 Étage 1 — Finition · 2 × 15</div>
-        <div class="exercise" onclick="tap(this,'hip-abductor',45)">
-          <div class="exname">Hip Abductor<small>Fessiers et hanches</small></div>
-          <div class="exright"><div class="play-btn">▶</div><span class="exdet">20kg</span><span class="check-icon">✓</span></div>
-        </div>
-        <div class="exercise" onclick="tap(this,'ab-crunch',45)">
-          <div class="exname">Abdominal Crunch machine<small>Contracte fort, reviens lentement</small></div>
-          <div class="exright"><div class="play-btn">▶</div><span class="exdet">15kg</span><span class="check-icon">✓</span></div>
-        </div>
-      </div>
-      <div class="tip" style="border-left-color:#7ab8f5;">🍳 <strong>Jeudi —</strong> Skyr · banane · cannelle · café</div>
-    </div>
-  </div>
+<div class="card jeu">
+<div class="card-header">
+<span class="tag">Jeudi — Bas du corps</span>
+<h2>Jambes<br>&amp; Ventre</h2>
+<div class="dur">15<span>min</span></div>
 </div>
-
+<div class="card-body">
+<div class="sbadge" style="background:#e8c98a10;color:#e8c98a;border:1px solid #e8c98a30;">🏢 Étage 3 → Étage 1</div>
+<div class="phase">
+<div class="phase-label">📍 Étage 3 — Cardio</div>
+<div class="exercise" onclick="tap(this,'velo',0)">
+<div class="exname">Vélo statique<small>Résistance progressive</small></div>
+<div class="exright"><div class="play-btn">▶</div><span class="exdet">6 min</span><span class="check-icon">✓</span></div>
+</div>
+</div>
+<div class="phase">
+<div class="phase-label">📍 Étage 3 — Core</div>
+<div id="core-jeu"></div>
+</div>
+<div class="phase">
+<div class="phase-label">📍 Étage 1 — Leg Press pyramide</div>
+<div class="exercise" onclick="tap(this,'leg-press',60)">
+<div class="exname">Série 1 — Lourd<small>Focus force</small></div>
+<div class="exright"><div class="play-btn">▶</div><span class="exdet">10 × 45kg</span><span class="check-icon">✓</span></div>
+</div>
+<div class="exercise" onclick="tap(this,'leg-press',60)">
+<div class="exname">Série 2</div>
+<div class="exright"><div class="play-btn">▶</div><span class="exdet">12 × 40kg</span><span class="check-icon">✓</span></div>
+</div>
+<div class="exercise" onclick="tap(this,'leg-press',60)">
+<div class="exname">Série 3</div>
+<div class="exright"><div class="play-btn">▶</div><span class="exdet">15 × 35kg</span><span class="check-icon">✓</span></div>
+</div>
+<div class="exercise" onclick="tap(this,'leg-press',60)">
+<div class="exname">Série 4 — Léger<small>Focus endurance</small></div>
+<div class="exright"><div class="play-btn">▶</div><span class="exdet">20 × 30kg</span><span class="check-icon">✓</span></div>
+</div>
+</div>
+<div class="phase">
+<div class="phase-label">📍 Étage 1 — Finition · 2 × 15</div>
+<div class="exercise" onclick="tap(this,'hip-abductor',45)">
+<div class="exname">Hip Abductor<small>Fessiers et hanches</small></div>
+<div class="exright"><div class="play-btn">▶</div><span class="exdet">20kg</span><span class="check-icon">✓</span></div>
+</div>
+<div class="exercise" onclick="tap(this,'ab-crunch',45)">
+<div class="exname">Abdominal Crunch machine<small>Contracte fort, reviens lentement</small></div>
+<div class="exright"><div class="play-btn">▶</div><span class="exdet">15kg</span><span class="check-icon">✓</span></div>
+</div>
+</div>
+<div class="tip" style="border-left-color:#7ab8f5;">🍳 <strong>Jeudi —</strong> Skyr · banane · cannelle · café</div>
+</div>
+</div>
+</div>
 <!-- VENDREDI -->
 <div class="panel" id="panel-ven">
-  <div class="card ven">
-    <div class="card-header">
-      <span class="tag">Vendredi — Circuit Full Body</span>
-      <h2>Circuit<br>Express</h2>
-      <div class="dur">25<span>min</span></div>
-    </div>
-    <div class="card-body">
-      <div class="sbadge" style="background:#a8e6a310;color:#a8e6a3;border:1px solid #a8e6a330;">🏢 Étage 3 → Étage 1</div>
-      <div class="phase">
-        <div class="phase-label">📍 Étage 3 — Cardio</div>
-        <div class="exercise" onclick="tap(this,'elliptique',0)">
-          <div class="exname">Elliptique<small>Monte la résistance à mi-chemin</small></div>
-          <div class="exright"><div class="play-btn">▶</div><span class="exdet">6 min</span><span class="check-icon">✓</span></div>
-        </div>
-      </div>
-      <div class="phase">
-        <div class="phase-label">📍 Étage 3 — Core</div>
-        <div id="core-ven"></div>
-      </div>
-      <div class="phase">
-        <div class="phase-label">📍 Étage 1 — Circuit · 3 tours · 10 reps</div>
-        <div class="tip" style="margin-bottom:10px;border-left-color:#a8e6a3;font-size:0.78rem;">Enchaîne sans pause · 45 sec entre chaque tour</div>
-        <div class="exercise" onclick="tap(this,'leg-press',45)">
-          <div class="exname">① Leg Press<small>Jambes</small></div>
-          <div class="exright"><div class="play-btn">▶</div><span class="exdet">10 × 35kg</span><span class="check-icon">✓</span></div>
-        </div>
-        <div class="exercise" onclick="tap(this,'lat-pulldown',45)">
-          <div class="exname">② Lat Pull-Down<small>Dos</small></div>
-          <div class="exright"><div class="play-btn">▶</div><span class="exdet">10 × 20kg</span><span class="check-icon">✓</span></div>
-        </div>
-        <div class="exercise" onclick="tap(this,'shoulder-press',45)">
-          <div class="exname">③ Shoulder Press<small>Épaules</small></div>
-          <div class="exright"><div class="play-btn">▶</div><span class="exdet">10 × 15kg</span><span class="check-icon">✓</span></div>
-        </div>
-        <div class="exercise" onclick="tap(this,'ab-crunch',45)">
-          <div class="exname">④ Abdominal Crunch<small>Abdos</small></div>
-          <div class="exright"><div class="play-btn">▶</div><span class="exdet">10 × 15kg</span><span class="check-icon">✓</span></div>
-        </div>
-      </div>
-      <div class="tip">📊 <strong>Pesée du vendredi</strong> — poids + tour de taille avant la douche</div>
-      <div class="tip" style="margin-top:8px;border-left-color:#7ab8f5;">🍳 <strong>Vendredi —</strong> 2 œufs · knäckebröd · comté · café</div>
-    </div>
-  </div>
+<div class="card ven">
+<div class="card-header">
+<span class="tag">Vendredi — Circuit Full Body</span>
+<h2>Circuit<br>Express</h2>
+<div class="dur">25<span>min</span></div>
 </div>
-
+<div class="card-body">
+<div class="sbadge" style="background:#a8e6a310;color:#a8e6a3;border:1px solid #a8e6a330;">🏢 Étage 3 → Étage 1</div>
+<div class="phase">
+<div class="phase-label">📍 Étage 3 — Cardio</div>
+<div class="exercise" onclick="tap(this,'elliptique',0)">
+<div class="exname">Elliptique<small>Monte la résistance à mi-chemin</small></div>
+<div class="exright"><div class="play-btn">▶</div><span class="exdet">6 min</span><span class="check-icon">✓</span></div>
+</div>
+</div>
+<div class="phase">
+<div class="phase-label">📍 Étage 3 — Core</div>
+<div id="core-ven"></div>
+</div>
+<div class="phase">
+<div class="phase-label">📍 Étage 1 — Circuit · 3 tours · 10 reps</div>
+<div class="tip" style="margin-bottom:10px;border-left-color:#a8e6a3;font-size:0.78rem;">Enchaîne sans pause · 45 sec entre chaque tour</div>
+<div class="exercise" onclick="tap(this,'leg-press',45)">
+<div class="exname">① Leg Press<small>Jambes</small></div>
+<div class="exright"><div class="play-btn">▶</div><span class="exdet">10 × 35kg</span><span class="check-icon">✓</span></div>
+</div>
+<div class="exercise" onclick="tap(this,'lat-pulldown',45)">
+<div class="exname">② Lat Pull-Down<small>Dos</small></div>
+<div class="exright"><div class="play-btn">▶</div><span class="exdet">10 × 20kg</span><span class="check-icon">✓</span></div>
+</div>
+<div class="exercise" onclick="tap(this,'shoulder-press',45)">
+<div class="exname">③ Shoulder Press<small>Épaules</small></div>
+<div class="exright"><div class="play-btn">▶</div><span class="exdet">10 × 15kg</span><span class="check-icon">✓</span></div>
+</div>
+<div class="exercise" onclick="tap(this,'ab-crunch',45)">
+<div class="exname">④ Abdominal Crunch<small>Abdos</small></div>
+<div class="exright"><div class="play-btn">▶</div><span class="exdet">10 × 15kg</span><span class="check-icon">✓</span></div>
+</div>
+</div>
+<div class="tip">📊 <strong>Pesée du vendredi</strong> — poids + tour de taille avant la douche</div>
+<div class="tip" style="margin-top:8px;border-left-color:#7ab8f5;">🍳 <strong>Vendredi —</strong> 2 œufs · knäckebröd · comté · café</div>
+</div>
+</div>
+</div>
 <!-- BONUS -->
 <div class="panel" id="panel-bon">
-  <div class="card" style="border-top:3px solid #ff6b35;border:1px solid #2a2a2a;background:#141414;border-radius:16px;overflow:hidden;">
-    <div class="card-header">
-      <span class="tag" style="color:#ff6b35;">Jour Bonus · Quand tu peux</span>
-      <h2>Déstockage<br>Express</h2>
-      <div class="dur">20<span>min</span></div>
-    </div>
-    <div class="card-body">
-      <div class="sbadge" style="background:#ff6b3510;color:#ff6b35;border:1px solid #ff6b3530;">🏢 Étage 3 uniquement — pas de machines</div>
-      <div class="phase">
-        <div class="phase-label" style="color:#888;">📍 Cardio enchaîné · 18 min</div>
-        <div class="exercise" onclick="tap(this,'rameur',0)">
-          <div class="exname">Rameur<small>Effort soutenu, accélère les 2 dernières min</small></div>
-          <div class="exright"><div class="play-btn">▶</div><span class="exdet" style="color:#ff6b35;">8 min</span><span class="check-icon">✓</span></div>
-        </div>
-        <div class="exercise" onclick="tap(this,'elliptique',0)">
-          <div class="exname">Elliptique<small>Résistance 7-8, poignées mobiles</small></div>
-          <div class="exright"><div class="play-btn">▶</div><span class="exdet" style="color:#ff6b35;">6 min</span><span class="check-icon">✓</span></div>
-        </div>
-        <div class="exercise" onclick="tap(this,'velo',0)">
-          <div class="exname">Vélo statique<small>Sprint final — résistance max sur la dernière minute</small></div>
-          <div class="exright"><div class="play-btn">▶</div><span class="exdet" style="color:#ff6b35;">4 min</span><span class="check-icon">✓</span></div>
-        </div>
-      </div>
-      <div class="phase">
-        <div class="phase-label" style="color:#888;">📍 Core express · au sol</div>
-        <div class="exercise" onclick="tap(this,'gainage',30)">
-          <div class="exname">Gainage classique<small>Planche avant-bras</small></div>
-          <div class="exright"><div class="play-btn">▶</div><span class="exdet" style="color:#ff6b35;">2 × 40s</span><span class="check-icon">✓</span></div>
-        </div>
-        <div class="exercise" onclick="tap(this,'mountain-climbers',30)">
-          <div class="exname">Mountain climbers<small>Rythme rapide</small></div>
-          <div class="exright"><div class="play-btn">▶</div><span class="exdet" style="color:#ff6b35;">2 × 30s</span><span class="check-icon">✓</span></div>
-        </div>
-      </div>
-      <div class="tip" style="border-left-color:#ff6b35;"><strong>Pas de machines.</strong> Cardio pur pour brûler les réserves — idéal après un week-end épicurien ou si tu as 20 min devant toi.</div>
-      <div class="tip" style="margin-top:8px;border-left-color:#7ab8f5;">🍳 <strong>Avant —</strong> Yaourt grec · café · pas de pain</div>
-    </div>
-  </div>
+<div class="card" style="border-top:3px solid #ff6b35;border:1px solid #2a2a2a;background:#141414;border-radius:16px;overflow:hidden;">
+<div class="card-header">
+<span class="tag" style="color:#ff6b35;">Jour Bonus · Quand tu peux</span>
+<h2>Déstockage<br>Express</h2>
+<div class="dur">20<span>min</span></div>
 </div>
-
+<div class="card-body">
+<div class="sbadge" style="background:#ff6b3510;color:#ff6b35;border:1px solid #ff6b3530;">🏢 Étage 3 uniquement — pas de machines</div>
+<div class="phase">
+<div class="phase-label" style="color:#888;">📍 Cardio enchaîné · 18 min</div>
+<div class="exercise" onclick="tap(this,'rameur',0)">
+<div class="exname">Rameur<small>Effort soutenu, accélère les 2 dernières min</small></div>
+<div class="exright"><div class="play-btn">▶</div><span class="exdet" style="color:#ff6b35;">8 min</span><span class="check-icon">✓</span></div>
+</div>
+<div class="exercise" onclick="tap(this,'elliptique',0)">
+<div class="exname">Elliptique<small>Résistance 7-8, poignées mobiles</small></div>
+<div class="exright"><div class="play-btn">▶</div><span class="exdet" style="color:#ff6b35;">6 min</span><span class="check-icon">✓</span></div>
+</div>
+<div class="exercise" onclick="tap(this,'velo',0)">
+<div class="exname">Vélo statique<small>Sprint final — résistance max sur la dernière minute</small></div>
+<div class="exright"><div class="play-btn">▶</div><span class="exdet" style="color:#ff6b35;">4 min</span><span class="check-icon">✓</span></div>
+</div>
+</div>
+<div class="phase">
+<div class="phase-label" style="color:#888;">📍 Core express · au sol</div>
+<div class="exercise" onclick="tap(this,'gainage',30)">
+<div class="exname">Gainage classique<small>Planche avant-bras</small></div>
+<div class="exright"><div class="play-btn">▶</div><span class="exdet" style="color:#ff6b35;">2 × 40s</span><span class="check-icon">✓</span></div>
+</div>
+<div class="exercise" onclick="tap(this,'mountain-climbers',30)">
+<div class="exname">Mountain climbers<small>Rythme rapide</small></div>
+<div class="exright"><div class="play-btn">▶</div><span class="exdet" style="color:#ff6b35;">2 × 30s</span><span class="check-icon">✓</span></div>
+</div>
+</div>
+<div class="tip" style="border-left-color:#ff6b35;"><strong>Pas de machines.</strong> Cardio pur pour brûler les réserves — idéal après un week-end épicurien ou si tu as 20 min devant toi.</div>
+<div class="tip" style="margin-top:8px;border-left-color:#7ab8f5;">🍳 <strong>Avant —</strong> Yaourt grec · café · pas de pain</div>
+</div>
+</div>
+</div>
 <!-- TIMER -->
 <div class="timer-bar" id="tbar">
-  <div class="timer-inner">
-    <div class="tlbl" id="tlbl">Pause — reprends dans</div>
-    <div class="tnum" id="tnum">45</div>
-    <div class="tprog"><div class="tpbar" id="tpbar" style="width:100%;background:linear-gradient(90deg,#e8c98a,#6fcf97);"></div></div>
-    <div class="tbtns">
-      <button class="tbtn restart" onclick="restartTimer()">↺ Refaire</button>
-      <button class="tbtn skip" onclick="skipTimer()">Passer →</button>
-    </div>
-  </div>
+<div class="timer-inner">
+<div class="tlbl" id="tlbl">Pause — reprends dans</div>
+<div class="tnum" id="tnum">45</div>
+<div class="tprog"><div class="tpbar" id="tpbar" style="width:100%;background:linear-gradient(90deg,#e8c98a,#6fcf97);"></div></div>
+<div class="tbtns">
+<button class="tbtn restart" onclick="restartTimer()">↺ Refaire</button>
+<button class="tbtn skip" onclick="skipTimer()">Passer →</button>
 </div>
-
+</div>
+</div>
 <!-- MODAL -->
 <div class="moverlay" id="moverlay" onclick="closeModal(event)">
-  <div class="modal">
-    <div class="mhead"><span class="mtitle" id="mtitle"></span><button class="mclose" onclick="closeModalFn()">✕</button></div>
-    <div class="mbody">
-      <div class="vwrap" id="mvid"></div>
-      <div class="cues" id="mcues"></div>
-      <div class="muscles" id="mmuscles"></div>
-    </div>
-  </div>
+<div class="modal">
+<div class="mhead"><span class="mtitle" id="mtitle"></span><button class="mclose" onclick="closeModalFn()">✕</button></div>
+<div class="mbody">
+<div class="vwrap" id="mvid"></div>
+<div class="cues" id="mcues"></div>
+<div class="muscles" id="mmuscles"></div>
 </div>
-
+</div>
+</div>
 <script>
 // ── WEEK CALCULATION ──
 const START = new Date('2026-03-04');
 const now = new Date();
 const weekNum = Math.floor((now - START) / (7 * 24 * 3600 * 1000)) + 1;
 const cycle = ((weekNum - 1) % 3) + 1;
-
 document.getElementById('week-badge').textContent = `Semaine ${weekNum} du programme · Cycle ${cycle}/3`;
 
 // ── CORE ROTATION ──
 const CORE = {
-  mer: [
-    {id:'gainage', name:'Gainage classique', sub:'Planche avant-bras', det:'3 × 45s', rest:45},
-    {id:'squat',   name:'Squats poids du corps', sub:'Descente lente 3 secondes', det:'3 × 20', rest:45},
-    {id:'pompes',  name:'Pompes', sub:'Descente lente, coudes à 45°', det:'3 × 10', rest:45}
-  ],
-  jeu: [
-    {id:'planche-lat',       name:'Planche latérale', sub:'25s gauche + 25s droite', det:'3 × 25s', rest:45},
-    {id:'mountain-climbers', name:'Mountain climbers', sub:'Rythme rapide', det:'3 × 30s', rest:30},
-    {id:'gainage',           name:'Gainage classique', sub:'Planche avant-bras', det:'3 × 45s', rest:45}
-  ],
-  ven: [
-    {id:'squat',       name:'Squats poids du corps', sub:'Descente lente 3 secondes', det:'3 × 20', rest:45},
-    {id:'pompes',      name:'Pompes', sub:'Tempo lent', det:'3 × 10', rest:45},
-    {id:'planche-lat', name:'Planche latérale', sub:'G/D alternés', det:'3 × 25s', rest:45}
-  ]
+mer: [
+{id:'gainage', name:'Gainage classique', sub:'Planche avant-bras', det:'3 × 45s', rest:45},
+{id:'squat', name:'Squats poids du corps', sub:'Descente lente 3 secondes', det:'3 × 20', rest:45},
+{id:'pompes', name:'Pompes', sub:'Descente lente, coudes à 45°', det:'3 × 10', rest:45}
+],
+jeu: [
+{id:'planche-lat', name:'Planche latérale', sub:'25s gauche + 25s droite', det:'3 × 25s', rest:45},
+{id:'mountain-climbers', name:'Mountain climbers', sub:'Rythme rapide', det:'3 × 30s', rest:30},
+{id:'gainage', name:'Gainage classique', sub:'Planche avant-bras', det:'3 × 45s', rest:45}
+],
+ven: [
+{id:'squat', name:'Squats poids du corps', sub:'Descente lente 3 secondes', det:'3 × 20', rest:45},
+{id:'pompes', name:'Pompes', sub:'Tempo lent', det:'3 × 10', rest:45},
+{id:'planche-lat', name:'Planche latérale', sub:'G/D alternés', det:'3 × 25s', rest:45}
+]
 };
-
 function buildCore(day) {
-  const ex = CORE[day][cycle - 1];
-  return `<div class="exercise" onclick="tap(this,'${ex.id}',${ex.rest})">
-    <div class="exname">${ex.name}<small>${ex.sub}</small></div>
-    <div class="exright"><div class="play-btn">▶</div><span class="exdet">${ex.det}</span><span class="check-icon">✓</span></div>
-  </div>`;
+const ex = CORE[day][cycle - 1];
+return `<div class="exercise" onclick="tap(this,'${ex.id}',${ex.rest})">
+<div class="exname">${ex.name}<small>${ex.sub}</small></div>
+<div class="exright"><div class="play-btn">▶</div><span class="exdet">${ex.det}</span><span class="check-icon">✓</span></div>
+</div>`;
 }
-
 document.getElementById('core-mer').innerHTML = buildCore('mer');
 document.getElementById('core-jeu').innerHTML = buildCore('jeu');
 document.getElementById('core-ven').innerHTML = buildCore('ven');
 
 // ── TABS ──
 const tabColors = {'mer':'active-mer','jeu':'active-jeu','ven':'active-ven','bon':'active-bon'};
-function switchTab(day) {
-  document.querySelectorAll('.tab').forEach(t => { t.className = 'tab'; });
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.getElementById('tab-' + day).classList.add(tabColors[day]);
-  document.getElementById('panel-' + day).classList.add('active');
-  skipTimer();
-}
-const d = new Date().getDay();
-if (d === 4) switchTab('jeu');
-else if (d === 5) switchTab('ven');
 
-// ── TIMER ──
+// ── TIMER ──  (déclaré AVANT switchTab pour éviter TDZ)
 let tInt = null, tSec = 45, tTotal = 45;
 function startTimer(s) {
-  clearInterval(tInt); tSec = s; tTotal = s;
-  document.getElementById('tbar').classList.add('active');
-  updateT();
-  tInt = setInterval(() => {
-    tSec--;
-    updateT();
-    if (tSec <= 0) {
-      clearInterval(tInt);
-      document.getElementById('tnum').textContent = '✓';
-      document.getElementById('tnum').classList.remove('urgent');
-      document.getElementById('tlbl').textContent = "C'est parti !";
-      setTimeout(skipTimer, 1200);
-    }
-  }, 1000);
+clearInterval(tInt); tSec = s; tTotal = s;
+document.getElementById('tbar').classList.add('active');
+updateT();
+tInt = setInterval(() => {
+tSec--;
+updateT();
+if (tSec <= 0) {
+clearInterval(tInt);
+document.getElementById('tnum').textContent = '✓';
+document.getElementById('tnum').classList.remove('urgent');
+document.getElementById('tlbl').textContent = "C'est parti !";
+setTimeout(skipTimer, 1200);
+}
+}, 1000);
 }
 function updateT() {
-  const n = document.getElementById('tnum'), b = document.getElementById('tpbar');
-  n.textContent = tSec;
-  n.classList.toggle('urgent', tSec <= 10);
-  b.style.width = (tSec / tTotal * 100) + '%';
-  b.style.background = tSec <= 10 ? 'linear-gradient(90deg,#ff5757,#ff8a57)' : 'linear-gradient(90deg,#e8c98a,#6fcf97)';
+const n = document.getElementById('tnum'), b = document.getElementById('tpbar');
+n.textContent = tSec;
+n.classList.toggle('urgent', tSec <= 10);
+b.style.width = (tSec / tTotal * 100) + '%';
+b.style.background = tSec <= 10 ? 'linear-gradient(90deg,#ff5757,#ff8a57)' : 'linear-gradient(90deg,#e8c98a,#6fcf97)';
 }
 function skipTimer() {
-  clearInterval(tInt);
-  document.getElementById('tbar').classList.remove('active');
-  document.getElementById('tnum').classList.remove('urgent');
-  document.getElementById('tlbl').textContent = 'Pause — reprends dans';
+clearInterval(tInt);
+document.getElementById('tbar').classList.remove('active');
+document.getElementById('tnum').classList.remove('urgent');
+document.getElementById('tlbl').textContent = 'Pause — reprends dans';
 }
 function restartTimer() { startTimer(tTotal); }
 
-// ── TAP ──
+// ── TAP ──  (déclaré AVANT switchTab pour éviter TDZ)
 const taps = {};
 function tap(el, id, rest) {
-  const k = el.dataset.k || (el.dataset.k = Math.random().toString(36).slice(2));
-  taps[k] = (taps[k] || 0) + 1;
-  if (taps[k] === 1) { showEx(id); }
-  else if (taps[k] === 2) { el.classList.add('done'); closeModalFn(); if (rest > 0) startTimer(rest); }
-  else { taps[k] = 0; el.classList.remove('done'); }
+const k = el.dataset.k || (el.dataset.k = Math.random().toString(36).slice(2));
+taps[k] = (taps[k] || 0) + 1;
+if (taps[k] === 1) { showEx(id); }
+else if (taps[k] === 2) { el.classList.add('done'); closeModalFn(); if (rest > 0) startTimer(rest); }
+else { taps[k] = 0; el.classList.remove('done'); }
 }
 
 // ── EXERCISES ──
 const EX = {
-  gainage:{t:'Gainage — Planche',q:'gainage planche avant bras technique musculation',m:['Abdominaux','Lombaires','Fessiers'],c:[{g:1,l:'Appui',t:'Avant-bras à plat, coudes sous les épaules'},{g:1,l:'Corps',t:'Ligne droite tête-talons'},{g:1,l:'Ventre',t:'Rentre le nombril, contracte les abdos'},{g:0,l:'Évite',t:'Les fesses qui montent'}]},
-  'planche-lat':{t:'Planche latérale',q:'planche latérale gainage obliques technique',m:['Obliques','Abdominaux'],c:[{g:1,l:'Appui',t:'Avant-bras au sol, épaule alignée avec le coude'},{g:1,l:'Corps',t:'Ligne droite tête-pieds, hanches levées'},{g:1,l:'Durée',t:'25s par côté'},{g:0,l:'Évite',t:'Les hanches qui tombent'}]},
-  squat:{t:'Squat poids du corps',q:'squat poids du corps technique débutant',m:['Quadriceps','Fessiers'],c:[{g:1,l:'Pieds',t:'Écartement des épaules, légèrement en canard'},{g:1,l:'Descente',t:'Cuisses parallèles, 3s lente'},{g:1,l:'Dos',t:'Droit, poitrine fière'},{g:0,l:'Évite',t:'Genoux vers l\'intérieur'}]},
-  pompes:{t:'Pompes',q:'pompes technique débutant musculation pectoraux',m:['Pectoraux','Triceps','Épaules'],c:[{g:1,l:'Mains',t:'Largeur des épaules'},{g:1,l:'Corps',t:'Ligne droite tête-talons'},{g:1,l:'Descente',t:'Lente — coudes à 45°'},{g:0,l:'Évite',t:'Les hanches qui s\'affaissent'}]},
-  'mountain-climbers':{t:'Mountain Climbers',q:'mountain climbers technique cardio abdos',m:['Abdominaux','Cardio'],c:[{g:1,l:'Position',t:'Planche haute, bras tendus'},{g:1,l:'Mouvement',t:'Genoux vers la poitrine alternés'},{g:1,l:'Rythme',t:'Rapide — comme courir sur place'},{g:0,l:'Évite',t:'Lever les fesses'}]},
-  'lat-pulldown':{t:'Lat Pull-Down',q:'lat pull down tirage vertical technique dos musculation',m:['Grand dorsal','Biceps'],c:[{g:1,l:'Prise',t:'Large, paumes vers l\'avant'},{g:1,l:'Mouvement',t:'Tire vers la poitrine'},{g:1,l:'Dos',t:'Légèrement incliné en arrière'},{g:0,l:'Évite',t:'Tirer derrière la tête'}]},
-  'seated-row':{t:'Diverging Seated Row',q:'tirage horizontal assis machine dos technique musculation',m:['Grand dorsal','Biceps'],c:[{g:1,l:'Position',t:'Assis, dos droit'},{g:1,l:'Mouvement',t:'Coudes le long du corps'},{g:1,l:'Fin',t:'Omoplates serrées — 1 sec'},{g:0,l:'Évite',t:'Te pencher en arrière'}]},
-  'shoulder-press':{t:'Converging Shoulder Press',q:'shoulder press machine épaules technique salle',m:['Deltoïdes','Triceps'],c:[{g:1,l:'Réglage',t:'Poignées à hauteur des épaules'},{g:1,l:'Mouvement',t:'Pousse vers le haut'},{g:1,l:'Respiration',t:'Expire en poussant'},{g:0,l:'Évite',t:'Cambrer le dos'}]},
-  'rear-delt-pec':{t:'Rear Delt / Pec Fly',q:'rear delt pec fly machine technique salle musculation',m:['Pectoraux','Deltoïdes postérieurs'],c:[{g:1,l:'Pec Fly',t:'Poignées vers l\'avant — ferme les bras'},{g:1,l:'Rear Delt',t:'Poignées vers l\'arrière — ouvre les bras'},{g:1,l:'Réglage',t:'Poignées à hauteur des épaules'},{g:0,l:'Évite',t:'Tirer avec le dos'}]},
-  'leg-press':{t:'Leg Press',q:'leg press presse cuisses technique débutant musculation',m:['Quadriceps','Fessiers','Ischio-jambiers'],c:[{g:1,l:'Position',t:'Dos plat contre le dossier'},{g:1,l:'Mouvement',t:'Extension quasi complète'},{g:1,l:'Pieds',t:'Écartement des épaules'},{g:0,l:'Évite',t:'Décoller les fesses'}]},
-  'hip-abductor':{t:'Hip Abductor',q:'hip abductor machine fessiers technique salle musculation',m:['Fessiers','Abducteurs'],c:[{g:1,l:'Position',t:'Assis, dos droit'},{g:1,l:'Mouvement',t:'Écarte les jambes vers l\'extérieur'},{g:1,l:'Contraction',t:'Tiens 1 sec en haut'},{g:0,l:'Évite',t:'Te pencher d\'un côté'}]},
-  'ab-crunch':{t:'Abdominal Crunch Machine',q:'abdominal crunch machine abdos technique salle musculation',m:['Abdominaux'],c:[{g:1,l:'Réglage',t:'Haut du dos contre le coussin'},{g:1,l:'Mouvement',t:'Contracte les abdos'},{g:1,l:'Tempo',t:'Descends lentement 2 sec'},{g:0,l:'Évite',t:'Tirer avec le cou'}]},
-  rameur:{t:'Rameur',q:'rameur technique correct cardio salle sport débutant',m:['Dos','Épaules','Jambes'],c:[{g:1,l:'Jambes',t:'Pousse fort — 60% de l\'effort'},{g:1,l:'Bras',t:'Incline le buste, tire vers le bas-ventre'},{g:1,l:'Retour',t:'Bras d\'abord, puis jambes'},{g:0,l:'Évite',t:'Arrondir le dos'}]},
-  velo:{t:'Vélo statique',q:'vélo statique technique cardio salle sport',m:['Quadriceps','Fessiers','Cardio'],c:[{g:1,l:'Selle',t:'Jambe presque tendue en bas'},{g:1,l:'Cadence',t:'Régulière, résistance modérée'},{g:1,l:'Dos',t:'Légèrement penché en avant'},{g:0,l:'Évite',t:'La résistance trop faible'}]},
-  elliptique:{t:'Elliptique',q:'elliptique technique bonne posture cardio salle sport',m:['Full body','Cardio'],c:[{g:1,l:'Bras',t:'Poignées mobiles — +20% calories'},{g:1,l:'Résistance',t:'Minimum niveau 5'},{g:1,l:'Posture',t:'Dos droit, regard devant'},{g:0,l:'Évite',t:'Les poignées fixes'}]},
-  marche:{t:'Marche rapide',q:'marche rapide technique posture bénéfices cardio',m:['Cardio','Jambes','Fessiers'],c:[{g:1,l:'Allure',t:'5-6 km/h — tu transpires, tu peux parler'},{g:1,l:'Bras',t:'Balance les bras naturellement'},{g:1,l:'Posture',t:'Dos droit, épaules détendues'},{g:0,l:'Évite',t:'La promenade tranquille'}]}
+gainage:{t:'Gainage — Planche',q:'gainage planche avant bras technique musculation',m:['Abdominaux','Lombaires','Fessiers'],c:[{g:1,l:'Appui',t:'Avant-bras à plat, coudes sous les épaules'},{g:1,l:'Corps',t:'Ligne droite tête-talons'},{g:1,l:'Ventre',t:'Rentre le nombril, contracte les abdos'},{g:0,l:'Évite',t:'Les fesses qui montent'}]},
+'planche-lat':{t:'Planche latérale',q:'planche latérale gainage obliques technique',m:['Obliques','Abdominaux'],c:[{g:1,l:'Appui',t:'Avant-bras au sol, épaule alignée avec le coude'},{g:1,l:'Corps',t:'Ligne droite tête-pieds, hanches levées'},{g:1,l:'Durée',t:'25s par côté'},{g:0,l:'Évite',t:'Les hanches qui tombent'}]},
+squat:{t:'Squat poids du corps',q:'squat poids du corps technique débutant',m:['Quadriceps','Fessiers'],c:[{g:1,l:'Pieds',t:'Écartement des épaules, légèrement en canard'},{g:1,l:'Descente',t:'Cuisses parallèles, 3s lente'},{g:1,l:'Dos',t:'Droit, poitrine fière'},{g:0,l:'Évite',t:'Genoux vers l\'intérieur'}]},
+pompes:{t:'Pompes',q:'pompes technique débutant musculation pectoraux',m:['Pectoraux','Triceps','Épaules'],c:[{g:1,l:'Mains',t:'Largeur des épaules'},{g:1,l:'Corps',t:'Ligne droite tête-talons'},{g:1,l:'Descente',t:'Lente — coudes à 45°'},{g:0,l:'Évite',t:'Les hanches qui s\'affaissent'}]},
+'mountain-climbers':{t:'Mountain Climbers',q:'mountain climbers technique cardio abdos',m:['Abdominaux','Cardio'],c:[{g:1,l:'Position',t:'Planche haute, bras tendus'},{g:1,l:'Mouvement',t:'Genoux vers la poitrine alternés'},{g:1,l:'Rythme',t:'Rapide — comme courir sur place'},{g:0,l:'Évite',t:'Lever les fesses'}]},
+'lat-pulldown':{t:'Lat Pull-Down',q:'lat pull down tirage vertical technique dos musculation',m:['Grand dorsal','Biceps'],c:[{g:1,l:'Prise',t:'Large, paumes vers l\'avant'},{g:1,l:'Mouvement',t:'Tire vers la poitrine'},{g:1,l:'Dos',t:'Légèrement incliné en arrière'},{g:0,l:'Évite',t:'Tirer derrière la tête'}]},
+'seated-row':{t:'Diverging Seated Row',q:'tirage horizontal assis machine dos technique musculation',m:['Grand dorsal','Biceps'],c:[{g:1,l:'Position',t:'Assis, dos droit'},{g:1,l:'Mouvement',t:'Coudes le long du corps'},{g:1,l:'Fin',t:'Omoplates serrées — 1 sec'},{g:0,l:'Évite',t:'Te pencher en arrière'}]},
+'shoulder-press':{t:'Converging Shoulder Press',q:'shoulder press machine épaules technique salle',m:['Deltoïdes','Triceps'],c:[{g:1,l:'Réglage',t:'Poignées à hauteur des épaules'},{g:1,l:'Mouvement',t:'Pousse vers le haut'},{g:1,l:'Respiration',t:'Expire en poussant'},{g:0,l:'Évite',t:'Cambrer le dos'}]},
+'rear-delt-pec':{t:'Rear Delt / Pec Fly',q:'rear delt pec fly machine technique salle musculation',m:['Pectoraux','Deltoïdes postérieurs'],c:[{g:1,l:'Pec Fly',t:'Poignées vers l\'avant — ferme les bras'},{g:1,l:'Rear Delt',t:'Poignées vers l\'arrière — ouvre les bras'},{g:1,l:'Réglage',t:'Poignées à hauteur des épaules'},{g:0,l:'Évite',t:'Tirer avec le dos'}]},
+'leg-press':{t:'Leg Press',q:'leg press presse cuisses technique débutant musculation',m:['Quadriceps','Fessiers','Ischio-jambiers'],c:[{g:1,l:'Position',t:'Dos plat contre le dossier'},{g:1,l:'Mouvement',t:'Extension quasi complète'},{g:1,l:'Pieds',t:'Écartement des épaules'},{g:0,l:'Évite',t:'Décoller les fesses'}]},
+'hip-abductor':{t:'Hip Abductor',q:'hip abductor machine fessiers technique salle musculation',m:['Fessiers','Abducteurs'],c:[{g:1,l:'Position',t:'Assis, dos droit'},{g:1,l:'Mouvement',t:'Écarte les jambes vers l\'extérieur'},{g:1,l:'Contraction',t:'Tiens 1 sec en haut'},{g:0,l:'Évite',t:'Te pencher d\'un côté'}]},
+'ab-crunch':{t:'Abdominal Crunch Machine',q:'abdominal crunch machine abdos technique salle musculation',m:['Abdominaux'],c:[{g:1,l:'Réglage',t:'Haut du dos contre le coussin'},{g:1,l:'Mouvement',t:'Contracte les abdos'},{g:1,l:'Tempo',t:'Descends lentement 2 sec'},{g:0,l:'Évite',t:'Tirer avec le cou'}]},
+rameur:{t:'Rameur',q:'rameur technique correct cardio salle sport débutant',m:['Dos','Épaules','Jambes'],c:[{g:1,l:'Jambes',t:'Pousse fort — 60% de l\'effort'},{g:1,l:'Bras',t:'Incline le buste, tire vers le bas-ventre'},{g:1,l:'Retour',t:'Bras d\'abord, puis jambes'},{g:0,l:'Évite',t:'Arrondir le dos'}]},
+velo:{t:'Vélo statique',q:'vélo statique technique cardio salle sport',m:['Quadriceps','Fessiers','Cardio'],c:[{g:1,l:'Selle',t:'Jambe presque tendue en bas'},{g:1,l:'Cadence',t:'Régulière, résistance modérée'},{g:1,l:'Dos',t:'Légèrement penché en avant'},{g:0,l:'Évite',t:'La résistance trop faible'}]},
+elliptique:{t:'Elliptique',q:'elliptique technique bonne posture cardio salle sport',m:['Full body','Cardio'],c:[{g:1,l:'Bras',t:'Poignées mobiles — +20% calories'},{g:1,l:'Résistance',t:'Minimum niveau 5'},{g:1,l:'Posture',t:'Dos droit, regard devant'},{g:0,l:'Évite',t:'Les poignées fixes'}]},
+marche:{t:'Marche rapide',q:'marche rapide technique posture bénéfices cardio',m:['Cardio','Jambes','Fessiers'],c:[{g:1,l:'Allure',t:'5-6 km/h — tu transpires, tu peux parler'},{g:1,l:'Bras',t:'Balance les bras naturellement'},{g:1,l:'Posture',t:'Dos droit, épaules détendues'},{g:0,l:'Évite',t:'La promenade tranquille'}]}
 };
 
 function showEx(id) {
-  const e = EX[id]; if (!e) return;
-  document.getElementById('mtitle').textContent = e.t;
-  const q = encodeURIComponent(e.q);
-  document.getElementById('mvid').innerHTML = `<a href="https://www.youtube.com/results?search_query=${q}" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:14px;background:#ff000015;border:1px solid #ff000040;border-radius:10px;padding:16px;text-decoration:none;position:absolute;top:0;left:0;width:100%;height:100%;"><svg width="42" height="42" viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#FF0000"/><path d="M32 24L20 31V17L32 24Z" fill="white"/></svg><div><div style="color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;text-transform:uppercase;">Voir sur YouTube</div><div style="color:#999;font-size:0.78rem;margin-top:3px;">${e.t}</div></div></a>`;
-  document.getElementById('mcues').innerHTML = e.c.map(c => `<div class="cue"><div class="cl ${c.g?'':'r'}">${c.g?'✓':'✗'} ${c.l}</div><p>${c.t}</p></div>`).join('');
-  document.getElementById('mmuscles').innerHTML = e.m.map(m => `<span class="mtag">${m}</span>`).join('');
-  document.getElementById('moverlay').classList.add('active');
+const e = EX[id]; if (!e) return;
+document.getElementById('mtitle').textContent = e.t;
+const q = encodeURIComponent(e.q);
+document.getElementById('mvid').innerHTML = `<a href="https://www.youtube.com/results?search_query=${q}" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:14px;background:#ff000015;border:1px solid #ff000040;border-radius:10px;padding:16px;text-decoration:none;position:absolute;top:0;left:0;width:100%;height:100%;"><svg width="42" height="42" viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#FF0000"/><path d="M32 24L20 31V17L32 24Z" fill="white"/></svg><div><div style="color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;text-transform:uppercase;">Voir sur YouTube</div><div style="color:#999;font-size:0.78rem;margin-top:3px;">${e.t}</div></div></a>`;
+document.getElementById('mcues').innerHTML = e.c.map(c => `<div class="cue"><div class="cl ${c.g?'':'r'}">${c.g?'✓':'✗'} ${c.l}</div><p>${c.t}</p></div>`).join('');
+document.getElementById('mmuscles').innerHTML = e.m.map(m => `<span class="mtag">${m}</span>`).join('');
+document.getElementById('moverlay').classList.add('active');
 }
 function closeModalFn() { document.getElementById('mvid').innerHTML = ''; document.getElementById('moverlay').classList.remove('active'); }
 function closeModal(e) { if (e.target === document.getElementById('moverlay')) closeModalFn(); }
+
+// ── TABS SWITCH ──
+function switchTab(day) {
+document.querySelectorAll('.tab').forEach(t => { t.className = 'tab'; });
+document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+document.getElementById('tab-' + day).classList.add(tabColors[day]);
+document.getElementById('panel-' + day).classList.add('active');
+skipTimer();
+}
+
+// ── AUTO-SWITCH (EN DERNIER — après toutes les déclarations) ──
+const d = new Date().getDay();
+if (d === 4) switchTab('jeu');
+else if (d === 5) switchTab('ven');
+
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModalFn(); skipTimer(); } });
 </script>
 </body>
