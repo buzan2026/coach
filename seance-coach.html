@@ -14,6 +14,8 @@ body{background:var(--dark);color:var(--text);font-family:'Barlow',sans-serif;mi
 .app-header h1{font-family:'Barlow Condensed',sans-serif;font-size:2.4rem;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:#fff;line-height:1;}
 .app-header p{margin-top:5px;font-size:0.78rem;color:#777;letter-spacing:0.14em;text-transform:uppercase;}
 .week-badge{display:inline-block;margin-top:10px;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;padding:5px 14px;border-radius:100px;background:#1a1a1a;border:1px solid #333;color:#aaa;}
+.nav-link{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:#555;text-decoration:none;padding:6px 14px;border-radius:8px;border:1px solid #222;transition:all 0.2s;}
+.nav-link:hover{color:#e8c98a;border-color:#e8c98a40;}
 .tabs{display:flex;gap:0;padding:20px 16px 0;max-width:640px;margin:0 auto;}
 .tab{flex:1;padding:12px 6px;text-align:center;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:0.9rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#555;border-bottom:2px solid #1a1a1a;transition:all 0.2s;-webkit-tap-highlight-color:transparent;}
 .tab.active-mer{color:var(--b);border-bottom-color:var(--b);}
@@ -87,8 +89,10 @@ body{background:var(--dark);color:var(--text);font-family:'Barlow',sans-serif;mi
 <body>
 <div class="app-header">
 <h1>Mes Séances</h1>
-<p id="week-label">1 tap = vidéo · 2 taps = ⏱ pause · 3 taps = reset</p>
+<p id="week-label">1 tap = ⏱ timer · ▶ = exemple vidéo · 2 taps = reset</p>
 <div class="week-badge" id="week-badge">Semaine —</div>
+<br>
+<a href="mesures.html" class="nav-link">📊 Mes mesures</a>
 </div>
 <div class="tabs">
 <div class="tab active-mer" id="tab-mer" onclick="switchTab('mer')">Mer</div>
@@ -146,7 +150,7 @@ body{background:var(--dark);color:var(--text);font-family:'Barlow',sans-serif;mi
 <div class="card-header">
 <span class="tag">Jeudi — Bas du corps</span>
 <h2>Jambes<br>&amp; Ventre</h2>
-<div class="dur">15<span>min</span></div>
+<div class="dur">25<span>min</span></div>
 </div>
 <div class="card-body">
 <div class="sbadge" style="background:#e8c98a10;color:#e8c98a;border:1px solid #e8c98a30;">🏢 Étage 3 → Étage 1</div>
@@ -189,6 +193,10 @@ body{background:var(--dark);color:var(--text);font-family:'Barlow',sans-serif;mi
 <div class="exercise" onclick="tap(this,'ab-crunch',45)">
 <div class="exname">Abdominal Crunch machine<small>Contracte fort, reviens lentement</small></div>
 <div class="exright"><div class="play-btn">▶</div><span class="exdet">15kg</span><span class="check-icon">✓</span></div>
+</div>
+<div class="exercise" onclick="tap(this,'leg-extension',45)">
+<div class="exname">Leg Extension<small>Finition quadriceps</small></div>
+<div class="exright"><div class="play-btn">▶</div><span class="exdet">20kg</span><span class="check-icon">✓</span></div>
 </div>
 </div>
 <div class="tip" style="border-left-color:#7ab8f5;">🍳 <strong>Jeudi —</strong> Skyr · banane · cannelle · café</div>
@@ -381,11 +389,22 @@ function restartTimer() { startTimer(tTotal); }
 // ── TAP ──  (déclaré AVANT switchTab pour éviter TDZ)
 const taps = {};
 function tap(el, id, rest) {
-const k = el.dataset.k || (el.dataset.k = Math.random().toString(36).slice(2));
-taps[k] = (taps[k] || 0) + 1;
-if (taps[k] === 1) { showEx(id); }
-else if (taps[k] === 2) { el.classList.add('done'); closeModalFn(); if (rest > 0) startTimer(rest); }
-else { taps[k] = 0; el.classList.remove('done'); }
+  // Clic sur ▶ → vidéo YouTube
+  if (event && event.target && event.target.classList.contains('play-btn')) {
+    showEx(id);
+    return;
+  }
+  // Clic sur la card → timer
+  const k = el.dataset.k || (el.dataset.k = Math.random().toString(36).slice(2));
+  taps[k] = (taps[k] || 0) + 1;
+  if (taps[k] === 1) {
+    el.classList.add('done');
+    closeModalFn();
+    if (rest > 0) startTimer(rest);
+  } else {
+    taps[k] = 0;
+    el.classList.remove('done');
+  }
 }
 
 // ── EXERCISES ──
@@ -402,6 +421,7 @@ pompes:{t:'Pompes',q:'pompes technique débutant musculation pectoraux',m:['Pect
 'leg-press':{t:'Leg Press',q:'leg press presse cuisses technique débutant musculation',m:['Quadriceps','Fessiers','Ischio-jambiers'],c:[{g:1,l:'Position',t:'Dos plat contre le dossier'},{g:1,l:'Mouvement',t:'Extension quasi complète'},{g:1,l:'Pieds',t:'Écartement des épaules'},{g:0,l:'Évite',t:'Décoller les fesses'}]},
 'hip-abductor':{t:'Hip Abductor',q:'hip abductor machine fessiers technique salle musculation',m:['Fessiers','Abducteurs'],c:[{g:1,l:'Position',t:'Assis, dos droit'},{g:1,l:'Mouvement',t:'Écarte les jambes vers l\'extérieur'},{g:1,l:'Contraction',t:'Tiens 1 sec en haut'},{g:0,l:'Évite',t:'Te pencher d\'un côté'}]},
 'ab-crunch':{t:'Abdominal Crunch Machine',q:'abdominal crunch machine abdos technique salle musculation',m:['Abdominaux'],c:[{g:1,l:'Réglage',t:'Haut du dos contre le coussin'},{g:1,l:'Mouvement',t:'Contracte les abdos'},{g:1,l:'Tempo',t:'Descends lentement 2 sec'},{g:0,l:'Évite',t:'Tirer avec le cou'}]},
+'leg-extension':{t:'Leg Extension',q:'leg extension machine quadriceps technique salle musculation',m:['Quadriceps'],c:[{g:1,l:'Réglage',t:'Coussin devant les chevilles, dos plat'},{g:1,l:'Mouvement',t:'Extension complète, tiens 1 sec en haut'},{g:1,l:'Tempo',t:'Descends lentement — 2 sec'},{g:0,l:'Évite',t:'Monter les fesses'}]},
 rameur:{t:'Rameur',q:'rameur technique correct cardio salle sport débutant',m:['Dos','Épaules','Jambes'],c:[{g:1,l:'Jambes',t:'Pousse fort — 60% de l\'effort'},{g:1,l:'Bras',t:'Incline le buste, tire vers le bas-ventre'},{g:1,l:'Retour',t:'Bras d\'abord, puis jambes'},{g:0,l:'Évite',t:'Arrondir le dos'}]},
 velo:{t:'Vélo statique',q:'vélo statique technique cardio salle sport',m:['Quadriceps','Fessiers','Cardio'],c:[{g:1,l:'Selle',t:'Jambe presque tendue en bas'},{g:1,l:'Cadence',t:'Régulière, résistance modérée'},{g:1,l:'Dos',t:'Légèrement penché en avant'},{g:0,l:'Évite',t:'La résistance trop faible'}]},
 elliptique:{t:'Elliptique',q:'elliptique technique bonne posture cardio salle sport',m:['Full body','Cardio'],c:[{g:1,l:'Bras',t:'Poignées mobiles — +20% calories'},{g:1,l:'Résistance',t:'Minimum niveau 5'},{g:1,l:'Posture',t:'Dos droit, regard devant'},{g:0,l:'Évite',t:'Les poignées fixes'}]},
