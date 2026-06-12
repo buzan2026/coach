@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mes Mesures</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap');
+:root{--dark:#0d0d0d;--card:#141414;--border:#2a2a2a;--a:#e8c98a;--b:#7ab8f5;--c:#a8e6a3;--text:#ede8e0;--muted:#666;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--dark);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh;padding-bottom:60px;}
+
+/* ── HEADER ── */
+.app-header{padding:32px 20px 0;text-align:center;}
+.app-header h1{font-family:'Barlow Condensed',sans-serif;font-size:2.4rem;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:#fff;line-height:1;}
+.app-header p{margin-top:5px;font-size:0.78rem;color:#777;letter-spacing:0.14em;text-transform:uppercase;}
+.week-badge{display:inline-block;margin-top:10px;font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;padding:5px 14px;border-radius:100px;background:#1a1a1a;border:1px solid #333;color:#aaa;}
+.back-link{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:#555;text-decoration:none;padding:6px 12px;border-radius:8px;border:1px solid #222;transition:all 0.2s;}
+.back-link:hover{color:#aaa;border-color:#333;}
+
+/* ── LAYOUT ── */
+.page{max-width:640px;margin:0 auto;padding:20px 16px;}
+
+/* ── STATS GRID ── */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.stat-card{background:var(--card);border-radius:14px;border:1px solid var(--border);padding:16px 18px;position:relative;}
+.stat-card.poids{border-top:3px solid var(--b);}
+.stat-card.taille{border-top:3px solid var(--a);}
+.stat-label{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.14em;color:#555;margin-bottom:6px;}
+.stat-val{font-family:'Barlow Condensed',sans-serif;font-size:2.4rem;font-weight:800;line-height:1;color:#fff;}
+.stat-unit{font-size:0.9rem;font-weight:400;color:#777;margin-left:2px;}
+.stat-delta{font-size:0.78rem;font-weight:600;margin-top:4px;}
+.stat-delta.up{color:#e87a7a;}
+.stat-delta.down{color:#a8e6a3;}
+.stat-delta.flat{color:#666;}
+.stat-goal{font-size:0.72rem;color:#555;margin-top:8px;padding-top:8px;border-top:1px solid #1e1e1e;display:flex;align-items:center;gap:6px;}
+.stat-goal span{color:#888;}
+.goal-edit{background:none;border:none;color:#555;cursor:pointer;font-size:0.7rem;padding:2px 4px;border-radius:4px;transition:color 0.2s;}
+.goal-edit:hover{color:#aaa;}
+
+/* ── PROGRESS BAR ── */
+.progress-row{margin-bottom:20px;}
+.progress-item{margin-bottom:10px;}
+.progress-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
+.progress-name{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#888;}
+.progress-pct{font-family:'Barlow Condensed',sans-serif;font-size:0.85rem;font-weight:700;}
+.progress-bar-bg{height:6px;background:#1a1a1a;border-radius:3px;overflow:hidden;}
+.progress-bar-fill{height:100%;border-radius:3px;transition:width 0.5s ease;}
+
+/* ── ADD FORM ── */
+.add-card{background:var(--card);border-radius:16px;border:1px solid var(--border);padding:20px 22px;margin-bottom:16px;}
+.add-card h3{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#fff;margin-bottom:16px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-group label{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#666;}
+.form-group input{background:#0a0a0a;border:1px solid #2a2a2a;border-radius:8px;padding:10px 12px;font-family:'Barlow',sans-serif;font-size:1rem;font-weight:600;color:#fff;width:100%;outline:none;transition:border-color 0.2s;}
+.form-group input:focus{border-color:#444;}
+.form-group input[type="date"]{color-scheme:dark;}
+.btn-add{width:100%;padding:12px;border:none;border-radius:10px;font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;cursor:pointer;background:linear-gradient(135deg,#e8c98a20,#7ab8f520);color:#fff;border:1px solid #333;transition:all 0.2s;}
+.btn-add:hover{background:linear-gradient(135deg,#e8c98a30,#7ab8f530);border-color:#444;}
+.btn-add:active{transform:scale(0.98);}
+
+/* ── CHART ── */
+.chart-card{background:var(--card);border-radius:16px;border:1px solid var(--border);padding:20px 22px;margin-bottom:16px;}
+.chart-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.chart-header h3{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#fff;}
+.chart-legend{display:flex;gap:12px;}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#888;}
+.legend-dot{width:8px;height:8px;border-radius:50%;}
+.chart-filters{display:flex;gap:6px;margin-bottom:14px;}
+.filter-btn{padding:5px 12px;border-radius:20px;border:1px solid #2a2a2a;background:none;font-family:'Barlow Condensed',sans-serif;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#555;cursor:pointer;transition:all 0.2s;}
+.filter-btn.active{background:#1e1e1e;border-color:#444;color:#aaa;}
+.chart-wrap{position:relative;height:200px;}
+.chart-empty{display:flex;align-items:center;justify-content:center;height:200px;color:#333;font-size:0.85rem;text-align:center;line-height:1.6;}
+
+/* ── HISTORY TABLE ── */
+.history-card{background:var(--card);border-radius:16px;border:1px solid var(--border);overflow:hidden;margin-bottom:16px;}
+.history-header{padding:16px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.history-header h3{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#fff;}
+.history-count{font-size:0.72rem;color:#555;font-weight:600;}
+.history-table{width:100%;border-collapse:collapse;}
+.history-table th{padding:9px 14px;text-align:left;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#444;border-bottom:1px solid #1a1a1a;}
+.history-table th:not(:first-child){text-align:right;}
+.history-table td{padding:11px 14px;font-size:0.88rem;border-bottom:1px solid #0f0f0f;}
+.history-table td:not(:first-child){text-align:right;font-family:'Barlow Condensed',sans-serif;font-size:0.95rem;font-weight:700;}
+.history-table tr:last-child td{border-bottom:none;}
+.history-table tr:hover td{background:#111;}
+.delta-cell{font-size:0.78rem !important;font-weight:600 !important;}
+.delta-up{color:#e87a7a;}
+.delta-down{color:#a8e6a3;}
+.delta-flat{color:#444;}
+.date-cell{color:#888;font-size:0.82rem;}
+.delete-btn{background:none;border:none;color:#333;cursor:pointer;font-size:0.75rem;padding:2px 6px;border-radius:4px;transition:color 0.2s;}
+.delete-btn:hover{color:#e87a7a;}
+.empty-state{padding:40px 22px;text-align:center;color:#333;font-size:0.85rem;line-height:1.8;}
+.empty-state strong{color:#555;display:block;font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;}
+
+/* ── MODAL OBJECTIFS ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:1000;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.active{display:flex;}
+.modal{background:#141414;border-radius:18px;border:1px solid #2a2a2a;width:100%;max-width:360px;padding:24px;}
+.modal h3{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:800;text-transform:uppercase;color:#fff;margin-bottom:20px;}
+.modal-row{margin-bottom:16px;}
+.modal-row label{display:block;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#666;margin-bottom:6px;}
+.modal-row input{background:#0a0a0a;border:1px solid #2a2a2a;border-radius:8px;padding:10px 12px;font-family:'Barlow',sans-serif;font-size:1rem;font-weight:600;color:#fff;width:100%;outline:none;}
+.modal-row input:focus{border-color:#444;}
+.modal-btns{display:flex;gap:10px;margin-top:20px;}
+.modal-btns button{flex:1;padding:11px;border:none;border-radius:10px;font-family:'Barlow Condensed',sans-serif;font-size:0.95rem;font-weight:700;text-transform:uppercase;cursor:pointer;}
+.btn-save{background:#e8c98a20;color:#e8c98a;border:1px solid #e8c98a35 !important;}
+.btn-cancel{background:#1a1a1a;color:#666;}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:#1e1e1e;border:1px solid #333;border-radius:10px;padding:10px 20px;font-size:0.85rem;font-weight:600;color:#aaa;opacity:0;transition:all 0.3s;pointer-events:none;white-space:nowrap;z-index:2000;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <h1>Mes Mesures</h1>
+  <p>Poids · Tour de taille · Évolution</p>
+  <div class="week-badge" id="week-badge">Semaine —</div>
+  <br>
+  <a href="seance-coach.html" class="back-link">← Séances</a>
+</div>
+
+<div class="page">
+
+  <!-- STATS -->
+  <div class="stats-grid" id="stats-grid">
+    <div class="stat-card poids">
+      <div class="stat-label">Poids actuel</div>
+      <div class="stat-val" id="stat-poids">—<span class="stat-unit">kg</span></div>
+      <div class="stat-delta flat" id="delta-poids">—</div>
+      <div class="stat-goal">
+        <span>Objectif : <span id="goal-poids-display">—</span> kg</span>
+        <button class="goal-edit" onclick="openGoalModal()">✎</button>
+      </div>
+    </div>
+    <div class="stat-card taille">
+      <div class="stat-label">Tour de taille</div>
+      <div class="stat-val" id="stat-taille">—<span class="stat-unit">cm</span></div>
+      <div class="stat-delta flat" id="delta-taille">—</div>
+      <div class="stat-goal">
+        <span>Objectif : <span id="goal-taille-display">—</span> cm</span>
+        <button class="goal-edit" onclick="openGoalModal()">✎</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROGRESS VERS OBJECTIFS -->
+  <div class="progress-row" id="progress-row" style="display:none;">
+    <div class="progress-item">
+      <div class="progress-header">
+        <span class="progress-name">Progression poids</span>
+        <span class="progress-pct" id="pct-poids" style="color:var(--b);">0%</span>
+      </div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="bar-poids" style="background:var(--b);width:0%;"></div></div>
+    </div>
+    <div class="progress-item" style="margin-top:8px;">
+      <div class="progress-header">
+        <span class="progress-name">Progression taille</span>
+        <span class="progress-pct" id="pct-taille" style="color:var(--a);">0%</span>
+      </div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="bar-taille" style="background:var(--a);width:0%;"></div></div>
+    </div>
+  </div>
+
+  <!-- SAISIE -->
+  <div class="add-card">
+    <h3>Ajouter une mesure</h3>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Date</label>
+        <input type="date" id="input-date">
+      </div>
+      <div class="form-group">
+        <label>Poids (kg)</label>
+        <input type="number" id="input-poids" step="0.1" min="40" max="200" placeholder="82.5">
+      </div>
+      <div class="form-group">
+        <label>Taille (cm)</label>
+        <input type="number" id="input-taille" step="0.5" min="50" max="200" placeholder="94">
+      </div>
+    </div>
+    <button class="btn-add" onclick="addEntry()">Enregistrer</button>
+  </div>
+
+  <!-- GRAPHIQUE -->
+  <div class="chart-card">
+    <div class="chart-header">
+      <h3>Évolution</h3>
+      <div class="chart-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--b);"></div>Poids</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--a);"></div>Taille</div>
+      </div>
+    </div>
+    <div class="chart-filters">
+      <button class="filter-btn active" onclick="setFilter(this,4)">1 mois</button>
+      <button class="filter-btn" onclick="setFilter(this,12)">3 mois</button>
+      <button class="filter-btn" onclick="setFilter(this,9999)">Tout</button>
+    </div>
+    <div class="chart-wrap" id="chart-wrap">
+      <div class="chart-empty" id="chart-empty">Ajoute ta première mesure<br>pour voir le graphique apparaître</div>
+      <canvas id="myChart" style="display:none;"></canvas>
+    </div>
+  </div>
+
+  <!-- HISTORIQUE -->
+  <div class="history-card">
+    <div class="history-header">
+      <h3>Historique</h3>
+      <span class="history-count" id="history-count">0 entrée</span>
+    </div>
+    <div id="history-body">
+      <div class="empty-state"><strong>Aucune mesure</strong>Ajoute ta première pesée<br>tous les vendredis matin</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- MODAL OBJECTIFS -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeGoalModal(event)">
+  <div class="modal">
+    <h3>Objectifs</h3>
+    <div class="modal-row">
+      <label>Poids cible (kg)</label>
+      <input type="number" id="goal-poids-input" step="0.5" placeholder="ex: 78">
+    </div>
+    <div class="modal-row">
+      <label>Tour de taille cible (cm)</label>
+      <input type="number" id="goal-taille-input" step="0.5" placeholder="ex: 88">
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeGoalModal()">Annuler</button>
+      <button class="btn-save" onclick="saveGoals()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+// ── STORAGE ──
+const KEY_ENTRIES = 'mesures_entries';
+const KEY_GOALS   = 'mesures_goals';
+const START = new Date('2026-03-04');
+
+function load() {
+  try { return JSON.parse(localStorage.getItem(KEY_ENTRIES)) || []; } catch { return []; }
+}
+function loadGoals() {
+  try { return JSON.parse(localStorage.getItem(KEY_GOALS)) || {poids: null, taille: null}; } catch { return {poids: null, taille: null}; }
+}
+function save(entries) { localStorage.setItem(KEY_ENTRIES, JSON.stringify(entries)); }
+function saveGoals(goals) { localStorage.setItem(KEY_GOALS, JSON.stringify(goals)); }
+
+// ── WEEK BADGE ──
+const now = new Date();
+const weekNum = Math.floor((now - START) / (7 * 24 * 3600 * 1000)) + 1;
+document.getElementById('week-badge').textContent = `Semaine ${weekNum} du programme`;
+
+// ── DATE DEFAULT ──
+const today = new Date().toISOString().slice(0, 10);
+document.getElementById('input-date').value = today;
+
+// ── CHART ──
+let chart = null;
+let currentFilter = 4; // weeks
+
+function initChart(entries) {
+  if (entries.length === 0) {
+    document.getElementById('chart-empty').style.display = 'flex';
+    document.getElementById('myChart').style.display = 'none';
+    if (chart) { chart.destroy(); chart = null; }
+    return;
+  }
+
+  const sorted = [...entries].sort((a, b) => a.date.localeCompare(b.date));
+  const filtered = currentFilter >= 9999 ? sorted : sorted.slice(-currentFilter * 1); // approx weeks → entries
+
+  // For filter by weeks: use date-based filtering
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - currentFilter * 7);
+  const dateFiltered = currentFilter >= 9999 ? sorted : sorted.filter(e => new Date(e.date) >= cutoff);
+  const data = dateFiltered.length > 0 ? dateFiltered : sorted.slice(-8);
+
+  document.getElementById('chart-empty').style.display = 'none';
+  document.getElementById('myChart').style.display = 'block';
+
+  const labels = data.map(e => {
+    const d = new Date(e.date);
+    return d.toLocaleDateString('fr-FR', {day:'2-digit', month:'short'});
+  });
+  const poids = data.map(e => e.poids);
+  const tailles = data.map(e => e.taille);
+  const goals = loadGoals();
+
+  const goalPoidsData = goals.poids ? data.map(() => goals.poids) : [];
+  const goalTailleData = goals.taille ? data.map(() => goals.taille) : [];
+
+  const datasets = [
+    {
+      label: 'Poids (kg)',
+      data: poids,
+      borderColor: '#7ab8f5',
+      backgroundColor: '#7ab8f510',
+      tension: 0.4,
+      pointBackgroundColor: '#7ab8f5',
+      pointRadius: 4,
+      pointHoverRadius: 6,
+      yAxisID: 'y',
+      fill: true,
+    },
+    {
+      label: 'Taille (cm)',
+      data: tailles,
+      borderColor: '#e8c98a',
+      backgroundColor: '#e8c98a10',
+      tension: 0.4,
+      pointBackgroundColor: '#e8c98a',
+      pointRadius: 4,
+      pointHoverRadius: 6,
+      yAxisID: 'y2',
+      fill: true,
+    }
+  ];
+
+  if (goalPoidsData.length > 0) {
+    datasets.push({
+      label: 'Objectif poids',
+      data: goalPoidsData,
+      borderColor: '#7ab8f550',
+      borderDash: [6, 4],
+      borderWidth: 1.5,
+      pointRadius: 0,
+      yAxisID: 'y',
+      fill: false,
+    });
+  }
+  if (goalTailleData.length > 0) {
+    datasets.push({
+      label: 'Objectif taille',
+      data: goalTailleData,
+      borderColor: '#e8c98a50',
+      borderDash: [6, 4],
+      borderWidth: 1.5,
+      pointRadius: 0,
+      yAxisID: 'y2',
+      fill: false,
+    });
+  }
+
+  if (chart) chart.destroy();
+  const ctx = document.getElementById('myChart').getContext('2d');
+  chart = new Chart(ctx, {
+    type: 'line',
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1a1a1a',
+          borderColor: '#333',
+          borderWidth: 1,
+          titleColor: '#aaa',
+          bodyColor: '#fff',
+          padding: 10,
+          callbacks: {
+            label: ctx => {
+              const unit = ctx.dataset.yAxisID === 'y' ? ' kg' : ' cm';
+              return ` ${ctx.dataset.label}: ${ctx.parsed.y}${unit}`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: '#1a1a1a' },
+          ticks: { color: '#555', font: { size: 10 }, maxRotation: 30 }
+        },
+        y: {
+          position: 'left',
+          grid: { color: '#1a1a1a' },
+          ticks: { color: '#7ab8f5', font: { size: 10 }, callback: v => v + ' kg' },
+          title: { display: false }
+        },
+        y2: {
+          position: 'right',
+          grid: { drawOnChartArea: false },
+          ticks: { color: '#e8c98a', font: { size: 10 }, callback: v => v + ' cm' },
+        }
+      }
+    }
+  });
+}
+
+// ── STATS ──
+function updateStats(entries) {
+  const sorted = [...entries].sort((a, b) => a.date.localeCompare(b.date));
+  const goals = loadGoals();
+
+  if (sorted.length === 0) {
+    document.getElementById('stat-poids').innerHTML = '—<span class="stat-unit">kg</span>';
+    document.getElementById('stat-taille').innerHTML = '—<span class="stat-unit">cm</span>';
+    document.getElementById('delta-poids').textContent = '—';
+    document.getElementById('delta-taille').textContent = '—';
+    document.getElementById('progress-row').style.display = 'none';
+    updateGoalDisplay(goals);
+    return;
+  }
+
+  const last = sorted[sorted.length - 1];
+  const prev = sorted.length >= 2 ? sorted[sorted.length - 2] : null;
+
+  document.getElementById('stat-poids').innerHTML = `${last.poids}<span class="stat-unit">kg</span>`;
+  document.getElementById('stat-taille').innerHTML = `${last.taille}<span class="stat-unit">cm</span>`;
+
+  if (prev) {
+    const dp = (last.poids - prev.poids).toFixed(1);
+    const dt = (last.taille - prev.taille).toFixed(1);
+    const ep = document.getElementById('delta-poids');
+    const et = document.getElementById('delta-taille');
+    ep.textContent = (dp > 0 ? '▲ +' : dp < 0 ? '▼ ' : '→ ') + dp + ' kg vs sem. préc.';
+    ep.className = 'stat-delta ' + (dp > 0 ? 'up' : dp < 0 ? 'down' : 'flat');
+    et.textContent = (dt > 0 ? '▲ +' : dt < 0 ? '▼ ' : '→ ') + dt + ' cm vs sem. préc.';
+    et.className = 'stat-delta ' + (dt > 0 ? 'up' : dt < 0 ? 'down' : 'flat');
+  }
+
+  updateGoalDisplay(goals);
+
+  // Progress bars
+  if (goals.poids && goals.taille && sorted.length >= 1) {
+    const firstEntry = sorted[0];
+    const progressRow = document.getElementById('progress-row');
+    progressRow.style.display = 'block';
+
+    // Poids: going from start to goal
+    const startP = firstEntry.poids;
+    const totalP = startP - goals.poids;
+    const doneP = startP - last.poids;
+    const pctP = totalP > 0 ? Math.min(100, Math.max(0, Math.round(doneP / totalP * 100))) : 0;
+    document.getElementById('pct-poids').textContent = pctP + '%';
+    document.getElementById('bar-poids').style.width = pctP + '%';
+
+    const startT = firstEntry.taille;
+    const totalT = startT - goals.taille;
+    const doneT = startT - last.taille;
+    const pctT = totalT > 0 ? Math.min(100, Math.max(0, Math.round(doneT / totalT * 100))) : 0;
+    document.getElementById('pct-taille').textContent = pctT + '%';
+    document.getElementById('bar-taille').style.width = pctT + '%';
+  }
+}
+
+function updateGoalDisplay(goals) {
+  document.getElementById('goal-poids-display').textContent = goals.poids ?? '—';
+  document.getElementById('goal-taille-display').textContent = goals.taille ?? '—';
+}
+
+// ── HISTORY TABLE ──
+function renderHistory(entries) {
+  const sorted = [...entries].sort((a, b) => b.date.localeCompare(a.date));
+  const count = sorted.length;
+  document.getElementById('history-count').textContent = count + ' entrée' + (count > 1 ? 's' : '');
+
+  if (count === 0) {
+    document.getElementById('history-body').innerHTML = `<div class="empty-state"><strong>Aucune mesure</strong>Ajoute ta première pesée<br>tous les vendredis matin</div>`;
+    return;
+  }
+
+  let rows = `<table class="history-table">
+    <thead><tr>
+      <th>Date</th>
+      <th>Poids</th>
+      <th>Δ</th>
+      <th>Taille</th>
+      <th>Δ</th>
+      <th></th>
+    </tr></thead><tbody>`;
+
+  for (let i = 0; i < sorted.length; i++) {
+    const e = sorted[i];
+    const prev = sorted[i + 1];
+    const dp = prev ? (e.poids - prev.poids).toFixed(1) : null;
+    const dt = prev ? (e.taille - prev.taille).toFixed(1) : null;
+    const dpClass = dp === null ? 'delta-flat' : dp > 0 ? 'delta-up' : dp < 0 ? 'delta-down' : 'delta-flat';
+    const dtClass = dt === null ? 'delta-flat' : dt > 0 ? 'delta-up' : dt < 0 ? 'delta-down' : 'delta-flat';
+    const dpTxt = dp === null ? '—' : (dp > 0 ? '+' : '') + dp;
+    const dtTxt = dt === null ? '—' : (dt > 0 ? '+' : '') + dt;
+    const dateStr = new Date(e.date).toLocaleDateString('fr-FR', {day:'2-digit', month:'short', year:'2-digit'});
+
+    rows += `<tr>
+      <td class="date-cell">${dateStr}</td>
+      <td>${e.poids} <span style="font-size:0.7rem;color:#555;">kg</span></td>
+      <td class="delta-cell ${dpClass}">${dpTxt}</td>
+      <td>${e.taille} <span style="font-size:0.7rem;color:#555;">cm</span></td>
+      <td class="delta-cell ${dtClass}">${dtTxt}</td>
+      <td><button class="delete-btn" onclick="deleteEntry('${e.date}')">✕</button></td>
+    </tr>`;
+  }
+  rows += '</tbody></table>';
+  document.getElementById('history-body').innerHTML = rows;
+}
+
+// ── ADD ENTRY ──
+function addEntry() {
+  const date = document.getElementById('input-date').value;
+  const poids = parseFloat(document.getElementById('input-poids').value);
+  const taille = parseFloat(document.getElementById('input-taille').value);
+
+  if (!date || isNaN(poids) || isNaN(taille)) {
+    toast('Remplis tous les champs !');
+    return;
+  }
+
+  const entries = load();
+  const existingIdx = entries.findIndex(e => e.date === date);
+  if (existingIdx >= 0) {
+    entries[existingIdx] = { date, poids, taille };
+    toast('Mesure mise à jour ✓');
+  } else {
+    entries.push({ date, poids, taille });
+    toast('Mesure enregistrée ✓');
+  }
+  save(entries);
+  document.getElementById('input-poids').value = '';
+  document.getElementById('input-taille').value = '';
+  render();
+}
+
+// ── DELETE ──
+function deleteEntry(date) {
+  const entries = load().filter(e => e.date !== date);
+  save(entries);
+  render();
+  toast('Entrée supprimée');
+}
+
+// ── FILTER ──
+function setFilter(btn, weeks) {
+  currentFilter = weeks;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  initChart(load());
+}
+
+// ── GOALS MODAL ──
+function openGoalModal() {
+  const goals = loadGoals();
+  document.getElementById('goal-poids-input').value = goals.poids ?? '';
+  document.getElementById('goal-taille-input').value = goals.taille ?? '';
+  document.getElementById('modal-overlay').classList.add('active');
+}
+function closeGoalModal(e) {
+  if (!e || e.target === document.getElementById('modal-overlay')) {
+    document.getElementById('modal-overlay').classList.remove('active');
+  }
+}
+// Override saveGoals for the modal button (separate from storage fn)
+function saveGoalsFromModal() {
+  const p = parseFloat(document.getElementById('goal-poids-input').value);
+  const t = parseFloat(document.getElementById('goal-taille-input').value);
+  const goals = { poids: isNaN(p) ? null : p, taille: isNaN(t) ? null : t };
+  localStorage.setItem(KEY_GOALS, JSON.stringify(goals));
+  document.getElementById('modal-overlay').classList.remove('active');
+  render();
+  toast('Objectifs enregistrés ✓');
+}
+// Patch the modal button
+document.querySelector('.btn-save').onclick = saveGoalsFromModal;
+
+// ── TOAST ──
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2200);
+}
+
+// ── RENDER ALL ──
+function render() {
+  const entries = load();
+  updateStats(entries);
+  renderHistory(entries);
+  initChart(entries);
+}
+
+// ── KEYBOARD ──
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeGoalModal();
+  if (e.key === 'Enter' && document.activeElement.tagName === 'INPUT' && document.getElementById('modal-overlay').classList.contains('active')) {
+    saveGoalsFromModal();
+  }
+});
+
+// ── SEED DATA NOTION ──
+// Données importées depuis Notion "Suivi Fitness Boris" (dernière MAJ : 3 avril 2026)
+const NOTION_SEED_ENTRIES = [
+  { date: '2026-03-04', poids: 88,   taille: 104.5 }, // Départ
+  { date: '2026-03-13', poids: 86.5, taille: 104.5 }, // S1
+  { date: '2026-03-20', poids: 85,   taille: 102   }, // S2
+  { date: '2026-03-27', poids: 84.5, taille: 99    }, // S3
+  { date: '2026-04-03', poids: 86,   taille: 99    }, // S4
+];
+const NOTION_SEED_GOALS = { poids: 80, taille: 90 };
+
+function initSeed() {
+  const existingEntries = localStorage.getItem(KEY_ENTRIES);
+  const existingGoals   = localStorage.getItem(KEY_GOALS);
+  if (!existingEntries) {
+    localStorage.setItem(KEY_ENTRIES, JSON.stringify(NOTION_SEED_ENTRIES));
+  }
+  if (!existingGoals) {
+    localStorage.setItem(KEY_GOALS, JSON.stringify(NOTION_SEED_GOALS));
+  }
+}
+
+// ── INIT ──
+initSeed();
+render();
+</script>
+</body>
+</html>
