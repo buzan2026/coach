@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -712,23 +713,26 @@ body {
   document.getElementById("btn-restart").addEventListener("click", function() { startTimer(tTotal); });
   document.getElementById("btn-skip").addEventListener("click", stopTimer);
 
-  // TAP
-  var taps = {};
+  // TAP — play icon = video / anywhere else = timer + done
   document.addEventListener("click", function(e) {
+    var icon = e.target.closest(".ex-icon");
     var el = e.target.closest(".ex");
     if (!el) return;
-    var k = el.dataset.key || (el.dataset.key = Math.random().toString(36).slice(2));
-    taps[k] = (taps[k] || 0) + 1;
-    if (taps[k] === 1) {
+
+    if (icon) {
+      // Tap on play icon → video
       openEx(el.dataset.ex);
-    } else if (taps[k] === 2) {
+      return;
+    }
+
+    // Tap anywhere else → toggle done + timer
+    if (el.classList.contains("done")) {
+      el.classList.remove("done");
+      stopTimer();
+    } else {
       el.classList.add("done");
-      closeEx();
       var r = parseInt(el.dataset.rest) || 0;
       if (r > 0) startTimer(r);
-    } else {
-      taps[k] = 0;
-      el.classList.remove("done");
     }
   });
 
