@@ -15,10 +15,8 @@
     --border: #2a2a36;
     --mer: #a855f7;
     --mer-dim: rgba(168,85,247,0.12);
-    --mer-border: rgba(168,85,247,0.22);
     --jeu: #ff6b35;
     --jeu-dim: rgba(255,107,53,0.12);
-    --jeu-border: rgba(255,107,53,0.22);
     --ven: #4ade80;
     --ven-dim: rgba(74,222,128,0.10);
     --ven-border: rgba(74,222,128,0.22);
@@ -62,19 +60,17 @@
     letter-spacing: 0.02em;
     -webkit-tap-highlight-color: transparent;
   }
-  .tab-btn:hover { color: var(--text); }
   .tab-btn[data-day="mer"].active { color: var(--mer); border-bottom-color: var(--mer); }
   .tab-btn[data-day="jeu"].active { color: var(--jeu); border-bottom-color: var(--jeu); }
   .tab-btn[data-day="ven"].active { color: var(--ven); border-bottom-color: var(--ven); }
 
-  /* ── PANELS ── */
   .panel { display: none; }
   .panel.active { display: block; }
 
   .wrap {
     max-width: 640px;
     margin: 0 auto;
-    padding: 28px 20px 100px;
+    padding: 28px 20px 140px;
   }
   header { margin-bottom: 28px; }
   .badge {
@@ -90,14 +86,7 @@
   .badge-mer { background: var(--mer-dim); color: var(--mer); }
   .badge-jeu { background: var(--jeu-dim); color: var(--jeu); }
   .badge-ven { background: var(--ven-dim); color: var(--ven); }
-
-  h1 {
-    font-size: 28px;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1.15;
-    margin-bottom: 8px;
-  }
+  h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 8px; }
   .meta { color: var(--muted); font-size: 14px; }
 
   .card {
@@ -119,36 +108,39 @@
     align-items: center;
     gap: 8px;
   }
-  .dot {
-    display: inline-block;
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
+  .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
   .dot-mer { background: var(--mer); }
   .dot-jeu { background: var(--jeu); }
   .dot-ven { background: var(--ven); }
   .dot-accent { background: #3ddc97; }
 
   .warmup { font-size: 16px; font-weight: 600; }
-  .warmup .small {
-    display: block;
-    font-size: 13px;
-    font-weight: 400;
-    color: var(--muted);
-    margin-top: 4px;
-  }
+  .warmup .small { display: block; font-size: 13px; font-weight: 400; color: var(--muted); margin-top: 4px; }
 
+  /* ── EXERCISE CARDS ── */
   .exo-list { list-style: none; }
-  .exo { padding: 16px 0; border-bottom: 1px solid var(--border); }
-  .exo:last-child { border-bottom: none; }
-  .exo-name { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
-  .exo-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 8px;
+  .exo {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.15s;
+    border-radius: 8px;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
   }
+  .exo:last-child { border-bottom: none; }
+  .exo:active { background: rgba(255,255,255,0.03); }
+
+  /* Done state */
+  .exo.done .exo-name::after {
+    content: ' ✓';
+    color: #3ddc97;
+    font-size: 14px;
+  }
+  .exo.done { opacity: 0.55; }
+
+  .exo-name { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+  .exo-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 8px; }
   .exo-pill {
     background: var(--bg2);
     border: 1px solid var(--border);
@@ -156,13 +148,7 @@
     padding: 8px 10px;
     text-align: center;
   }
-  .exo-pill .label {
-    font-size: 9px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-    margin-bottom: 2px;
-  }
+  .exo-pill .label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 2px; }
   .exo-pill .value { font-size: 14px; font-weight: 700; }
   .exo-pill .value.c-mer { color: var(--mer); }
   .exo-pill .value.c-jeu { color: var(--jeu); }
@@ -174,7 +160,6 @@
     background: linear-gradient(135deg, rgba(61,220,151,0.06) 0%, rgba(255,210,63,0.04) 100%);
     border: 1px solid rgba(61,220,151,0.2);
   }
-
   .pesee-banner {
     background: rgba(74,222,128,0.08);
     border: 1px solid rgba(74,222,128,0.2);
@@ -188,7 +173,6 @@
   .pesee-banner .title { font-size: 14px; font-weight: 700; color: var(--ven); margin-bottom: 6px; }
   .pesee-banner .sub { font-size: 13px; color: var(--muted); line-height: 1.6; }
   .pesee-banner .sub strong { color: var(--text); }
-
   .footer-note {
     margin-top: 24px;
     padding: 18px 20px;
@@ -201,32 +185,88 @@
   }
   .footer-note strong { color: var(--text); font-weight: 600; }
 
-  /* ── WAKE LOCK INDICATOR ── */
+  /* ── TIMER BAR ── */
+  #timer-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0; right: 0;
+    z-index: 200;
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    padding: 14px 24px 20px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  #timer-bar.visible { display: flex; }
+  #timer-bar.flash { background: rgba(61,220,151,0.2); }
+
+  #timer-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+  #timer-display {
+    font-size: 48px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  #timer-progress {
+    width: 100%;
+    max-width: 320px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  #timer-progress-fill {
+    height: 100%;
+    background: #3ddc97;
+    border-radius: 2px;
+    transition: width 1s linear;
+    width: 100%;
+  }
+  #timer-cancel {
+    font-size: 12px;
+    color: var(--muted);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 12px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* ── WAKE LOCK ── */
   #wakelock-indicator {
     position: fixed;
-    bottom: 16px;
-    right: 16px;
-    font-size: 11px;
+    top: 70px;
+    right: 12px;
+    font-size: 10px;
     font-weight: 600;
     color: var(--muted);
     background: var(--bg2);
     border: 1px solid var(--border);
     border-radius: 100px;
-    padding: 6px 12px;
-    z-index: 999;
-    letter-spacing: 0.05em;
-    transition: color 0.3s;
+    padding: 4px 10px;
+    z-index: 150;
+    letter-spacing: 0.04em;
+    opacity: 0.7;
   }
 </style>
 </head>
 <body>
 
-<!-- TAB BAR -->
 <div class="tab-bar">
   <div class="tab-bar-inner">
-    <button class="tab-btn" data-day="mer">⚡ Mer 20</button>
-    <button class="tab-btn" data-day="jeu">🔥 Jeu 21</button>
-    <button class="tab-btn" data-day="ven">🌿 Ven 22</button>
+    <button class="tab-btn" data-day="mer">⚡ Mercredi</button>
+    <button class="tab-btn" data-day="jeu">🔥 Jeudi</button>
+    <button class="tab-btn" data-day="ven">🌿 Vendredi</button>
   </div>
 </div>
 
@@ -234,9 +274,9 @@
 <div class="panel" id="panel-mer">
   <div class="wrap">
     <header>
-      <span class="badge badge-mer">Mercredi 20 mai 2026</span>
+      <span class="badge badge-mer">Mercredi</span>
       <h1>Haut du corps <span style="color:var(--mer)">+ Core</span></h1>
-      <p class="meta">25 min · Basic-Fit · 3e → 1er étage</p>
+      <p class="meta">25 min · Basic-Fit · 3e → 1er étage · <em>Tape un exo pour lancer le timer de repos</em></p>
     </header>
     <div class="card">
       <h2><span class="dot dot-mer"></span>Échauffement — 3e étage</h2>
@@ -247,7 +287,7 @@
     <div class="card">
       <h2><span class="dot dot-mer"></span>Corps de séance — 1er étage</h2>
       <ul class="exo-list">
-        <li class="exo">
+        <li class="exo" data-rest="45">
           <div class="exo-name">Converging Chest Press</div>
           <div class="exo-grid">
             <div class="exo-pill"><div class="label">Séries</div><div class="value">4 × 10</div></div>
@@ -256,7 +296,7 @@
           </div>
           <p class="exo-tip"><strong>+2,5 kg vs semaine dernière.</strong> Tempo lent à la descente (3s), pousser explosif.</p>
         </li>
-        <li class="exo">
+        <li class="exo" data-rest="45">
           <div class="exo-name">Converging Shoulder Press</div>
           <div class="exo-grid">
             <div class="exo-pill"><div class="label">Séries</div><div class="value">4 × 10</div></div>
@@ -265,7 +305,7 @@
           </div>
           <p class="exo-tip">Charge maintenue. Pousser sans verrouiller les coudes.</p>
         </li>
-        <li class="exo">
+        <li class="exo" data-rest="30">
           <div class="exo-name">Pec Fly</div>
           <div class="exo-grid">
             <div class="exo-pill"><div class="label">Séries</div><div class="value">3 × 12</div></div>
@@ -274,7 +314,7 @@
           </div>
           <p class="exo-tip">Ramener les bras devant soi en contrôlant la fermeture.</p>
         </li>
-        <li class="exo">
+        <li class="exo" data-rest="30">
           <div class="exo-name">Abdominal Crunch (machine)</div>
           <div class="exo-grid">
             <div class="exo-pill"><div class="label">Séries</div><div class="value">3 × 20</div></div>
@@ -288,7 +328,7 @@
     <div class="card finisher">
       <h2><span class="dot dot-accent"></span>Fin de séance — Zone stretch 1er étage</h2>
       <ul class="exo-list">
-        <li class="exo">
+        <li class="exo" data-rest="15">
           <div class="exo-name">Vacuum abdominal debout</div>
           <div class="exo-grid">
             <div class="exo-pill"><div class="label">Séries</div><div class="value">3 × 15s</div></div>
@@ -297,23 +337,23 @@
           </div>
           <p class="exo-tip">Expire tout l'air, rentre le nombril vers la colonne. Tiens 15s. <strong>L'exo le plus efficace pour dégonfler.</strong></p>
         </li>
-        <li class="exo">
+        <li class="exo" data-rest="30">
           <div class="exo-name">Hollow hold en rotation</div>
           <div class="exo-grid">
             <div class="exo-pill"><div class="label">Séries</div><div class="value">3 × 20s</div></div>
             <div class="exo-pill"><div class="label">Charge</div><div class="value">—</div></div>
             <div class="exo-pill"><div class="label">Repos</div><div class="value">30s</div></div>
           </div>
-          <p class="exo-tip">Allongé sur le dos, bras tendus au-dessus de la tête, lombaires collées au sol. Jambes levées à 30–40 cm. Rotation légère des épaules gauche/droite. <strong>Sangle profonde + obliques.</strong></p>
+          <p class="exo-tip">Allongé sur le dos, bras tendus, lombaires collées au sol. Jambes levées à 30–40 cm. Rotation légère des épaules. <strong>Sangle profonde + obliques.</strong></p>
         </li>
-        <li class="exo">
+        <li class="exo" data-rest="30">
           <div class="exo-name">Russian twists médecine ball</div>
           <div class="exo-grid">
             <div class="exo-pill"><div class="label">Séries</div><div class="value">3 × 20 tapes</div></div>
             <div class="exo-pill"><div class="label">Charge</div><div class="value">5 kg</div></div>
             <div class="exo-pill"><div class="label">Repos</div><div class="value">30s</div></div>
           </div>
-          <p class="exo-tip">Assis, pieds décollés, tu fais passer la médecine ball d'un côté à l'autre. <strong>10 tapes par côté = 20 au total.</strong></p>
+          <p class="exo-tip">Assis, pieds décollés, médecine ball d'un côté à l'autre. <strong>10 tapes par côté = 20 au total.</strong></p>
         </li>
       </ul>
     </div>
@@ -327,9 +367,9 @@
 <div class="panel" id="panel-jeu">
   <div class="wrap">
     <header>
-      <span class="badge badge-jeu">Jeudi 21 mai 2026</span>
+      <span class="badge badge-jeu">Jeudi</span>
       <h1>Pull + Bas du corps <span style="color:var(--jeu)">+ Composés</span></h1>
-      <p class="meta">40 min · Basic-Fit · 3e → 2e → 1er étage</p>
+      <p class="meta">40 min · Basic-Fit · 3e → 2e → 1er étage · <em>Tape un exo pour lancer le timer de repos</em></p>
     </header>
     <div class="card">
       <h2><span class="dot dot-jeu"></span>Échauffement — 3e étage</h2>
@@ -338,9 +378,9 @@
       </div>
     </div>
     <div class="card">
-      <h2><span class="dot dot-jeu"></span>Corps de séance — 2e étage</h2>
+      <h2><span class="dot dot-jeu"></span>2e étage</h2>
       <ul class="exo-list">
-        <li class="exo">
+        <li class="exo" data-rest="60">
           <div class="exo-name">Hack Squat</div>
           <div class="exo-grid">
             <div class="exo-pill"><div class="label">Séries</div><div class="value">4 × 10</div></div>
@@ -352,9 +392,9 @@
       </ul>
     </div>
     <div class="card">
-      <h2><span class="dot dot-jeu"></span>Corps de séance — 1er étage</h2>
+      <h2><span class="dot dot-jeu"></span>1er étage</h2>
       <ul class="exo-list">
-        <li class="exo">
+        <li class="exo" data-rest="45">
           <div class="exo-name">Diverging Lat Pulldown</div>
           <div class="exo-grid">
             <div class="exo-pill"><div class="label">Séries</div><div class="value">4 × 10</div></div>
@@ -363,7 +403,7 @@
           </div>
           <p class="exo-tip"><strong>+2,5 kg vs semaine dernière.</strong> Tirer les coudes vers les hanches, serrer 2s en bas.</p>
         </li>
-        <li class="exo">
+        <li class="exo" data-rest="30">
           <div class="exo-name">Diverging Seated Row</div>
           <div class="exo-grid">
             <div class="exo-pill"><div class="label">Séries</div><div class="value">3 × 10</div></div>
@@ -372,7 +412,7 @@
           </div>
           <p class="exo-tip">Tirer en serrant les omoplates. Rythme soutenu.</p>
         </li>
-        <li class="exo">
+        <li class="exo" data-rest="30">
           <div class="exo-name">Rear Delt</div>
           <div class="exo-grid">
             <div class="exo-pill"><div class="label">Séries</div><div class="value">3 × 12</div></div>
@@ -384,25 +424,25 @@
       </ul>
     </div>
     <div class="card finisher">
-      <h2><span class="dot dot-accent"></span>Fin de séance — Zone stretch 1er étage</h2>
+      <h2><span class="dot dot-accent"></span>Finisher — Zone stretch 1er</h2>
       <ul class="exo-list">
-        <li class="exo">
-          <div class="exo-name">Bird dog</div>
+        <li class="exo" data-rest="30">
+          <div class="exo-name">Pallof press à la poulie</div>
           <div class="exo-grid">
-            <div class="exo-pill"><div class="label">Séries</div><div class="value">3 × 10/côté</div></div>
+            <div class="exo-pill"><div class="label">Séries</div><div class="value">3 × 12/côté</div></div>
+            <div class="exo-pill"><div class="label">Charge</div><div class="value">légère</div></div>
+            <div class="exo-pill"><div class="label">Repos</div><div class="value">30s</div></div>
+          </div>
+          <p class="exo-tip">Debout de profil à la poulie basse, poignée à 2 mains contre la poitrine. Tends les bras devant toi et <strong>résiste à la rotation</strong> — le but c'est de ne pas tourner. Obliques profonds en silence.</p>
+        </li>
+        <li class="exo" data-rest="30">
+          <div class="exo-name">Crunch bicycle</div>
+          <div class="exo-grid">
+            <div class="exo-pill"><div class="label">Séries</div><div class="value">3 × 20 reps</div></div>
             <div class="exo-pill"><div class="label">Charge</div><div class="value">—</div></div>
             <div class="exo-pill"><div class="label">Repos</div><div class="value">30s</div></div>
           </div>
-          <p class="exo-tip">À quatre pattes, dos plat. Tu tends <strong>bras droit + jambe gauche</strong> à l'horizontale, tiens <strong>2 secondes</strong>, tu reviens. Alterne.</p>
-        </li>
-        <li class="exo">
-          <div class="exo-name">Planche latérale</div>
-          <div class="exo-grid">
-            <div class="exo-pill"><div class="label">Séries</div><div class="value">3 × 25s/côté</div></div>
-            <div class="exo-pill"><div class="label">Charge</div><div class="value">—</div></div>
-            <div class="exo-pill"><div class="label">Repos</div><div class="value">20s</div></div>
-          </div>
-          <p class="exo-tip">Corps bien aligné, hanche levée. <strong>Obliques + épaule + fessier en simultané.</strong></p>
+          <p class="exo-tip">Allongé sur le dos, mains derrière la nuque. Tu amènes <strong>coude droit vers genou gauche</strong> en tendant la jambe droite — puis tu alternes. Lent et contrôlé, pas de tirage sur la nuque.</p>
         </li>
       </ul>
     </div>
@@ -416,20 +456,20 @@
 <div class="panel" id="panel-ven">
   <div class="wrap">
     <header>
-      <span class="badge badge-ven">Vendredi 22 mai 2026</span>
+      <span class="badge badge-ven">Vendredi</span>
       <h1>Full body <span style="color:var(--ven)">100 % poids du corps</span></h1>
-      <p class="meta">32 min · Basic-Fit · 3e → 1er étage · Zéro machine muscu</p>
+      <p class="meta">32 min · Basic-Fit · 3e → 1er · Zéro machine muscu · <em>Tape un exo pour lancer le timer</em></p>
     </header>
     <div class="card">
       <h2><span class="dot dot-ven"></span>Échauffement — 3e étage</h2>
       <div class="warmup">Crunchs sur banc incliné
-        <span class="small">3 × 15 reps. Dos calé sur le banc, montée contrôlée. Activation abdos avant le cardio.</span>
+        <span class="small">3 × 15 reps. Dos calé sur le banc, montée contrôlée.</span>
       </div>
     </div>
     <div class="card">
       <h2><span class="dot dot-ven"></span>Cardio HIIT — 3e étage</h2>
       <ul class="exo-list">
-        <li class="exo">
+        <li class="exo" data-rest="30">
           <div class="exo-name">Rameur Matrix — HIIT</div>
           <div class="exo-grid">
             <div class="exo-pill"><div class="label">Durée</div><div class="value c-ven">8 min</div></div>
@@ -441,9 +481,9 @@
       </ul>
     </div>
     <div class="card">
-      <h2><span class="dot dot-ven"></span>Corps de séance — 1er étage (zone fonctionnelle)</h2>
+      <h2><span class="dot dot-ven"></span>1er étage — zone fonctionnelle</h2>
       <ul class="exo-list">
-        <li class="exo">
+        <li class="exo" data-rest="30">
           <div class="exo-name">Squats poids du corps</div>
           <div class="exo-grid">
             <div class="exo-pill"><div class="label">Séries</div><div class="value">3 × 20</div></div>
@@ -452,7 +492,7 @@
           </div>
           <p class="exo-tip">Pieds largeur d'épaules, descendre les cuisses parallèles au sol. Rythme soutenu.</p>
         </li>
-        <li class="exo">
+        <li class="exo" data-rest="30">
           <div class="exo-name">Pompes</div>
           <div class="exo-grid">
             <div class="exo-pill"><div class="label">Séries</div><div class="value">3 × 12</div></div>
@@ -461,23 +501,23 @@
           </div>
           <p class="exo-tip">Corps aligné, coudes à 45° du torse. Descente lente, montée explosive.</p>
         </li>
-        <li class="exo">
+        <li class="exo" data-rest="30">
           <div class="exo-name">Mountain climbers</div>
           <div class="exo-grid">
             <div class="exo-pill"><div class="label">Séries</div><div class="value">3 × 30s</div></div>
             <div class="exo-pill"><div class="label">Charge</div><div class="value">—</div></div>
             <div class="exo-pill"><div class="label">Repos</div><div class="value">30s</div></div>
           </div>
-          <p class="exo-tip">En planche haute, ramener les genoux vers la poitrine en alternance le plus vite possible. <strong>Cardio + gainage d'un coup.</strong></p>
+          <p class="exo-tip">En planche haute, ramener les genoux vers la poitrine en alternance le plus vite possible.</p>
         </li>
-        <li class="exo">
-          <div class="exo-name">Planche latérale</div>
+        <li class="exo" data-rest="20">
+          <div class="exo-name">Glute bridge</div>
           <div class="exo-grid">
-            <div class="exo-pill"><div class="label">Séries</div><div class="value">3 × 25s/côté</div></div>
+            <div class="exo-pill"><div class="label">Séries</div><div class="value">3 × 15</div></div>
             <div class="exo-pill"><div class="label">Charge</div><div class="value">—</div></div>
             <div class="exo-pill"><div class="label">Repos</div><div class="value">20s</div></div>
           </div>
-          <p class="exo-tip">Corps bien aligné, hanche levée. Obliques + épaule + fessier.</p>
+          <p class="exo-tip">Allongé sur le dos, pieds à plat, genoux fléchis. Tu pousses les hanches vers le plafond, tu <strong>serres les fessiers 2s en haut</strong>, tu redescends lentement. Fessiers + ischios + bas du dos.</p>
         </li>
       </ul>
     </div>
@@ -497,120 +537,169 @@
     </div>
     <div class="footer-note">
       <strong>Vendredi = règle absolue :</strong> zéro machine de muscu. Full body poids du corps + rameur HIIT.<br><br>
-      <strong>Si la pesée montre une stagnation du tour de taille</strong> → la semaine prochaine on passe le cardio à 10 min sur les 3 jours.
+      <strong>Si la pesée montre une stagnation du tour de taille</strong> → la semaine prochaine on passe le cardio à 10 min.
     </div>
   </div>
 </div>
 
-<!-- WAKE LOCK INDICATOR -->
-<div id="wakelock-indicator">⏳ Chargement…</div>
+<!-- ── TIMER BAR ── -->
+<div id="timer-bar">
+  <div id="timer-label">Repos</div>
+  <div id="timer-display">0:00</div>
+  <div id="timer-progress"><div id="timer-progress-fill"></div></div>
+  <button id="timer-cancel">✕ Annuler</button>
+</div>
+
+<!-- ── WAKE LOCK ── -->
+<div id="wakelock-indicator">⏳</div>
 
 <script>
-// ── TABS — event delegation, aucun onclick inline ──────────────────────────
+// ── TABS ──────────────────────────────────────────────────────────────────
 (function() {
-  var DAYS = ['mer', 'jeu', 'ven'];
-
+  var DAYS = ['mer','jeu','ven'];
   function showTab(day) {
     DAYS.forEach(function(d) {
-      var panel = document.getElementById('panel-' + d);
-      var btn   = document.querySelector('.tab-btn[data-day="' + d + '"]');
-      if (!panel || !btn) return;
-      if (d === day) {
-        panel.classList.add('active');
-        btn.classList.add('active');
-      } else {
-        panel.classList.remove('active');
-        btn.classList.remove('active');
-      }
+      var p = document.getElementById('panel-' + d);
+      var b = document.querySelector('.tab-btn[data-day="' + d + '"]');
+      if (d === day) { p.classList.add('active'); b.classList.add('active'); }
+      else           { p.classList.remove('active'); b.classList.remove('active'); }
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-
-  // Délégation sur la tab-bar (robuste, pas de onclick inline)
   document.querySelector('.tab-bar').addEventListener('click', function(e) {
     var btn = e.target.closest('.tab-btn');
     if (btn) showTab(btn.getAttribute('data-day'));
   });
-
-  // Détection automatique du jour
-  var dow = new Date().getDay(); // 0=dim, 3=mer, 4=jeu, 5=ven
+  var dow = new Date().getDay();
   if (dow === 4) showTab('jeu');
   else if (dow === 5) showTab('ven');
   else showTab('mer');
 })();
 
-// ── WAKE LOCK — compatible iOS (NoSleep via video) + Android/Chrome ────────
+// ── TIMER ─────────────────────────────────────────────────────────────────
 (function() {
-  var indicator = document.getElementById('wakelock-indicator');
+  var bar      = document.getElementById('timer-bar');
+  var display  = document.getElementById('timer-display');
+  var fill     = document.getElementById('timer-progress-fill');
+  var cancelBtn= document.getElementById('timer-cancel');
 
-  function setStatus(text, color) {
-    indicator.textContent = text;
-    indicator.style.color = color || 'var(--muted)';
+  var ticker   = null;
+  var remaining = 0;
+  var total     = 0;
+
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+  function render() {
+    var m = Math.floor(remaining / 60);
+    var s = remaining % 60;
+    display.textContent = m + ':' + pad(s);
+    fill.style.width = (total > 0 ? (remaining / total) * 100 : 100) + '%';
   }
 
-  // ── Méthode 1 : Wake Lock API native (Chrome Android, Edge, etc.)
+  function stop() {
+    if (ticker) { clearInterval(ticker); ticker = null; }
+    bar.classList.remove('visible');
+    remaining = 0; total = 0;
+  }
+
+  function start(seconds) {
+    if (ticker) clearInterval(ticker);
+    remaining = seconds;
+    total     = seconds;
+    bar.classList.add('visible');
+    render();
+    ticker = setInterval(function() {
+      remaining--;
+      if (remaining <= 0) {
+        remaining = 0;
+        render();
+        clearInterval(ticker); ticker = null;
+        // Flash vert = c'est parti !
+        bar.classList.add('flash');
+        display.textContent = 'GO !';
+        fill.style.width = '100%';
+        setTimeout(function() {
+          bar.classList.remove('flash');
+          bar.classList.remove('visible');
+          total = 0;
+        }, 1200);
+      } else {
+        render();
+      }
+    }, 1000);
+  }
+
+  cancelBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    stop();
+  });
+
+  // Tap sur n'importe quelle carte exercice
+  document.addEventListener('click', function(e) {
+    // Ignore tap sur annuler
+    if (e.target.closest('#timer-cancel')) return;
+
+    var exo = e.target.closest('.exo');
+    if (!exo) return;
+
+    var restSec = parseInt(exo.getAttribute('data-rest'), 10) || 30;
+
+    if (exo.classList.contains('done')) {
+      // Re-tap → reset
+      exo.classList.remove('done');
+      stop();
+    } else {
+      // 1er tap → coche + lance timer
+      exo.classList.add('done');
+      start(restSec);
+    }
+  });
+})();
+
+// ── WAKE LOCK ─────────────────────────────────────────────────────────────
+(function() {
+  var ind = document.getElementById('wakelock-indicator');
+  function ok()  { ind.textContent = '⚡'; ind.style.color = '#4ade80'; ind.title = 'Écran maintenu allumé'; }
+  function bad() { ind.textContent = '💤'; ind.style.color = '#8a8a98'; ind.title = 'Veille active'; }
+
   if ('wakeLock' in navigator) {
     var wl = null;
-    function acquireNative() {
-      navigator.wakeLock.request('screen').then(function(lock) {
-        wl = lock;
-        setStatus('⚡ Écran maintenu allumé', 'var(--ven)');
-        lock.addEventListener('release', function() {
-          setStatus('💤 Veille active', 'var(--muted)');
-        });
-      }).catch(function() {
-        setStatus('💤 Veille active', 'var(--muted)');
-      });
+    function req() {
+      navigator.wakeLock.request('screen').then(function(l) {
+        wl = l; ok();
+        l.addEventListener('release', bad);
+      }).catch(bad);
     }
     document.addEventListener('visibilitychange', function() {
-      if (document.visibilityState === 'visible') acquireNative();
+      if (document.visibilityState === 'visible') req();
     });
-    acquireNative();
+    req();
     return;
   }
 
-  // ── Méthode 2 : Fallback iOS/Safari — micro-vidéo silencieuse en boucle
-  // Technique NoSleep.js : une vidéo de 2s en boucle force l'écran à rester allumé
-  var activated = false;
-
-  function buildNoSleepVideo() {
+  // Fallback iOS : micro-vidéo silencieuse
+  function buildVideo() {
     var v = document.createElement('video');
-    v.setAttribute('playsinline', '');
-    v.setAttribute('muted', '');
-    v.setAttribute('loop', '');
+    v.setAttribute('playsinline',''); v.setAttribute('muted',''); v.setAttribute('loop','');
     v.style.cssText = 'position:fixed;width:1px;height:1px;opacity:0.01;top:0;left:0;pointer-events:none;';
-
-    // MP4 minimaliste 1×1 pixel (data URI)
-    var src = document.createElement('source');
-    src.type = 'video/mp4';
-    src.src = 'data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAAIZnJlZQAAA5BtZGF0AAACrgYF//+q3EXpvebZSLeWLNgg2SPu73gyNjQgLSBjb3JlIDE0MiByMjQ3OSBkZDc5YTYxIC0gSC4yNjQvTVBFRy00IEFWQ2NvZGVjIC0gQ29weWxlZnQgMjAwMy0yMDE0IC0gaHR0cDovL3d3dy52aWRlb2xhbi5vcmcveDI2NC5odG1sIC0gb3B0aW9uczogY2FiYWM9MSByZWY9MyBkZWJsb2NrPTE6MDowIGFuYWx5c2U9MHgzOjB4MTEzIG1lPWhleCBzdWJtZT03IHBzeT0xIHBzeV9yZD0xLjAwOjAuMDAgbWl4ZWRfcmVmPTEgbWVfcmFuZ2U9MTYgY2hyb21hX21lPTEgdHJlbGxpcz0xIDh4OGRjdD0xIGNxbT0wIGRlYWR6b25lPTIxLDExIGZhc3RfcHNraXA9MSBjaHJvbWFfcXBfb2Zmc2V0PS0yIHRocmVhZHM9NjEgbG9va2FoZWFkX3RocmVhZHM9MTAgc2xpY2VkX3RocmVhZHM9MCBucj0wIGRlY2ltYXRlPTEgaW50ZXJsYWNlZD0wIGJsdXJheV9jb21wYXQ9MCBjb25zdHJhaW5lZF9pbnRyYT0wIGJmcmFtZXM9MyBiX3B5cmFtaWQ9MiBiX2FkYXB0PTEgYl9iaWFzPTAgZGlyZWN0PTEgd2VpZ2h0Yj0xIG9wZW5fZ29wPTAgd2VpZ2h0cD0yIGtleWludD0yNTAga2V5aW50X21pbj0yNSBzY2VuZWN1dD00MCBpbnRyYV9yZWZyZXNoPTAgcmNfbG9va2FoZWFkPTQwIHJjPWNyZiBtYnRyZWU9MSBjcmY9MjMuMCBxY29tcD0wLjYwIHFwbWluPTAgcXBtYXg9NjkgcXBzdGVwPTQgaXBfcmF0aW89MS40MCBhcT0xOjEuMDAAgAAAAFZliIQL8mKAAKvMnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnAAAAAxBmiWsAAAMAADAAAA==';
-    v.appendChild(src);
-    document.body.appendChild(v);
-    return v;
+    var s = document.createElement('source'); s.type = 'video/mp4';
+    s.src = 'data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAAIZnJlZQAAA5BtZGF0AAACrgYF//+q3EXpvebZSLeWLNgg2SPu73gyNjQgLSBjb3JlIDE0MiByMjQ3OSBkZDc5YTYxIC0gSC4yNjQvTVBFRy00IEFWQ2NvZGVjIC0gQ29weWxlZnQgMjAwMy0yMDE0IC0gaHR0cDovL3d3dy52aWRlb2xhbi5vcmcveDI2NC5odG1sIC0gb3B0aW9uczogY2FiYWM9MSByZWY9MyBkZWJsb2NrPTE6MDowIGFuYWx5c2U9MHgzOjB4MTEzIG1lPWhleCBzdWJtZT03IHBzeT0xIHBzeV9yZD0xLjAwOjAuMDAgbWl4ZWRfcmVmPTEgbWVfcmFuZ2U9MTYgY2hyb21hX21lPTEgdHJlbGxpcz0xIDh4OGRjdD0xIGNxbT0wIGRlYWR6b25lPTIxLDExIGZhc3RfcHNraXA9MSBjaHJvbWFfcXBfb2Zmc2V0PS0yIHRocmVhZHM9NjEgbG9va2FoZWFkX3RocmVhZHM9MTAgc2xpY2VkX3RocmVhZHM9MCBucj0wIGRlY2ltYXRlPTEgaW50ZXJsYWNlZD0wIGJsdXJheV9jb21wYXQ9MCBjb25zdHJhaW5lZF9pbnRyYT0wIGJmcmFtZXM9MyBiX3B5cmFtaWQ9MiBiX2FkYXB0PTEgYl9iaWFzPTAgZGlyZWN0PTEgd2VpZ2h0Yj0xIG9wZW5fZ29wPTAgd2VpZ2h0cD0yIGtleWludD0yNTAga2V5aW50X21pbj0yNSBzY2VuZWN1dD00MCBpbnRyYV9yZWZyZXNoPTAgcmNfbG9va2FoZWFkPTQwIHJjPWNyZiBtYnRyZWU9MSBjcmY9MjMuMCBxY29tcD0wLjYwIHFwbWluPTAgcXBtYXg9NjkgcXBzdGVwPTQgaXBfcmF0aW89MS40MCBhcT0xOjEuMDAAgAAAAFZliIQL8mKAAKvMnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnAAAAAxBmiWsAAAMAADAAAA==';
+    v.appendChild(s); document.body.appendChild(v); return v;
   }
-
-  var noSleepVideo = null;
-
-  function enableNoSleep() {
+  var vid = null; var activated = false;
+  function enable() {
     if (activated) return;
-    if (!noSleepVideo) noSleepVideo = buildNoSleepVideo();
-    noSleepVideo.play().then(function() {
-      activated = true;
-      setStatus('⚡ Écran maintenu allumé', 'var(--ven)');
-    }).catch(function() {
-      // Autoplay bloqué — on attend un geste utilisateur
-      setStatus('👆 Touche l\'écran pour activer', 'var(--muted)');
-      document.addEventListener('touchstart', function handler() {
-        noSleepVideo.play().then(function() {
-          activated = true;
-          setStatus('⚡ Écran maintenu allumé', 'var(--ven)');
-        });
-        document.removeEventListener('touchstart', handler);
+    if (!vid) vid = buildVideo();
+    vid.play().then(function() { activated = true; ok(); })
+    .catch(function() {
+      ind.textContent = '👆'; ind.title = 'Touche l\'écran pour activer';
+      document.addEventListener('touchstart', function h() {
+        vid.play().then(function() { activated = true; ok(); });
+        document.removeEventListener('touchstart', h);
       }, { once: true });
     });
   }
-
-  enableNoSleep();
+  enable();
 })();
 </script>
 </body>
