@@ -46,7 +46,6 @@
     max-width: 640px;
     margin: 0 auto;
     display: flex;
-    gap: 0;
   }
   .tab-btn {
     flex: 1;
@@ -61,11 +60,12 @@
     transition: color 0.15s, border-color 0.15s;
     text-align: center;
     letter-spacing: 0.02em;
+    -webkit-tap-highlight-color: transparent;
   }
   .tab-btn:hover { color: var(--text); }
-  .tab-btn.active-mer { color: var(--mer); border-bottom-color: var(--mer); }
-  .tab-btn.active-jeu { color: var(--jeu); border-bottom-color: var(--jeu); }
-  .tab-btn.active-ven { color: var(--ven); border-bottom-color: var(--ven); }
+  .tab-btn[data-day="mer"].active { color: var(--mer); border-bottom-color: var(--mer); }
+  .tab-btn[data-day="jeu"].active { color: var(--jeu); border-bottom-color: var(--jeu); }
+  .tab-btn[data-day="ven"].active { color: var(--ven); border-bottom-color: var(--ven); }
 
   /* ── PANELS ── */
   .panel { display: none; }
@@ -121,8 +121,7 @@
   }
   .dot {
     display: inline-block;
-    width: 6px;
-    height: 6px;
+    width: 6px; height: 6px;
     border-radius: 50%;
     flex-shrink: 0;
   }
@@ -130,7 +129,6 @@
   .dot-jeu { background: var(--jeu); }
   .dot-ven { background: var(--ven); }
   .dot-accent { background: #3ddc97; }
-  .dot-gold { background: #ffd23f; }
 
   .warmup { font-size: 16px; font-weight: 600; }
   .warmup .small {
@@ -172,19 +170,6 @@
   .exo-tip { font-size: 13px; color: var(--muted); line-height: 1.55; }
   .exo-tip strong { color: var(--text); font-weight: 600; }
 
-  .circuit-banner {
-    background: rgba(255,93,93,0.08);
-    border: 1px solid rgba(255,93,93,0.2);
-    border-radius: 12px;
-    padding: 10px 14px;
-    margin-bottom: 12px;
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #ff5d5d;
-  }
-
   .finisher {
     background: linear-gradient(135deg, rgba(61,220,151,0.06) 0%, rgba(255,210,63,0.04) 100%);
     border: 1px solid rgba(61,220,151,0.2);
@@ -200,12 +185,7 @@
     align-items: flex-start;
   }
   .pesee-banner .icon { font-size: 24px; flex-shrink: 0; }
-  .pesee-banner .title {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--ven);
-    margin-bottom: 6px;
-  }
+  .pesee-banner .title { font-size: 14px; font-weight: 700; color: var(--ven); margin-bottom: 6px; }
   .pesee-banner .sub { font-size: 13px; color: var(--muted); line-height: 1.6; }
   .pesee-banner .sub strong { color: var(--text); }
 
@@ -244,13 +224,13 @@
 <!-- TAB BAR -->
 <div class="tab-bar">
   <div class="tab-bar-inner">
-    <button class="tab-btn" id="btn-mer" onclick="showTab('mer')">⚡ Mer 20</button>
-    <button class="tab-btn" id="btn-jeu" onclick="showTab('jeu')">🔥 Jeu 21</button>
-    <button class="tab-btn" id="btn-ven" onclick="showTab('ven')">🌿 Ven 22</button>
+    <button class="tab-btn" data-day="mer">⚡ Mer 20</button>
+    <button class="tab-btn" data-day="jeu">🔥 Jeu 21</button>
+    <button class="tab-btn" data-day="ven">🌿 Ven 22</button>
   </div>
 </div>
 
-<!-- ═══════════════════════════════ MERCREDI ═══════════════════════════════ -->
+<!-- ═══════════ MERCREDI ═══════════ -->
 <div class="panel" id="panel-mer">
   <div class="wrap">
     <header>
@@ -258,15 +238,12 @@
       <h1>Haut du corps <span style="color:var(--mer)">+ Core</span></h1>
       <p class="meta">25 min · Basic-Fit · 3e → 1er étage</p>
     </header>
-
     <div class="card">
       <h2><span class="dot dot-mer"></span>Échauffement — 3e étage</h2>
-      <div class="warmup">
-        5 min tapis course incliné
+      <div class="warmup">5 min tapis course incliné
         <span class="small">Inclinaison 5–6%, allure marche rapide. Montée en cadence sur la dernière minute.</span>
       </div>
     </div>
-
     <div class="card">
       <h2><span class="dot dot-mer"></span>Corps de séance — 1er étage</h2>
       <ul class="exo-list">
@@ -308,7 +285,6 @@
         </li>
       </ul>
     </div>
-
     <div class="card finisher">
       <h2><span class="dot dot-accent"></span>Fin de séance — Zone stretch 1er étage</h2>
       <ul class="exo-list">
@@ -341,14 +317,13 @@
         </li>
       </ul>
     </div>
-
     <div class="footer-note">
-      <strong>Core de rotation cette semaine : Hollow hold.</strong> On travaille la sangle profonde + obliques sans machine. Le vacuum fait la vraie différence sur le tour de taille dans la durée.
+      <strong>Core de rotation cette semaine : Hollow hold.</strong> Vacuum + hollow hold + russian twists = combo dégonflement maximum.
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════ JEUDI ═══════════════════════════════ -->
+<!-- ═══════════ JEUDI ═══════════ -->
 <div class="panel" id="panel-jeu">
   <div class="wrap">
     <header>
@@ -356,15 +331,12 @@
       <h1>Pull + Bas du corps <span style="color:var(--jeu)">+ Composés</span></h1>
       <p class="meta">40 min · Basic-Fit · 3e → 2e → 1er étage</p>
     </header>
-
     <div class="card">
       <h2><span class="dot dot-jeu"></span>Échauffement — 3e étage</h2>
-      <div class="warmup">
-        8 min vélo elliptique HIIT
+      <div class="warmup">8 min vélo elliptique HIIT
         <span class="small">Intervalles 30s intensité max / 30s récupération active. 8 tours.</span>
       </div>
     </div>
-
     <div class="card">
       <h2><span class="dot dot-jeu"></span>Corps de séance — 2e étage</h2>
       <ul class="exo-list">
@@ -379,7 +351,6 @@
         </li>
       </ul>
     </div>
-
     <div class="card">
       <h2><span class="dot dot-jeu"></span>Corps de séance — 1er étage</h2>
       <ul class="exo-list">
@@ -412,7 +383,6 @@
         </li>
       </ul>
     </div>
-
     <div class="card finisher">
       <h2><span class="dot dot-accent"></span>Fin de séance — Zone stretch 1er étage</h2>
       <ul class="exo-list">
@@ -423,7 +393,7 @@
             <div class="exo-pill"><div class="label">Charge</div><div class="value">—</div></div>
             <div class="exo-pill"><div class="label">Repos</div><div class="value">30s</div></div>
           </div>
-          <p class="exo-tip">À quatre pattes, dos plat. Tu tends <strong>bras droit + jambe gauche</strong> à l'horizontale, tu tiens <strong>2 secondes</strong>, tu reviens. Alterne. Sensation : sangle profonde + équilibre.</p>
+          <p class="exo-tip">À quatre pattes, dos plat. Tu tends <strong>bras droit + jambe gauche</strong> à l'horizontale, tiens <strong>2 secondes</strong>, tu reviens. Alterne.</p>
         </li>
         <li class="exo">
           <div class="exo-name">Planche latérale</div>
@@ -436,14 +406,13 @@
         </li>
       </ul>
     </div>
-
     <div class="footer-note">
-      <strong>Règle des étages :</strong> Elliptique au 3e → Hack Squat au 2e → toutes les machines tirées + finisher au 1er. On ne remonte jamais.
+      <strong>Règle des étages :</strong> Elliptique au 3e → Hack Squat au 2e → machines tirées + finisher au 1er. On ne remonte jamais.
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════ VENDREDI ═══════════════════════════════ -->
+<!-- ═══════════ VENDREDI ═══════════ -->
 <div class="panel" id="panel-ven">
   <div class="wrap">
     <header>
@@ -451,15 +420,12 @@
       <h1>Full body <span style="color:var(--ven)">100 % poids du corps</span></h1>
       <p class="meta">32 min · Basic-Fit · 3e → 1er étage · Zéro machine muscu</p>
     </header>
-
     <div class="card">
       <h2><span class="dot dot-ven"></span>Échauffement — 3e étage</h2>
-      <div class="warmup">
-        Crunchs sur banc incliné
+      <div class="warmup">Crunchs sur banc incliné
         <span class="small">3 × 15 reps. Dos calé sur le banc, montée contrôlée. Activation abdos avant le cardio.</span>
       </div>
     </div>
-
     <div class="card">
       <h2><span class="dot dot-ven"></span>Cardio HIIT — 3e étage</h2>
       <ul class="exo-list">
@@ -470,11 +436,10 @@
             <div class="exo-pill"><div class="label">Rythme</div><div class="value">30s / 30s</div></div>
             <div class="exo-pill"><div class="label">Tours</div><div class="value">8</div></div>
           </div>
-          <p class="exo-tip">30s à fond, 30s récup lente. <strong>Dos droit, tirer avec les coudes vers les hanches.</strong> C'est le cardio le plus efficace pour brûler des calories après la séance.</p>
+          <p class="exo-tip">30s à fond, 30s récup lente. <strong>Dos droit, tirer avec les coudes vers les hanches.</strong></p>
         </li>
       </ul>
     </div>
-
     <div class="card">
       <h2><span class="dot dot-ven"></span>Corps de séance — 1er étage (zone fonctionnelle)</h2>
       <ul class="exo-list">
@@ -516,7 +481,6 @@
         </li>
       </ul>
     </div>
-
     <div class="card finisher" style="border-color: var(--ven-border);">
       <h2><span class="dot dot-ven"></span>Bloc pesée — avant la douche</h2>
       <div class="pesee-banner">
@@ -526,74 +490,128 @@
           <div class="sub">
             <strong>Maintenant, avant la douche.</strong><br>
             À jeun, détendu, sans rentrer le ventre. Mètre ruban <strong>au niveau du nombril</strong>.<br><br>
-            Ces deux chiffres dans la conversation → je mets à jour et prépare la semaine suivante.
+            Ces deux chiffres dans la conversation → je prépare la semaine suivante.
           </div>
         </div>
       </div>
     </div>
-
     <div class="footer-note">
-      <strong>Vendredi = règle absolue :</strong> zéro machine de muscu. Full body poids du corps + rameur HIIT = le format le plus efficace pour brûler après la séance.<br><br>
+      <strong>Vendredi = règle absolue :</strong> zéro machine de muscu. Full body poids du corps + rameur HIIT.<br><br>
       <strong>Si la pesée montre une stagnation du tour de taille</strong> → la semaine prochaine on passe le cardio à 10 min sur les 3 jours.
     </div>
   </div>
 </div>
 
 <!-- WAKE LOCK INDICATOR -->
-<div id="wakelock-indicator">⏳ Activation…</div>
+<div id="wakelock-indicator">⏳ Chargement…</div>
 
 <script>
-  // ── TAB SWITCHING ──────────────────────────────────────────────────────────
-  const TABS = ['mer','jeu','ven'];
-  const COLOR_CLASS = { mer: 'active-mer', jeu: 'active-jeu', ven: 'active-ven' };
+// ── TABS — event delegation, aucun onclick inline ──────────────────────────
+(function() {
+  var DAYS = ['mer', 'jeu', 'ven'];
 
   function showTab(day) {
-    TABS.forEach(t => {
-      document.getElementById('panel-' + t).classList.toggle('active', t === day);
-      const btn = document.getElementById('btn-' + t);
-      btn.className = 'tab-btn' + (t === day ? ' ' + COLOR_CLASS[t] : '');
+    DAYS.forEach(function(d) {
+      var panel = document.getElementById('panel-' + d);
+      var btn   = document.querySelector('.tab-btn[data-day="' + d + '"]');
+      if (!panel || !btn) return;
+      if (d === day) {
+        panel.classList.add('active');
+        btn.classList.add('active');
+      } else {
+        panel.classList.remove('active');
+        btn.classList.remove('active');
+      }
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // Auto-detect day of week
-  const dow = new Date().getDay(); // 0=Sun,1=Mon,2=Tue,3=Wed,4=Thu,5=Fri,6=Sat
+  // Délégation sur la tab-bar (robuste, pas de onclick inline)
+  document.querySelector('.tab-bar').addEventListener('click', function(e) {
+    var btn = e.target.closest('.tab-btn');
+    if (btn) showTab(btn.getAttribute('data-day'));
+  });
+
+  // Détection automatique du jour
+  var dow = new Date().getDay(); // 0=dim, 3=mer, 4=jeu, 5=ven
   if (dow === 4) showTab('jeu');
   else if (dow === 5) showTab('ven');
-  else showTab('mer'); // mercredi par défaut (ou tout autre jour)
+  else showTab('mer');
+})();
 
-  // ── WAKE LOCK : empêche la mise en veille de l'écran ──────────────────────
-  (async function() {
-    const indicator = document.getElementById('wakelock-indicator');
+// ── WAKE LOCK — compatible iOS (NoSleep via video) + Android/Chrome ────────
+(function() {
+  var indicator = document.getElementById('wakelock-indicator');
 
-    if (!('wakeLock' in navigator)) {
-      indicator.textContent = '⚠ Veille non bloquée';
-      return;
-    }
+  function setStatus(text, color) {
+    indicator.textContent = text;
+    indicator.style.color = color || 'var(--muted)';
+  }
 
-    let wakeLock = null;
-
-    async function requestWakeLock() {
-      try {
-        wakeLock = await navigator.wakeLock.request('screen');
-        indicator.textContent = '⚡ Écran maintenu allumé';
-        indicator.style.color = 'var(--ven)';
-        wakeLock.addEventListener('release', () => {
-          indicator.textContent = '💤 Veille active';
-          indicator.style.color = 'var(--muted)';
+  // ── Méthode 1 : Wake Lock API native (Chrome Android, Edge, etc.)
+  if ('wakeLock' in navigator) {
+    var wl = null;
+    function acquireNative() {
+      navigator.wakeLock.request('screen').then(function(lock) {
+        wl = lock;
+        setStatus('⚡ Écran maintenu allumé', 'var(--ven)');
+        lock.addEventListener('release', function() {
+          setStatus('💤 Veille active', 'var(--muted)');
         });
-      } catch(e) {
-        indicator.textContent = '⚠ Verrouillage échoué';
-      }
+      }).catch(function() {
+        setStatus('💤 Veille active', 'var(--muted)');
+      });
     }
-
-    // Réactiver si on revient sur la page après avoir changé d'onglet
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible') requestWakeLock();
+    document.addEventListener('visibilitychange', function() {
+      if (document.visibilityState === 'visible') acquireNative();
     });
+    acquireNative();
+    return;
+  }
 
-    requestWakeLock();
-  })();
+  // ── Méthode 2 : Fallback iOS/Safari — micro-vidéo silencieuse en boucle
+  // Technique NoSleep.js : une vidéo de 2s en boucle force l'écran à rester allumé
+  var activated = false;
+
+  function buildNoSleepVideo() {
+    var v = document.createElement('video');
+    v.setAttribute('playsinline', '');
+    v.setAttribute('muted', '');
+    v.setAttribute('loop', '');
+    v.style.cssText = 'position:fixed;width:1px;height:1px;opacity:0.01;top:0;left:0;pointer-events:none;';
+
+    // MP4 minimaliste 1×1 pixel (data URI)
+    var src = document.createElement('source');
+    src.type = 'video/mp4';
+    src.src = 'data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAAIZnJlZQAAA5BtZGF0AAACrgYF//+q3EXpvebZSLeWLNgg2SPu73gyNjQgLSBjb3JlIDE0MiByMjQ3OSBkZDc5YTYxIC0gSC4yNjQvTVBFRy00IEFWQ2NvZGVjIC0gQ29weWxlZnQgMjAwMy0yMDE0IC0gaHR0cDovL3d3dy52aWRlb2xhbi5vcmcveDI2NC5odG1sIC0gb3B0aW9uczogY2FiYWM9MSByZWY9MyBkZWJsb2NrPTE6MDowIGFuYWx5c2U9MHgzOjB4MTEzIG1lPWhleCBzdWJtZT03IHBzeT0xIHBzeV9yZD0xLjAwOjAuMDAgbWl4ZWRfcmVmPTEgbWVfcmFuZ2U9MTYgY2hyb21hX21lPTEgdHJlbGxpcz0xIDh4OGRjdD0xIGNxbT0wIGRlYWR6b25lPTIxLDExIGZhc3RfcHNraXA9MSBjaHJvbWFfcXBfb2Zmc2V0PS0yIHRocmVhZHM9NjEgbG9va2FoZWFkX3RocmVhZHM9MTAgc2xpY2VkX3RocmVhZHM9MCBucj0wIGRlY2ltYXRlPTEgaW50ZXJsYWNlZD0wIGJsdXJheV9jb21wYXQ9MCBjb25zdHJhaW5lZF9pbnRyYT0wIGJmcmFtZXM9MyBiX3B5cmFtaWQ9MiBiX2FkYXB0PTEgYl9iaWFzPTAgZGlyZWN0PTEgd2VpZ2h0Yj0xIG9wZW5fZ29wPTAgd2VpZ2h0cD0yIGtleWludD0yNTAga2V5aW50X21pbj0yNSBzY2VuZWN1dD00MCBpbnRyYV9yZWZyZXNoPTAgcmNfbG9va2FoZWFkPTQwIHJjPWNyZiBtYnRyZWU9MSBjcmY9MjMuMCBxY29tcD0wLjYwIHFwbWluPTAgcXBtYXg9NjkgcXBzdGVwPTQgaXBfcmF0aW89MS40MCBhcT0xOjEuMDAAgAAAAFZliIQL8mKAAKvMnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnJycnAAAAAxBmiWsAAAMAADAAAA==';
+    v.appendChild(src);
+    document.body.appendChild(v);
+    return v;
+  }
+
+  var noSleepVideo = null;
+
+  function enableNoSleep() {
+    if (activated) return;
+    if (!noSleepVideo) noSleepVideo = buildNoSleepVideo();
+    noSleepVideo.play().then(function() {
+      activated = true;
+      setStatus('⚡ Écran maintenu allumé', 'var(--ven)');
+    }).catch(function() {
+      // Autoplay bloqué — on attend un geste utilisateur
+      setStatus('👆 Touche l\'écran pour activer', 'var(--muted)');
+      document.addEventListener('touchstart', function handler() {
+        noSleepVideo.play().then(function() {
+          activated = true;
+          setStatus('⚡ Écran maintenu allumé', 'var(--ven)');
+        });
+        document.removeEventListener('touchstart', handler);
+      }, { once: true });
+    });
+  }
+
+  enableNoSleep();
+})();
 </script>
 </body>
 </html>
